@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import Movie from './movie'
+
+export class Movie extends Component {
+    render() {
+        return <div className="movie-entry">{this.props.movie.name}</div>
+    }
+}
 
 export class MovieList extends Component {
     constructor(props) {
@@ -24,5 +29,3 @@ export class MovieList extends Component {
         )
     }
 }
-
-export default MovieList

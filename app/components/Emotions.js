@@ -1,5 +1,15 @@
 import React, { Component, PropTypes } from 'react'
-import Emotion from './Emotion'
+import { Link } from 'react-router'
+
+export class Emotion extends Component {
+    render() {
+        return (
+            <div className="emotion-label">
+                <Link to={`/app/${this.props.name}/`}>{this.props.name}</Link>
+            </div>
+        )
+    }
+}
 
 export class EmotionList extends Component {
     static propTypes = {
@@ -18,5 +28,3 @@ export class EmotionList extends Component {
         )
     }
 }
-
-export default EmotionList
