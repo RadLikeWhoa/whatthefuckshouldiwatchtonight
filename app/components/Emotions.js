@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router'
+import request from 'superagent'
 
 export class Emotion extends Component {
     render() {
@@ -12,14 +13,6 @@ export class Emotion extends Component {
 }
 
 export class EmotionList extends Component {
-    static propTypes = {
-        emotions: PropTypes.arrayOf(PropTypes.string).isRequired
-    }
-
-    static defaultProps = {
-        emotions: [ 'amused', 'sad', 'excited', 'uplifted', 'scared', 'inspired', 'joyful', 'weird', 'sentimental' ]
-    }
-
     render() {
         return (
             <div data-grid>
@@ -30,6 +23,28 @@ export class EmotionList extends Component {
 }
 
 export class Emotions extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            emotions: []
+        }
+
+        this.getEmotions()
+    }
+
+    getEmotions() {
+        request.get('/api/emotions')
+            .set('Accept', 'application/json')
+            .end((err, res) => {
+                if (!err) {
+                    this.setState({
+                        emotions: res.data
+                    })
+                }
+            })
+    }
+
     render() {
         document.title = 'What the fuck should I watch tonight?!'
 
@@ -39,7 +54,7 @@ export class Emotions extends Component {
                     <h1 className="site-title">Show me movies that will make me feel…</h1>
                     <a data-button="inverted">… or rate a movie?</a>
                 </div>
-                <EmotionList />
+                <EmotionList emotions={this.state.emotions} />
             </div>
         )
     }

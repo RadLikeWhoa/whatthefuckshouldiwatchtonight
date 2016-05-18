@@ -32,7 +32,7 @@ export class MovieList extends Component {
 
 export class Movies extends Component {
     render() {
-        document.title = 'Movies that will make you feel ' + this.props.params.emotion + '! — What the fuck should I watch tonight?!'
+        document.title = 'Movies that will make you feel ' + this.props.params.emotion + '!'
 
         return (
             <div class="wrapper">
