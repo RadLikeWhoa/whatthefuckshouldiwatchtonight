@@ -1,12 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Router, Route, browserHistory } from 'react-router'
-import { EmotionList } from './components/emotions'
-import { MovieList } from './components/movies'
+import { Emotions } from './components/emotions'
+import { Movies } from './components/movies'
 
 render((
     <Router history={browserHistory}>
-        <Route path="/app/" component={EmotionList} />
-        <Route path="/app/:emotion/" component={MovieList} />
+        <Route path="/app/" component={Emotions} />
+        <Route path="/app/:emotion/" component={Movies} />
     </Router>
 ), document.getElementById('app'))

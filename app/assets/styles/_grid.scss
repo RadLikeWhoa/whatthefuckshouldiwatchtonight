@@ -1,0 +1,90 @@
+$grid-namespace: 'grid' !default;
+$grid-columns-namespace: 'col' !default;
+
+$column-prefixes: () !default;
+
+$columns: 2 3 4 5 6 !default;
+$gutters: 1.5em !default;
+
+@mixin _column-setup ($prefix: false) {
+    $cache: ();
+
+    @each $group in $columns {
+        $include: ();
+
+        @if (length($group) == 2) {
+            $include: nth($group, 2);
+            $group: nth($group, 1);
+        }
+
+        @for $i from 1 to $group {
+            @if (length($include) and index($include, $i)) or length($include) == 0 {
+                $value: 100% / $group * $i;
+                $index: index($cache, $value);
+
+                @if not $index {
+                    $cache: append($cache, $value);
+                    $index: length($cache);
+
+                    %#{$prefix + '-' + $index} { width: $value; }
+                }
+
+                $selector: if($prefix, $prefix, "") + $i + '-' + $group;
+
+                [data-#{$grid-columns-namespace}~="#{$selector}"] {
+                    @extend %#{$prefix + '-' + $index};
+                }
+            }
+        }
+    }
+}
+
+[data-#{$grid-namespace}] {
+    display: block;
+    margin-left: -$gutters;
+
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+
+[data-#{$grid-namespace}~="gutterless"] {
+    margin-left: 0;
+}
+
+[data-#{$grid-columns-namespace}] {
+    display: block;
+    width: 100%;
+    float: left;
+    padding-left: $gutters;
+
+    [data-#{$grid-namespace}~="rev"] & {
+        float: right;
+    }
+
+    [data-#{$grid-namespace}~="gutterless"] & {
+        padding-left: 0;
+    }
+}
+
+[data-#{$grid-columns-namespace}~="empty"] {
+    height: 1px;
+}
+
+[data-#{$grid-namespace}] [data-#{$grid-columns-namespace}~="guttered"] {
+    padding-left: $gutters;
+}
+
+[data-#{$grid-namespace}] [data-#{$grid-columns-namespace}~="small-guttered"] {
+    padding-left: $gutters / 3;
+}
+
+@include _column-setup();
+
+@each $prefix, $media-query in $column-prefixes {
+    @media #{$media-query} {
+        @include _column-setup($prefix);
+    }
+}
