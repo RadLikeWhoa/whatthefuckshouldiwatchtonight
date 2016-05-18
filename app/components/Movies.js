@@ -10,6 +10,8 @@ export class MovieList extends Component {
     constructor(props) {
         super(props)
 
+        document.title = 'Movies that will make you feel ' + this.props.params.emotion + '! — What the fuck should I watch tonight?!'
+
         this.state = {
             movies: [{
                 id: 1,

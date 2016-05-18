@@ -21,6 +21,8 @@ export class EmotionList extends Component {
     }
 
     render() {
+        document.title = 'What the fuck should I watch tonight?!'
+
         return (
             <div data-grid>
                 {this.props.emotions.map((e, i) => <Emotion name={e} key={i} />)}
