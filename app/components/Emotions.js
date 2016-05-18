@@ -34,12 +34,12 @@ export class Emotions extends Component {
     }
 
     getEmotions() {
-        request.get('/api/emotions')
+        request.get('/api/emotions/')
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
                     this.setState({
-                        emotions: res.data
+                        emotions: res.body.emotions
                     })
                 }
             })

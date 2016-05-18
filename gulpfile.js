@@ -13,13 +13,13 @@ gulp.task('build', function () {
         .bundle()
         .on('error', function(err) { console.error(err); this.emit('end'); })
         .pipe(source('bundle.js'))
-        .pipe(gulp.dest('dist/'))
+        .pipe(gulp.dest('app/dist/'))
 })
 
 gulp.task('styles', function () {
     return gulp.src('app/assets/styles/style.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('dist/css/'))
+        .pipe(gulp.dest('app/dist/css/'))
 })
 
 gulp.task('sql', function () {
@@ -29,7 +29,7 @@ gulp.task('sql', function () {
 })
 
 gulp.task('watch', [ 'build', 'styles', 'sql' ], function () {
-    gulp.watch('app/**/*.js', [ 'build' ])
+    gulp.watch([ 'app/main.js', 'app/components/**/*.js' ], [ 'build' ])
     gulp.watch('app/assets/styles/**/*.scss', [ 'styles' ])
     gulp.watch('db/**/*.sql', [ 'sql' ])
 })

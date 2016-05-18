@@ -6,7 +6,7 @@ import { Movies } from './components/movies'
 
 render((
     <Router history={browserHistory}>
-        <Route path="/app/" component={Emotions} />
-        <Route path="/app/:emotion/" component={Movies} />
+        <Route path="/" component={Emotions} />
+        <Route path="/:emotion/" component={Movies} />
     </Router>
 ), document.getElementById('app'))

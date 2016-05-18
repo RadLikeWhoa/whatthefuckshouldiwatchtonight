@@ -1,0 +1,16 @@
+{
+    "name": "whatthefuckshouldiwatchtonight/api",
+    "description": "What the fuck should I watch tonight?",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [{
+        "name": "Sacha Schmid"
+    }, {
+        "name": "Rinesch Murugathas"
+    }, {
+        "name": "Tobias Baumgartner"
+    }],
+    "require": {
+        "slim/slim": "^3.4"
+    }
+}
