@@ -56,6 +56,8 @@ export class Movies extends Component {
      * getMoviesForEmotion() gets a list of all movies that have been reviewed
      * as matching the given emotion. It updates the state once the data has
      * been fetched.
+     *
+     * @TODO Check for valid emotion and redirect to 404 if invalid.
      */
 
     getMoviesForEmotion(emotion) {
@@ -71,7 +73,7 @@ export class Movies extends Component {
     }
 
     render() {
-        document.title = 'Movies that will make you feel ' + this.props.params.emotion + '!'
+        document.title = `Movies that'll make you feel ${this.props.params.emotion}!`
 
         return (
             <div class="wrapper">

@@ -1,0 +1,32 @@
+.emotions-header {
+    padding: 3em 1.5em;
+    text-align: center;
+}
+
+.emotions-title {
+    margin-bottom: 0;
+}
+
+.emotions-wrapper {
+    max-width: 40em;
+    margin: 0 auto;
+}
+
+.emotions-entry {
+    margin-bottom: 1.5em;
+    text-align: center;
+    color: #fff;
+    background-color: $main-color;
+
+    a {
+        display: block;
+        padding: 1.5em;
+        color: #fff;
+        text-decoration: none;
+    }
+}
+
+.emotions-footer {
+    padding: 1.5em;
+    text-align: center;
+}

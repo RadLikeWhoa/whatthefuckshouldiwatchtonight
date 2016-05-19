@@ -15,21 +15,23 @@ import request from 'superagent'
  */
 
 const Emotion = ({name}) => (
-    <div className="emotion-label" data-col="1-3">
-        <Link to={`/${name}/`}>{name}</Link>
-    </div>
+    <li data-col="1-3">
+        <div className="emotions-entry">
+            <Link to={`/${name}/`}>{name}</Link>
+        </div>
+    </li>
 )
 
 /**
- * EmotionList is the component that renders the grid containing all emotions.
+ * EmotionsList is the component that renders the grid containing all emotions.
  * It is a stateless component, as such it was written using the shorthand
  * notation.
  */
 
-const EmotionList = ({emotions}) => (
-    <div data-grid>
+const EmotionsList = ({emotions}) => (
+    <ul data-grid className="emotions-list unstyled-list">
         {emotions.map(e => <Emotion name={e.emotion} key={e.id} />)}
-    </div>
+    </ul>
 )
 
 /**
@@ -71,12 +73,14 @@ export class Emotions extends Component {
 
         return (
             <div className="wrapper">
-                <header className="intro-heading">
-                    <h1 className="intro-title">Show me movies that'll make me feel…</h1>
+                <header className="emotions-header">
+                    <h1 className="emotions-title">Show me movies that'll make me feel…</h1>
                 </header>
-                <EmotionList emotions={this.state.emotions} />
-                <footer className="intro-footer">
-                    <a data-button="inverted">… or rate a movie?</a>
+                <div className="emotions-wrapper">
+                    <EmotionsList emotions={this.state.emotions} />
+                </div>
+                <footer className="emotions-footer">
+                    <a data-button>…or rate a movie?</a>
                 </footer>
             </div>
         )
