@@ -22,18 +22,6 @@ const Movie = ({movie}) => (
 )
 
 /**
- * MovieList is the component that is responsible for rendering a grid of movies
- * for a given emotion. It is a stateless component, as such it was written
- * using the shorthand notation.
- */
-
-const MovieList = ({movies}) => (
-    <div data-grid>
-        {movies.map(m => <Movie key={m.id} movie={m} />)}
-    </div>
-)
-
-/**
  * Movies is the container Component for the movie overview. It is responsible
  * for handling the state of the movies and fetching them. It controls the
  * rendering of the movies page.
@@ -77,7 +65,9 @@ export class Movies extends Component {
 
         return (
             <div class="wrapper">
-                <MovieList movies={this.state.movies} />
+                <div data-grid>
+                    {this.state.movies.map(m => <Movie key={m.id} movie={m} />)}
+                </div>
             </div>
         )
     }

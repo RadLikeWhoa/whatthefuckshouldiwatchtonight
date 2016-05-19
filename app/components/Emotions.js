@@ -23,18 +23,6 @@ const Emotion = ({name}) => (
 )
 
 /**
- * EmotionsList is the component that renders the grid containing all emotions.
- * It is a stateless component, as such it was written using the shorthand
- * notation.
- */
-
-const EmotionsList = ({emotions}) => (
-    <ul data-grid className="emotions-list unstyled-list">
-        {emotions.map(e => <Emotion name={e.emotion} key={e.id} />)}
-    </ul>
-)
-
-/**
  * Emotions is the container Component for the emotion picker. It is responsible
  * for handling the state of the emotions and fetching them. It controls the
  * rendering of the emotions page.
@@ -77,7 +65,9 @@ export class Emotions extends Component {
                     <h1 className="emotions-title">Show me movies that'll make me feel…</h1>
                 </header>
                 <div className="emotions-wrapper">
-                    <EmotionsList emotions={this.state.emotions} />
+                    <ul data-grid className="emotions-list unstyled-list">
+                        {this.state.emotions.map(e => <Emotion name={e.emotion} key={e.id} />)}
+                    </ul>
                 </div>
                 <footer className="emotions-footer">
                     <a data-button>…or rate a movie?</a>
