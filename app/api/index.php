@@ -8,6 +8,13 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require '../../vendor/autoload.php';
 require 'config.php';
 
+/**
+ * connectDB() attempts to create a PDO connection to the database and throws an
+ * error if it fails.
+ *
+ * @TODO Improve error handling
+ */
+
 function connectDB() {
     try {
         return new PDO('mysql:host=' . HOST . ';port=' . PORT . ';dbname=' . DB, USER, PWD);
@@ -18,6 +25,11 @@ function connectDB() {
 
 $app = new \Slim\App();
 
+/**
+ * /emotions/ lists all emotions from the database. There is no further
+ * configuration.
+ */
+
 $app->get('/emotions/', function (Request $request, Response $response) {
     $db = connectDB();
 
@@ -25,6 +37,12 @@ $app->get('/emotions/', function (Request $request, Response $response) {
 
     return $response->withJson([ 'emotions' => $results ]);
 });
+
+/**
+ * /movies/{emotion}/ lists all movies that have been reviewed as matching a
+ * given emotion. It includes the percentage of reviews that have the given
+ * emotion.
+ */
 
 $app->get('/movies/{emotion:[a-z]+}/', function (Request $request, Response $response) {
     $db = connectDB();

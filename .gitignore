@@ -2,3 +2,4 @@ node_modules/
 vendor/
 dist/
 db/insert.sql
+app/api/config.php
