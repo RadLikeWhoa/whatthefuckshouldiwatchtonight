@@ -2,25 +2,17 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import request from 'superagent'
 
-export class Emotion extends Component {
-    render() {
-        return (
-            <div className="emotion-label" data-col="1-3">
-                <Link to={`/${this.props.name}/`}>{this.props.name}</Link>
-            </div>
-        )
-    }
-}
+const Emotion = ({name}) => (
+    <div className="emotion-label" data-col="1-3">
+        <Link to={`/${name}/`}>{name}</Link>
+    </div>
+)
 
-export class EmotionList extends Component {
-    render() {
-        return (
-            <div data-grid>
-                {this.props.emotions.map((e, i) => <Emotion name={e} key={i} />)}
-            </div>
-        )
-    }
-}
+const EmotionList = ({emotions}) => (
+    <div data-grid>
+        {emotions.map(e => <Emotion name={e.emotion} key={e.id} />)}
+    </div>
+)
 
 export class Emotions extends Component {
     constructor(props) {
@@ -50,11 +42,13 @@ export class Emotions extends Component {
 
         return (
             <div className="wrapper">
-                <div class="site-heading">
-                    <h1 className="site-title">Show me movies that will make me feel…</h1>
-                    <a data-button="inverted">… or rate a movie?</a>
-                </div>
+                <header className="intro-heading">
+                    <h1 className="intro-title">Show me movies that will make me feel…</h1>
+                </header>
                 <EmotionList emotions={this.state.emotions} />
+                <footer className="intro-footer">
+                    <a data-button="inverted">… or rate a movie?</a>
+                </footer>
             </div>
         )
     }

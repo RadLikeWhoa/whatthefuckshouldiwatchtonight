@@ -1,42 +1,45 @@
 import React, { Component } from 'react'
+import request from 'superagent'
 
-export class Movie extends Component {
-    render() {
-        return <div className="movie-entry" data-col="1-4">{this.props.movie.name}</div>
-    }
-}
+const Movie = ({movie}) => (
+    <div className="movie-entry" data-col="1-4">{movie.name}</div>
+)
 
-export class MovieList extends Component {
+const MovieList = ({movies}) => (
+    <div data-grid>
+        {movies.map(m => <Movie key={m.id} movie={m} />)}
+    </div>
+)
+
+export class Movies extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            movies: [{
-                id: 1,
-                name: 'a'
-            }, {
-                id: 2,
-                name: 'b'
-            }]
+            movies: []
         }
+
+        this.getMoviesForEmotion(this.props.params.emotion)
     }
 
-    render() {
-        return (
-            <div data-grid>
-                {this.state.movies.map(m => <Movie key={m.id} movie={m} />)}
-            </div>
-        )
+    getMoviesForEmotion(emotion) {
+        request.get(`/api/movies/${emotion}/`)
+            .set('Accept', 'application/json')
+            .end((err, res) => {
+                if (!err) {
+                    this.setState({
+                        movies: res.body.movies
+                    })
+                }
+            })
     }
-}
 
-export class Movies extends Component {
     render() {
         document.title = 'Movies that will make you feel ' + this.props.params.emotion + '!'
 
         return (
             <div class="wrapper">
-                <MovieList />
+                <MovieList movies={this.state.movies} />
             </div>
         )
     }
