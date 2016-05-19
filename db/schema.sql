@@ -10,7 +10,6 @@ DROP TABLE IF EXISTS emotions;
 CREATE TABLE movies (
     id            INT(9),
     title         VARCHAR(100)  NOT NULL,
-    tagline       VARCHAR(250),
     poster_path   VARCHAR(100)  NOT NULL,
     runtime       INT(5)        NOT NULL,
     release_date  DATETIME      NOT NULL,
