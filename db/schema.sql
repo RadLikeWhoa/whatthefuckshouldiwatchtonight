@@ -40,8 +40,9 @@ CREATE TABLE reviews (
 );
 
 CREATE TABLE movie_persons (
-    movie_id  INT(9) NOT NULL,
-    person_id INT(9) NOT NULL,
+    movie_id  INT(9)       NOT NULL,
+    person_id INT(9)       NOT NULL,
+    role      VARCHAR(20)  NOT NULL,
     FOREIGN KEY (movie_id) REFERENCES movies (id),
     FOREIGN KEY (person_id) REFERENCES persons (id)
 );

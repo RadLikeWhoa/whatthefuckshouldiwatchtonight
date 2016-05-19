@@ -6,7 +6,7 @@ export class Emotion extends Component {
     render() {
         return (
             <div className="emotion-label" data-col="1-3">
-                <Link to={`/app/${this.props.name}/`}>{this.props.name}</Link>
+                <Link to={`/${this.props.name}/`}>{this.props.name}</Link>
             </div>
         )
     }
