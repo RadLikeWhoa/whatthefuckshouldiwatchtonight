@@ -18,9 +18,9 @@ import request from 'superagent'
  */
 
 const Movie = ({movie}) => (
-    <div className="movie-entry" data-col="1-8">
-        <img src={'https://image.tmdb.org/t/p/w396/' + movie.poster_path} />
-        {movie.title}
+    <div className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${movie.poster_path})`}}>
+        <div className="movie-title">{movie.title}</div>
+        <div className="movie-emotion" style={{ opacity: movie.percentage }}>a</div>
     </div>
 )
 
@@ -68,7 +68,7 @@ export class Movies extends Component {
 
         return (
             <div class="wrapper">
-                <div data-grid>
+                <div data-grid="gutterless">
                     {this.state.movies.map(m => <Movie key={m.id} movie={m} />)}
                 </div>
             </div>

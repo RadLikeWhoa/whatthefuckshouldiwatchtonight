@@ -1,0 +1,42 @@
+.movie-entry {
+    display: table;
+    height: 20em;
+    position: relative;
+    background-size: cover;
+    background-position: 50% 50%;
+    cursor: pointer;
+
+    &:hover .movie-title {
+        opacity: 1;
+    }
+}
+
+.movie-title {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding: 1.5em;
+    text-align: center;
+    background-color: rgba(#000, 0.5);
+    color: #fff;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.movie-emotion {
+    position: absolute;
+    bottom: 1em;
+    left: 50%;
+    width: 3em;
+    height: 3em;
+    margin-left: -1.5em;
+    text-align: center;
+    line-height: 3em;
+    color: #fff;
+    background-color: $main-color;
+    border-radius: 100%;
+    box-shadow: 0 2px 3px rgba(#333, 0.35);
+}
