@@ -47,7 +47,7 @@ $app->get('/emotions/', function (Request $request, Response $response) {
 $app->get('/movies/{emotion:[a-z]+}/', function (Request $request, Response $response) {
     $db = connectDB();
 
-    $query = $db->prepare('SELECT m.*, (cast(SELECT COUNT(*) FROM reviews r WHERE r.emotion_id = (SELECT e.id FROM emotions e WHERE e.emotion = :emotion) / cast(SELECT COUNT(*) FROM reviews r WHERE r.emotion_id = (SELECT e.id FROM emotions e WHERE e.emotion <> :emotion)) AND r.movie_id = m.id) AS percentage FROM movies m WHERE percentage > 0');
+    $query = $db->prepare('SELECT m.*, (SELECT COUNT(*) FROM reviews r WHERE r.emotion_id = (SELECT e.id FROM emotions e WHERE e.emotion = :emotion) AND r.movie_id = m.id) / (SELECT COUNT(*) FROM reviews r WHERE r.movie_id = m.id) AS percentage FROM movies m HAVING percentage > 0');
     $query->bindParam(':emotion', $request->getAttribute('emotion'));
     $query->execute();
 

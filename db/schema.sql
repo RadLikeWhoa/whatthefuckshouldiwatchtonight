@@ -32,6 +32,7 @@ CREATE TABLE emotions (
 
 CREATE TABLE reviews (
     id           INT(9),
+    movie_id     INT(9)    NOT NULL,
     emotion_id   INT(9)    NOT NULL,
     review_date  DATETIME  NOT NULL,
     PRIMARY KEY (id),

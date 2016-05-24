@@ -18,7 +18,10 @@ import request from 'superagent'
  */
 
 const Movie = ({movie}) => (
-    <div className="movie-entry" data-col="1-4">{movie.name}</div>
+    <div className="movie-entry" data-col="1-8">
+        <img src={'https://image.tmdb.org/t/p/w396/' + movie.poster_path} />
+        {movie.title}
+    </div>
 )
 
 /**
