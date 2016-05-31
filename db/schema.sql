@@ -20,7 +20,6 @@ CREATE TABLE movies (
 CREATE TABLE persons (
     id            INT(9),
     full_name     VARCHAR(100)  NOT NULL,
-    credit_order  INT(3)        NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -42,7 +41,7 @@ CREATE TABLE reviews (
 CREATE TABLE movie_persons (
     movie_id  INT(9)       NOT NULL,
     person_id INT(9)       NOT NULL,
-    role      VARCHAR(20)  NOT NULL,
+    credit_order  INT(3),
     FOREIGN KEY (movie_id) REFERENCES movies (id),
     FOREIGN KEY (person_id) REFERENCES persons (id)
 );
