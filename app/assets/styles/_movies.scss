@@ -40,3 +40,21 @@
     border-radius: 100%;
     box-shadow: 0 2px 3px rgba(#333, 0.35);
 }
+
+.detail-poster {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.detail-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 33.333%;
+    bottom: 0;
+    padding: 1.5em;
+}

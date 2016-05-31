@@ -60,7 +60,7 @@ export class Emotions extends Component {
         document.title = 'What the fuck should I watch tonight?!'
 
         return (
-            <div className="wrapper">
+            <main className="wrapper">
                 <header className="emotions-header">
                     <h1 className="emotions-title">Show me movies that'll make me feel…</h1>
                 </header>
@@ -72,7 +72,7 @@ export class Emotions extends Component {
                 <footer className="emotions-footer">
                     <a data-button>…or rate a movie?</a>
                 </footer>
-            </div>
+            </main>
         )
     }
 }

@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react'
 import request from 'superagent'
+import Modal from 'react-modal'
 
 /**
  * Movie is the component that is responsible for rendering a single movie
@@ -17,8 +18,8 @@ import request from 'superagent'
  * @TODO Add title
  */
 
-const Movie = ({movie}) => (
-    <div className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${movie.poster_path})`}}>
+const Movie = ({movie, onClick}) => (
+    <div className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${movie.poster_path})`}} onClick={onClick}>
         <div className="movie-title">{movie.title}</div>
         <div className="movie-emotion" style={{ opacity: movie.percentage }}>a</div>
     </div>
@@ -35,7 +36,9 @@ export class Movies extends Component {
         super(props)
 
         this.state = {
-            movies: []
+            movies: [],
+            isDetailModalOpen: false,
+            detail: {}
         }
 
         // Grab the emotion name from the request params.
@@ -63,15 +66,56 @@ export class Movies extends Component {
             })
     }
 
+    openModal(id) {
+        this.setState({ isDetailModalOpen: true })
+
+        request.get(`/api/movies/${id}/`)
+            .set('Accept', 'application/json')
+            .end((err, res) => {
+                if (!err) {
+                    this.setState({
+                        detail: res.body
+                    })
+                }
+            })
+    }
+
     render() {
         document.title = `Movies that'll make you feel ${this.props.params.emotion}!`
 
+        const modalStyle = {
+            overlay: {
+                backgroundColor: 'rgba(30, 30, 30, 0.85)'
+            },
+            content: {
+                top: '50%',
+                left: '50%',
+                border: 0,
+                backgroundColor: '#2c3641',
+                right: 'auto',
+                bottom: 'auto',
+                transform: 'translate(-50%, -50%)',
+                width: '40em',
+                height: '25em',
+                padding: 0
+            }
+        }
+
         return (
-            <div class="wrapper">
+            <main className="wrapper">
                 <div data-grid="gutterless">
-                    {this.state.movies.map(m => <Movie key={m.id} movie={m} />)}
+                    {this.state.movies.map(m => <Movie key={m.id} movie={m} onClick={() => this.openModal(m.id)} />)}
                 </div>
-            </div>
+                <Modal isOpen={this.state.isDetailModalOpen} style={modalStyle}>
+                    <div data-grid="gutterless">
+                        <div data-col="1-3" className="detail-poster" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})`}}>
+                        </div>
+                        <div data-col="2-3" className="detail-content">
+                            <h2>{this.state.detail.title}</h2>
+                        </div>
+                    </div>
+                </Modal>
+            </main>
         )
     }
 }
