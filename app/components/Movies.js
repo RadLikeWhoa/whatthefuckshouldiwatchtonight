@@ -34,7 +34,11 @@ export class Movies extends Component {
         this.state = {
             movies: [],
             isDetailModalOpen: false,
-            detail: {}
+            detail: {
+                title: '',
+                directors: [],
+                cast: []
+            }
         }
 
         // Grab the emotion name from the request params.
@@ -71,13 +75,13 @@ export class Movies extends Component {
      */
 
     openModal(id) {
-        this.setState({ isDetailModalOpen: true })
-
         request.get(`/api/movies/${id}/`)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
+                    console.log(res.body)
                     this.setState({
+                        isDetailModalOpen: true,
                         detail: res.body
                     })
                 }
@@ -103,7 +107,8 @@ export class Movies extends Component {
                 transform: 'translate(-50%, -50%)',
                 width: '40em',
                 height: '25em',
-                padding: 0
+                padding: 0,
+                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.8)'
             }
         }
 
@@ -118,6 +123,8 @@ export class Movies extends Component {
                         </div>
                         <div data-col="2-3" className="detail-content">
                             <h2>{this.state.detail.title}</h2>
+                            <p>Directed by: {this.state.detail.directors.join(', ')}</p>
+                            <p>Starring {this.state.detail.cast.join(', ')}</p>
                         </div>
                     </div>
                 </Modal>
