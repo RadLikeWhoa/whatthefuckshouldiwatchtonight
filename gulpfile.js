@@ -32,6 +32,8 @@ gulp.task('watch', [ 'build', 'styles', 'sql' ], function () {
     gulp.watch([ 'app/main.js', 'app/components/**/*.js' ], [ 'build' ])
     gulp.watch('app/assets/styles/**/*.scss', [ 'styles' ])
     gulp.watch('db/**/*.sql', [ 'sql' ])
+
+    require('opn')('http://localhost:8888')
 })
 
 gulp.task('default', [ 'watch' ])
