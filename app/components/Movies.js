@@ -12,10 +12,6 @@ import Modal from 'react-modal'
  * Movie is the component that is responsible for rendering a single movie
  * inside the grid of all movies for a given emotion. It is a stateless
  * component, as such it was written using the shorthand notation.
- *
- * @TODO Add emotion
- * @TODO Add poster
- * @TODO Add title
  */
 
 const Movie = ({movie, onClick}) => (
@@ -51,6 +47,8 @@ export class Movies extends Component {
      * as matching the given emotion. It updates the state once the data has
      * been fetched.
      *
+     * @param  emotion  string
+     *
      * @TODO Check for valid emotion and redirect to 404 if invalid.
      */
 
@@ -65,6 +63,12 @@ export class Movies extends Component {
                 }
             })
     }
+
+    /**
+     * Open the modal and fetch information about the selected movie.
+     *
+     * @param  id  integer
+     */
 
     openModal(id) {
         this.setState({ isDetailModalOpen: true })
@@ -82,6 +86,8 @@ export class Movies extends Component {
 
     render() {
         document.title = `Movies that'll make you feel ${this.props.params.emotion}!`
+
+        // React Modal expects styling to be passed as inline styles.
 
         const modalStyle = {
             overlay: {

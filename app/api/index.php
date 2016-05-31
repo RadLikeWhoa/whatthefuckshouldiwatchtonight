@@ -9,18 +9,46 @@ require '../../vendor/autoload.php';
 require 'config.php';
 
 /**
- * connectDB() attempts to create a PDO connection to the database and throws an
- * error if it fails.
+ * Query the database using a prepared statement with optional parameter
+ * bindings.
  *
- * @TODO Improve error handling
+ * @param   $statement  string
+ * @param   $params     [string => string]
+ *
+ * @return  [string => string]
  */
 
-function connectDB() {
+function query($statement, $params = []) {
+
+    // Attempt to create a new PDO connection using the values entered in the
+    // config file.
+
     try {
-        return new PDO('mysql:host=' . HOST . ';port=' . PORT . ';dbname=' . DB, USER, PWD);
+        $db = new PDO('mysql:host=' . HOST . ';port=' . PORT . ';dbname=' . DB, USER, PWD);
     } catch (PDOException $e) {
-        exit('Could not connect to database: ' . $e->getMessage());
+        return [];
     }
+
+    $query = $db->prepare($statement);
+
+    // Bind the given parameters to their values.
+
+    foreach ($params as $key => $val) {
+        $query->bindParam(':' . $key, $val);
+    }
+
+    $query->execute();
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Convenience method for retrieving a single row from the database.
+ *
+ * @see query($statement, $params)
+ */
+
+function querySingle($statement, $params = []) {
+    return query($statement, $params)[0];
 }
 
 $app = new \Slim\App();
@@ -31,51 +59,67 @@ $app = new \Slim\App();
  */
 
 $app->get('/emotions/', function (Request $request, Response $response) {
-    $db = connectDB();
+    $emotions = query('SELECT * FROM emotions');
 
-    $results = $db->query('SELECT * FROM emotions')->fetchAll(PDO::FETCH_ASSOC);
-
-    return $response->withJson([ 'emotions' => $results ]);
+    return $response->withJson([ 'emotions' => $emotions ]);
 });
 
 /**
  * /movies/{emotion}/ lists all movies that have been reviewed as matching a
- * given emotion. It includes the percentage of reviews that have the given
- * emotion.
+ * given emotion. It includes the share of reviews for the given emotion.
  */
 
 $app->get('/movies/{emotion:[a-z]+}/', function (Request $request, Response $response) {
-    $db = connectDB();
+    $movies = query('SELECT m.*, (SELECT COUNT(*) FROM reviews r WHERE r.emotion_id = (SELECT e.id FROM emotions e WHERE e.emotion = :emotion) AND r.movie_id = m.id) / (SELECT COUNT(*) FROM reviews r WHERE r.movie_id = m.id) AS percentage FROM movies m HAVING percentage > 0 LIMIT 102', [
+        'emotion' => $request->getAttribute('emotion')
+    ]);
 
-    $query = $db->prepare('SELECT m.*, (SELECT COUNT(*) FROM reviews r WHERE r.emotion_id = (SELECT e.id FROM emotions e WHERE e.emotion = :emotion) AND r.movie_id = m.id) / (SELECT COUNT(*) FROM reviews r WHERE r.movie_id = m.id) AS percentage FROM movies m HAVING percentage > 0 LIMIT 102');
-    $query->bindParam(':emotion', $request->getAttribute('emotion'));
-    $query->execute();
-
-    $results = $query->fetchAll(PDO::FETCH_ASSOC);
-
-    return $response->withJSON([ 'movies' => $results ]);
+    return $response->withJSON([ 'movies' => $movies ]);
 });
 
+/**
+ * /movies/{id}/ retrieves information about a single movie. Included is the
+ * number of reviews posted for each emotion and the list of directors and cast.
+ */
+
 $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response) {
-    $db = connectDB();
+    $movie = querySingle('SELECT m.* FROM movies m WHERE m.id = :id', [
+        'id' => $request->getAttribute('id')
+    ]);
 
-    $query = $db->prepare('SELECT m.* FROM movies m where m.id = :id');
-    $query->bindParam(':id', $request->getAttribute('id'));
-    $query->execute();
+    $emotions = query('SELECT e.emotion, (SELECT COUNT(r.id) FROM reviews r WHERE r.movie_id = :id AND r.emotion_id = e.id) AS count FROM emotions e', [
+        'id' => $request->getAttribute('id')
+    ]);
 
-    $result = $query->fetch(PDO::FETCH_ASSOC);
+    $crew = query('SELECT p.*, mp.role FROM persons p, movie_persons mp WHERE mp.person_id = p.id AND mp.movie_id = :id ORDER BY p.credit_order', [
+        'id' => $request->getAttribute('id')
+    ]);
 
-    $query = $db->prepare('SELECT e.emotion, COUNT(r.id) AS count FROM reviews r, emotions e WHERE r.movie_id = :id AND r.emotion_id = e.id GROUP BY r.emotion_id');
-    $query->bindParam(':id', $request->getAttribute('id'));
-    $query->execute();
+    // Counts are retrieved as an associative array containing name and count.
+    // We want to combine all the emotions into a single associative array
+    // [emotion => count].
 
-    $emotions = $query->fetchAll(PDO::FETCH_ASSOC);
-
-    $result['emotions'] = array_reduce($emotions, function ($c, $i) {
+    $movie['emotions'] = array_reduce($emotions, function ($c, $i) {
 	    return array_merge($c, [ $i['emotion'] => $i['count'] ]);
     }, []);
 
-    return $response->withJSON($result);
+    // Directors don't have a credit order. We only need their full name.
+
+    $result['directors'] = array_map(function ($e) {
+        return $e['full_name'];
+    }, array_filter(function ($e) {
+        return is_null($e['credit_order']);
+    }, $crew));
+
+    // Cast members have a credit order. We only need their full name.
+
+    $result['cast'] = array_map(function ($e) {
+        return $e['full_name'];
+    }, array_filter(function ($e) {
+        return !is_null($e['credit_order']);
+    }, $crew));
+
+    return $response->withJSON($movie);
 });
 
 $app->run();
