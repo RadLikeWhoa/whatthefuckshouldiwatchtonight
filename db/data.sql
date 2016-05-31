@@ -55,7 +55,7 @@ INSERT INTO reviews (id, movie_id, emotion_id, review_date) VALUES
   (21, 16, 3, "2016-03-30"),
   (22, 3, 6, "2016-02-20");
 
-INSERT INTO persons (id, full_name, credit_order) VALUES
+INSERT INTO persons (id, full_name) VALUES
   (1, "Ryan Gosling"),
   (2, "Robert Downey Jr."),
   (3, "Chris Evans"),

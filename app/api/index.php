@@ -94,7 +94,7 @@ $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response
         'id' => $request->getAttribute('id')
     ]);
 
-    $crew = query('SELECT p.*, mp.credit_order FROM persons p, movie_persons mp WHERE mp.person_id = p.id AND mp.movie_id = :id ORDER BY p.credit_order', [
+    $crew = query('SELECT p.*, mp.credit_order FROM persons p, movie_persons mp WHERE mp.person_id = p.id AND mp.movie_id = :id ORDER BY mp.credit_order', [
         'id' => $request->getAttribute('id')
     ]);
 
@@ -110,17 +110,17 @@ $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response
 
     $movie['directors'] = array_map(function ($e) {
         return $e['full_name'];
-    }, array_filter($crew, function ($e) {
+    }, array_values(array_filter($crew, function ($e) {
         return is_null($e['credit_order']);
-    }));
+    })));
 
     // Cast members have a credit order. We only need their full name.
 
     $movie['cast'] = array_map(function ($e) {
         return $e['full_name'];
-    }, array_filter($crew, function ($e) {
+    }, array_values(array_filter($crew, function ($e) {
         return !is_null($e['credit_order']);
-    }));
+    })));
 
     return $response->withJSON($movie);
 });
