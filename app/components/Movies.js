@@ -79,13 +79,28 @@ export class Movies extends Component {
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
-                    console.log(res.body)
                     this.setState({
                         isDetailModalOpen: true,
                         detail: res.body
                     })
                 }
             })
+    }
+
+    /**
+     * Close the modal and clear information about the previously selected
+     * movie.
+     */
+
+    closeModal() {
+        this.setState({
+            isDetailModalOpen: false,
+            detail: {
+                title: '',
+                directors: [],
+                cast: []
+            }
+        })
     }
 
     render() {
@@ -117,7 +132,7 @@ export class Movies extends Component {
                 <div data-grid="gutterless">
                     {this.state.movies.map(m => <Movie key={m.id} movie={m} onClick={() => this.openModal(m.id)} />)}
                 </div>
-                <Modal isOpen={this.state.isDetailModalOpen} style={modalStyle}>
+                <Modal isOpen={this.state.isDetailModalOpen} style={modalStyle} onRequestClose={() => this.closeModal()}>
                     <div data-grid="gutterless">
                         <div data-col="1-3" className="detail-poster" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})`}}>
                         </div>
