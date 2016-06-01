@@ -29,6 +29,7 @@ function query($statement, $params = []) {
         return [];
     }
 
+    $db->exec('SET NAMES UTF8');
     $query = $db->prepare($statement);
 
     // Bind the given parameters to their values.
