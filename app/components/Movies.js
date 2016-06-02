@@ -17,10 +17,10 @@ import { Link } from 'react-router'
  */
 
 const Movie = ({movie, onClick}) => (
-    <div className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${movie.poster_path})`}} onClick={onClick}>
-        <div className="movie-title">{movie.title}</div>
+    <li className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${movie.poster_path})`}} onClick={onClick}>
+        <h2 className="h3 movie-title">{movie.title}</h2>
         <div className="movie-emotion" style={{ opacity: movie.percentage }}>a</div>
-    </div>
+    </li>
 )
 
 /**
@@ -69,9 +69,9 @@ export default class Movies extends Component {
 
         return (
             <main className="wrapper">
-                <div data-grid="gutterless">
+                <ul className="unstyled-list" data-grid="gutterless">
                     {this.state.movies.map(m => <Movie key={m.id} movie={m} onClick={() => this.movieDetail.openModal(m.id)} />)}
-                </div>
+                </ul>
                 <section data-grid className="options">
                     <div data-col="1-6">
                         <Link to="/"><button data-button="block">Change your mood</button></Link>

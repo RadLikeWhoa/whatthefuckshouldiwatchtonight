@@ -81,14 +81,14 @@ export default class MovieDetail extends Component {
     render() {
         return (
             <Modal isOpen={this.state.isOpen} style={MovieDetail.modalStyle} onRequestClose={() => this.closeModal()}>
-                <div data-grid="gutterless">
+                <section data-grid="gutterless">
                     <div data-col="1-3" className="detail-poster" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})`}}></div>
                     <div data-col="2-3" className="detail-content">
                         <h2 className="h3 detail-title">{this.state.detail.title} <span className="muted">({this.state.detail.release_year})</span></h2>
                         <p>by {this.state.detail.directors.join(', ')}</p>
                         <p>Cast: {this.state.detail.cast.join(', ')}</p>
                     </div>
-                </div>
+                </section>
             </Modal>
         )
     }

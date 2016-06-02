@@ -17,9 +17,7 @@ import AddRating from './modals/AddRating'
 
 const Emotion = ({name}) => (
     <li data-col="1-3">
-        <div className="emotions-entry">
-            <Link to={`/${name}/`}>{name}</Link>
-        </div>
+        <Link className="emotions-entry" to={`/${name}/`}>{name}</Link>
     </li>
 )
 

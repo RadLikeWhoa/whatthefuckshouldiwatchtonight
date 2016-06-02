@@ -15,16 +15,12 @@
 }
 
 .emotions-entry {
+    display: block;
+    padding: 1.5em;
+    text-decoration: none;
     text-align: center;
     color: #fff;
     border-bottom: 1px solid $main-color;
     border-right: 1px solid $main-color;
     height: calc((100vh - 13em) / 3);
-
-    a {
-        display: block;
-        padding: 1.5em;
-        color: #fff;
-        text-decoration: none;
-    }
 }
