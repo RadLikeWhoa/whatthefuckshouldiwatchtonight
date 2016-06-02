@@ -69,7 +69,7 @@ export default class Movies extends Component {
 
         return (
             <main className="wrapper">
-                <ul className="unstyled-list" data-grid="gutterless">
+                <ul className="unstyled-list movies-list" data-grid="gutterless">
                     {this.state.movies.map(m => <Movie key={m.id} movie={m} onClick={() => this.movieDetail.openModal(m.id)} />)}
                 </ul>
                 <section data-grid className="options">
