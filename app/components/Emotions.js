@@ -28,7 +28,7 @@ const Emotion = ({name}) => (
  * rendering of the emotions page.
  */
 
-export class Emotions extends Component {
+export default class Emotions extends Component {
     constructor(props) {
         super(props)
 

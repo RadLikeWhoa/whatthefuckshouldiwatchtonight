@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react'
 import request from 'superagent'
-import Modal from 'react-modal'
+import MovieDetail from './modals/MovieDetail'
 
 /**
  * Movie is the component that is responsible for rendering a single movie
@@ -27,18 +27,12 @@ const Movie = ({movie, onClick}) => (
  * rendering of the movies page.
  */
 
-export class Movies extends Component {
+export default class Movies extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            movies: [],
-            isDetailModalOpen: false,
-            detail: {
-                title: '',
-                directors: [],
-                cast: []
-            }
+            movies: []
         }
 
         // Grab the emotion name from the request params.
@@ -68,80 +62,15 @@ export class Movies extends Component {
             })
     }
 
-    /**
-     * Open the modal and fetch information about the selected movie.
-     *
-     * @param  id  integer
-     */
-
-    openModal(id) {
-        request.get(`/api/movies/${id}/`)
-            .set('Accept', 'application/json')
-            .end((err, res) => {
-                if (!err) {
-                    this.setState({
-                        isDetailModalOpen: true,
-                        detail: res.body
-                    })
-                }
-            })
-    }
-
-    /**
-     * Close the modal and clear information about the previously selected
-     * movie.
-     */
-
-    closeModal() {
-        this.setState({
-            isDetailModalOpen: false,
-            detail: {
-                title: '',
-                directors: [],
-                cast: []
-            }
-        })
-    }
-
     render() {
         document.title = `Movies that'll make you feel ${this.props.params.emotion}!`
-
-        // React Modal expects styling to be passed as inline styles.
-
-        const modalStyle = {
-            overlay: {
-                backgroundColor: 'rgba(30, 30, 30, 0.85)'
-            },
-            content: {
-                top: '50%',
-                left: '50%',
-                border: 0,
-                backgroundColor: '#2c3641',
-                right: 'auto',
-                bottom: 'auto',
-                transform: 'translate(-50%, -50%)',
-                width: '50em',
-                height: '25em',
-                padding: 0,
-                boxShadow: '0 2px 5px rgba(0, 0, 0, 0.8)'
-            }
-        }
 
         return (
             <main className="wrapper">
                 <div data-grid="gutterless">
-                    {this.state.movies.map(m => <Movie key={m.id} movie={m} onClick={() => this.openModal(m.id)} />)}
+                    {this.state.movies.map(m => <Movie key={m.id} movie={m} onClick={() => this.movieDetail.openModal(m.id)} />)}
                 </div>
-                <Modal isOpen={this.state.isDetailModalOpen} style={modalStyle} onRequestClose={() => this.closeModal()}>
-                    <div data-grid="gutterless">
-                        <div data-col="1-3" className="detail-poster" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})`}}></div>
-                        <div data-col="2-3" className="detail-content">
-                            <h2 className="h3">{this.state.detail.title} <span className="muted">({this.state.detail.release_year})</span></h2>
-                            <p>Directed by {this.state.detail.directors.join(', ')}</p>
-                            <p>Starring {this.state.detail.cast.join(', ')}</p>
-                        </div>
-                    </div>
-                </Modal>
+                <MovieDetail ref={m => this.movieDetail = m} />
             </main>
         )
     }
