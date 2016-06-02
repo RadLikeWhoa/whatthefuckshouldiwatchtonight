@@ -5,6 +5,9 @@
 import React, { Component } from 'react'
 import request from 'superagent'
 import Modal from 'react-modal'
+import { debounce } from 'lodash'
+
+const apiKey = '3b699b130bdb1b0397cd703da00dcbeb'
 
 export default class AddRating extends Component {
 
@@ -34,7 +37,28 @@ export default class AddRating extends Component {
 
         this.state = {
             isOpen: false,
-            movie: {}
+            movie: {},
+            searchResults: []
+        }
+
+        this.search = debounce(this.search, 300)
+    }
+
+    search(query) {
+        if (query) {
+            request.get(`http://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
+                .set('Accept', 'application/json')
+                .end((err, res) => {
+                    if (!err) {
+                        this.setState({
+                            searchResults: res.body.results
+                        })
+                    }
+                })
+        } else {
+            this.setState({
+                searchResults: []
+            })
         }
     }
 
@@ -46,14 +70,20 @@ export default class AddRating extends Component {
 
     closeModal() {
         this.setState({
-            isOpen: false
+            isOpen: false,
+            searchResults: []
         })
     }
 
     render() {
         return (
             <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()}>
-                <input name="movie-name" type="text" className="text-input full-width" placeholder="Search for a movie…" />
+                <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" onChange={(ev) => this.search(ev.target.value)}/>
+                <section className="search-results">
+                    <ul className="search-results-list unstyled-list">
+                        {this.state.searchResults.map(r => <li className="search-result-item" key={r.id}>{r.title} ({(new Date(r.release_date)).getFullYear()})</li>)}
+                    </ul>
+                </section>
             </Modal>
         )
     }
