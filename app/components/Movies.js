@@ -8,6 +8,7 @@ import React, { Component } from 'react'
 import request from 'superagent'
 import MovieDetail from './modals/MovieDetail'
 import AddRating from './modals/AddRating'
+import { Link } from 'react-router'
 
 /**
  * Movie is the component that is responsible for rendering a single movie
@@ -71,6 +72,18 @@ export default class Movies extends Component {
                 <div data-grid="gutterless">
                     {this.state.movies.map(m => <Movie key={m.id} movie={m} onClick={() => this.movieDetail.openModal(m.id)} />)}
                 </div>
+                <section data-grid className="options">
+                    <div data-col="1-6">
+                        <Link to="/"><button data-button="block">Change your mood</button></Link>
+                    </div>
+                    <div data-col="1-6">
+                        <button data-button="block" onClick={() => this.addRating.openModal()}>Rate a movie</button>
+                    </div>
+                    <div data-col="3-6 empty"></div>
+                    <div data-col="1-6">
+                        <button data-button="block">Sort by</button>
+                    </div>
+                </section>
                 <MovieDetail ref={m => this.movieDetail = m} />
                 <AddRating ref={a => this.addRating = a} />
             </main>

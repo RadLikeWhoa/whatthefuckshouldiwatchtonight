@@ -41,6 +41,13 @@
     box-shadow: 0 2px 3px rgba(#333, 0.35);
 }
 
+.options {
+    position: fixed;
+    left: 1.5em;
+    right: 1.5em;
+    bottom: 1.5em;
+}
+
 .detail-poster {
     position: absolute;
     top: 0;
@@ -57,4 +64,8 @@
     left: 33.333%;
     bottom: 0;
     padding: 1.5em !important;
+}
+
+.detail-title {
+    margin-bottom: 0;
 }
