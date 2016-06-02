@@ -6,6 +6,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import request from 'superagent'
+import AddRating from './modals/AddRating'
 
 /**
  * Emotion is the component that renders a single emotion inside the grid. It is
@@ -70,8 +71,9 @@ export default class Emotions extends Component {
                     </ul>
                 </div>
                 <footer className="emotions-footer">
-                    <a data-button>…or rate a movie?</a>
+                    <a data-button onClick={() => this.addRating.openModal()}>…or rate a movie?</a>
                 </footer>
+                <AddRating ref={a => this.addRating = a} />
             </main>
         )
     }

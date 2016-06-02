@@ -1,0 +1,20 @@
+.text-input {
+    font: inherit;
+    padding: 0.75em;
+    border: 0;
+    border-radius: 3px;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:focus {
+        cursor: text;
+        outline: none;
+    }
+}
+
+.full-width {
+    display: block;
+    width: 100%;
+}

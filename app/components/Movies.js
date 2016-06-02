@@ -7,6 +7,7 @@
 import React, { Component } from 'react'
 import request from 'superagent'
 import MovieDetail from './modals/MovieDetail'
+import AddRating from './modals/AddRating'
 
 /**
  * Movie is the component that is responsible for rendering a single movie
@@ -71,6 +72,7 @@ export default class Movies extends Component {
                     {this.state.movies.map(m => <Movie key={m.id} movie={m} onClick={() => this.movieDetail.openModal(m.id)} />)}
                 </div>
                 <MovieDetail ref={m => this.movieDetail = m} />
+                <AddRating ref={a => this.addRating = a} />
             </main>
         )
     }
