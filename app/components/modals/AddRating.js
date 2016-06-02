@@ -68,6 +68,10 @@ export default class AddRating extends Component {
         })
     }
 
+    onAfterOpen() {
+        this.searchBox.focus()
+    }
+
     closeModal() {
         this.setState({
             isOpen: false,
@@ -77,8 +81,8 @@ export default class AddRating extends Component {
 
     render() {
         return (
-            <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()}>
-                <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" onChange={(ev) => this.search(ev.target.value)}/>
+            <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()} onAfterOpen={() => this.onAfterOpen()}>
+                <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => this.search(ev.target.value)}/>
                 <section className="search-results">
                     <ul className="search-results-list unstyled-list">
                         {this.state.searchResults.map(r => <li className="search-result-item" key={r.id}>{r.title} ({(new Date(r.release_date)).getFullYear()})</li>)}
