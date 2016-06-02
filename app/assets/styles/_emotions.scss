@@ -1,22 +1,25 @@
 .emotions-header {
     padding: 3em 1.5em;
     text-align: center;
+    border-bottom: 1px solid $main-color;
 }
 
-.emotions-title {
-    margin-bottom: 0;
-}
+.emotions-list [data-col] {
+    &:nth-child(3n) .emotions-entry {
+        border-right: 0;
+    }
 
-.emotions-wrapper {
-    max-width: 40em;
-    margin: 0 auto;
+    &:nth-last-child(-n+3) .emotions-entry {
+        border-bottom: 0;
+    }
 }
 
 .emotions-entry {
-    margin-bottom: 1.5em;
     text-align: center;
     color: #fff;
-    background-color: $main-color;
+    border-bottom: 1px solid $main-color;
+    border-right: 1px solid $main-color;
+    height: calc((100vh - 13em) / 3);
 
     a {
         display: block;
@@ -24,9 +27,4 @@
         color: #fff;
         text-decoration: none;
     }
-}
-
-.emotions-footer {
-    padding: 1.5em;
-    text-align: center;
 }
