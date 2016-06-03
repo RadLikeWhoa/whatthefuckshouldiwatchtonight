@@ -90,7 +90,7 @@ export default class MovieDetail extends Component {
 
     closeModal() {
         this.props.rateCallback(this.state.detail.id, this.state.detail.emotions.filter(e => e.emotion == this.props.emotion)[0].count / +this.state.totalRatings)
-        
+
         this.setState({
             isOpen: false,
             detail: {},
@@ -108,7 +108,7 @@ export default class MovieDetail extends Component {
                         <p>{!_.isEmpty(this.state.detail.directors) ? `by ${this.state.detail.directors.join(', ')} — ` : null}{this.state.detail.runtime} mins</p>
                         {!_.isEmpty(this.state.detail.cast) ? <p>Cast: {this.state.detail.cast.join(', ')}</p> : null}
                         <ul className="unstyled-list percentage-list">
-                            {!_.isEmpty(this.state.detail.emotions) ? this.state.detail.emotions.map(e => <li key={e.id} data-col="1-3" className="percentage"><span style={{ opacity: Math.min(1, (e.count / this.state.totalRatings) + 0.2) }} onClick={() => this.addRating(e.id)}>{Math.round(e.count / +this.state.totalRatings * 100)}% {e.emotion}</span></li>) : null}
+                            {!_.isEmpty(this.state.detail.emotions) ? this.state.detail.emotions.map(e => <li key={e.id} data-col="1-3" className="percentage"><span style={{ opacity: Math.min(1, (e.count / this.state.totalRatings) + 0.2) }} onClick={(ev) => { const target = ev.target; target.classList.add('is-highlighted'); this.addRating(e.id); setTimeout(() => target.classList.remove('is-highlighted'), 500) }}>{Math.round(e.count / +this.state.totalRatings * 100)}% {e.emotion}</span></li>) : null}
                         </ul>
                     </div>
                 </section>

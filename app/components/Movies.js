@@ -72,7 +72,6 @@ export default class Movies extends Component {
         request.get(`/api/movies/${this.props.params.emotion}/${orderBy || this.state.order.by}/${orderDirection || this.state.order.direction}/`)
             .set('Accept', 'application/json')
             .end((err, res) => {
-                console.log(err, res.statusCode)
                 if (!err) {
                     this.setState({
                         movies: res.body.movies
