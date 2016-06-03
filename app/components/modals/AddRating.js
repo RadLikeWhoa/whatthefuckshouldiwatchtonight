@@ -3,6 +3,7 @@
  */
 
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import request from 'superagent'
 import Modal from 'react-modal'
 import { isEmpty, debounce } from 'lodash'
@@ -116,6 +117,21 @@ export default class AddRating extends Component {
         })
     }
 
+    saveRating() {
+        const selectedEmotion = this.state.emotions.filter(e => e.selected)
+
+        if (_.isEmpty(selectedEmotion)) return
+
+        request.post('/api/movies/')
+            .set('Content-Type', 'application/json')
+            .send(JSON.stringify(Object.assign({}, this.state.movie, { emotionId: selectedEmotion[0].id })))
+            .end((err, res) => {
+                if (!err) {
+                    browserHistory.push(`/${selectedEmotion[0].emotion}/`)
+                }
+            })
+    }
+
     openModal() {
         this.setState({
             isOpen: true
@@ -127,9 +143,14 @@ export default class AddRating extends Component {
     }
 
     closeModal() {
+        const emotions = this.state.emotions
+
+        emotions.forEach((e, i) => emotions[i].selected = false)
+
         this.setState({
             isOpen: false,
             movie: {},
+            emotions: emotions,
             searchResults: []
         })
 
@@ -165,7 +186,7 @@ export default class AddRating extends Component {
                             <button data-button="block secondary" onClick={() => this.closeModal()}>Cancel</button>
                         </div>
                         <div data-col="1-2">
-                            <button data-button="block">Save Rating</button>
+                            <button data-button="block" onClick={() => this.saveRating()}>Save Rating</button>
                         </div>
                     </section>
                 </section>

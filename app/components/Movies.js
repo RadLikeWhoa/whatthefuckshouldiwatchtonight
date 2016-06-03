@@ -42,6 +42,10 @@ export default class Movies extends Component {
         this.getMoviesForEmotion(this.props.params.emotion)
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log('test')
+    }
+
     /**
      * getMoviesForEmotion() gets a list of all movies that have been reviewed
      * as matching the given emotion. It updates the state once the data has
