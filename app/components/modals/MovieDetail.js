@@ -6,7 +6,7 @@
 import React, { Component } from 'react'
 import request from 'superagent'
 import Modal from 'react-modal'
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash.isempty'
 
 export default class MovieDetail extends Component {
 
@@ -105,10 +105,10 @@ export default class MovieDetail extends Component {
                     <div data-col="1-3" className="detail-poster" style={{ backgroundImage: this.state.detail.poster_path ? `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})` : 'none'}}></div>
                     <div data-col="2-3" className="detail-content">
                         <h2 className="h3 detail-title"><span className="highlighted">{this.state.detail.title}</span> ({this.state.detail.release_year})</h2>
-                        <p>{!_.isEmpty(this.state.detail.directors) ? `by ${this.state.detail.directors.join(', ')} — ` : null}{this.state.detail.runtime} mins</p>
-                        {!_.isEmpty(this.state.detail.cast) ? <p>Cast: {this.state.detail.cast.join(', ')}</p> : null}
+                        <p>{!isEmpty(this.state.detail.directors) ? `by ${this.state.detail.directors.join(', ')} — ` : null}{this.state.detail.runtime} mins</p>
+                        {!isEmpty(this.state.detail.cast) ? <p>Cast: {this.state.detail.cast.join(', ')}</p> : null}
                         <ul className="unstyled-list percentage-list">
-                            {!_.isEmpty(this.state.detail.emotions) ? this.state.detail.emotions.map(e => <li key={e.id} data-col="1-3" className="percentage"><span style={{ opacity: Math.min(1, (e.count / this.state.totalRatings) + 0.2) }} onClick={(ev) => { const target = ev.target; target.classList.add('is-highlighted'); this.addRating(e.id); setTimeout(() => target.classList.remove('is-highlighted'), 500) }}>{Math.round(e.count / +this.state.totalRatings * 100)}% {e.emotion}</span></li>) : null}
+                            {!isEmpty(this.state.detail.emotions) ? this.state.detail.emotions.map(e => <li key={e.id} data-col="1-3" className="percentage"><span style={{ opacity: Math.min(1, (e.count / this.state.totalRatings) + 0.2) }} onClick={(ev) => { const target = ev.target; target.classList.add('is-highlighted'); this.addRating(e.id); setTimeout(() => target.classList.remove('is-highlighted'), 500) }}>{Math.round(e.count / +this.state.totalRatings * 100)}% {e.emotion}</span></li>) : null}
                         </ul>
                     </div>
                 </section>

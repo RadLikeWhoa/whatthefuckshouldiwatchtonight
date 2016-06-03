@@ -6,7 +6,8 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
 import Modal from 'react-modal'
-import { isEmpty, debounce } from 'lodash'
+import isEmpty from 'lodash.isempty'
+import debounce from 'lodash.debounce'
 
 const apiKey = '3b699b130bdb1b0397cd703da00dcbeb'
 
@@ -120,7 +121,7 @@ export default class AddRating extends Component {
     saveRating() {
         const selectedEmotion = this.state.emotions.filter(e => e.selected)
 
-        if (_.isEmpty(selectedEmotion)) return
+        if (isEmpty(selectedEmotion)) return
 
         request.post('/api/movies/')
             .set('Content-Type', 'application/json')
@@ -164,23 +165,23 @@ export default class AddRating extends Component {
     render() {
         return (
             <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()} onAfterOpen={() => this.onAfterOpen()}>
-                <section style={{ display: _.isEmpty(this.state.movie) ? 'block' : 'none' }}>
+                <section style={{ display: isEmpty(this.state.movie) ? 'block' : 'none' }}>
                     <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => this.search(ev.target.value)}/>
                     <section className="search-results">
                         <ul className="search-results-list unstyled-list">
-                            {this.state.searchResults.map(r => <li className="search-result-item" key={r.id} onClick={() => this.selectedSearchResult(r.id)}>{r.title} ({(new Date(r.release_date)).getFullYear()})</li>)}
+                            {this.state.searchResults.map(r => <li className="search-result-item" key={r.id} onClick={() => this.selectedSearchResult(r.id)}>{r.title}{(() => { const date = (new Date(r.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}</li>)}
                         </ul>
                     </section>
                 </section>
-                <section style={{ display: !_.isEmpty(this.state.movie) ? 'block' : 'none' }}>
+                <section style={{ display: !isEmpty(this.state.movie) ? 'block' : 'none' }}>
                     <section data-grid>
                         <section className="clearfix add-movie-information">
                             <div data-col="1-6">
                                 <img className="result-poster" src={this.state.movie.poster_path ? `https://image.tmdb.org/t/p/w185${this.state.movie.poster_path}` : ''} />
                             </div>
                             <div data-col="5-6">
-                                <h2 className="h3 detail-title"><span className="highlighted">{this.state.movie.title}</span> ({(new Date(this.state.movie.release_date)).getFullYear()})</h2>
-                                {!_.isEmpty(this.state.movie.credits) ? <p>{this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ')}</p> : null}
+                                <h2 className="h3 detail-title"><span className="highlighted">{this.state.movie.title}</span>{(() => { const date = (new Date(this.state.movie.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}</h2>
+                                {!isEmpty(this.state.movie.credits) ? <p>{this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ')}</p> : null}
                             </div>
                         </section>
                         <ul className="unstyled-list clearfix selectable-emotions-list">
