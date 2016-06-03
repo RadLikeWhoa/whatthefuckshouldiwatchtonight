@@ -6,6 +6,7 @@
 import React, { Component } from 'react'
 import request from 'superagent'
 import Modal from 'react-modal'
+import { isEmpty } from 'lodash'
 
 export default class MovieDetail extends Component {
 
@@ -77,8 +78,8 @@ export default class MovieDetail extends Component {
                     <div data-col="1-3" className="detail-poster" style={{ backgroundImage: this.state.detail.poster_path ? `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})` : 'none'}}></div>
                     <div data-col="2-3" className="detail-content">
                         <h2 className="h3 detail-title"><span className="highlighted">{this.state.detail.title}</span> ({this.state.detail.release_year})</h2>
-                        <p>by {this.state.detail.directors ? this.state.detail.directors.join(', ') : null} — {this.state.detail.runtime} mins</p>
-                        <p>Cast: {this.state.detail.cast ? this.state.detail.cast.join(', ') : null}</p>
+                        <p>{!_.isEmpty(this.state.detail.directors) ? `by ${this.state.detail.directors.join(', ')} — ` : null}{this.state.detail.runtime} mins</p>
+                        {!_.isEmpty(this.state.detail.cast) ? <p>Cast: {this.state.detail.cast.join(', ')}</p> : null}
                     </div>
                 </section>
             </Modal>

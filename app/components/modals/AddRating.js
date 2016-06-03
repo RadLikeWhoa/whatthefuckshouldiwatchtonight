@@ -180,7 +180,7 @@ export default class AddRating extends Component {
                             </div>
                             <div data-col="5-6">
                                 <h2 className="h3 detail-title"><span className="highlighted">{this.state.movie.title}</span> ({(new Date(this.state.movie.release_date)).getFullYear()})</h2>
-                                <p>by {this.state.movie.credits ? this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ') : null}</p>
+                                {!_.isEmpty(this.state.movie.credits) ? <p>{this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ')}</p> : null}
                             </div>
                         </section>
                         <ul className="unstyled-list clearfix selectable-emotions-list">
