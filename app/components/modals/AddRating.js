@@ -5,9 +5,15 @@
 import React, { Component } from 'react'
 import request from 'superagent'
 import Modal from 'react-modal'
-import { debounce } from 'lodash'
+import { isEmpty, debounce } from 'lodash'
 
 const apiKey = '3b699b130bdb1b0397cd703da00dcbeb'
+
+const Emotion = ({name, isSelected, onClick}) => (
+    <li data-col="1-3">
+        <button onClick={onClick} className={'selectable-emotion' + (isSelected ? ' is-selected' : '')}>{name}</button>
+    </li>
+)
 
 export default class AddRating extends Component {
 
@@ -38,10 +44,31 @@ export default class AddRating extends Component {
         this.state = {
             isOpen: false,
             movie: {},
+            emotions: [],
             searchResults: []
         }
 
-        this.search = debounce(this.search, 300)
+        this.getEmotions()
+
+        this.searchInProgress = false
+
+        this.search = debounce(this.search, 500)
+    }
+
+    getEmotions() {
+        request.get('/api/emotions/')
+            .set('Accept', 'application/json')
+            .end((err, res) => {
+                if (!err) {
+                    const emotions = res.body.emotions
+
+                    emotions.forEach((e, i) => emotions[i].selected = false)
+
+                    this.setState({
+                        emotions: emotions
+                    })
+                }
+            })
     }
 
     search(query) {
@@ -62,6 +89,33 @@ export default class AddRating extends Component {
         }
     }
 
+    selectedSearchResult(id) {
+        if (this.searchInProgress) return
+
+        this.searchInProgress = true
+
+        request.get(`http://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&append_to_response=credits`)
+            .set('Accept', 'application/json')
+            .end((err, res) => {
+                if (!err) {
+                    this.setState({
+                        movie: res.body
+                    })
+                }
+            })
+    }
+
+    selectedEmotion(index) {
+        const emotions = this.state.emotions
+
+        emotions.forEach((e, i) => emotions[i].selected = false)
+        emotions[index].selected = true
+
+        this.setState({
+            emotions: emotions
+        })
+    }
+
     openModal() {
         this.setState({
             isOpen: true
@@ -75,18 +129,45 @@ export default class AddRating extends Component {
     closeModal() {
         this.setState({
             isOpen: false,
+            movie: {},
             searchResults: []
         })
+
+        this.searchInProgress = false
     }
 
     render() {
         return (
             <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()} onAfterOpen={() => this.onAfterOpen()}>
-                <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => this.search(ev.target.value)}/>
-                <section className="search-results">
-                    <ul className="search-results-list unstyled-list">
-                        {this.state.searchResults.map(r => <li className="search-result-item" key={r.id}>{r.title} ({(new Date(r.release_date)).getFullYear()})</li>)}
-                    </ul>
+                <section style={{ display: _.isEmpty(this.state.movie) ? 'block' : 'none' }}>
+                    <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => this.search(ev.target.value)}/>
+                    <section className="search-results">
+                        <ul className="search-results-list unstyled-list">
+                            {this.state.searchResults.map(r => <li className="search-result-item" key={r.id} onClick={() => this.selectedSearchResult(r.id)}>{r.title} ({(new Date(r.release_date)).getFullYear()})</li>)}
+                        </ul>
+                    </section>
+                </section>
+                <section style={{ display: !_.isEmpty(this.state.movie) ? 'block' : 'none' }}>
+                    <section data-grid>
+                        <section className="clearfix add-movie-information">
+                            <div data-col="1-6">
+                                <img className="result-poster" src={this.state.movie.poster_path ? `https://image.tmdb.org/t/p/w185${this.state.movie.poster_path}` : ''} />
+                            </div>
+                            <div data-col="5-6">
+                                <h2 className="h3 detail-title"><span className="highlighted">{this.state.movie.title}</span> ({(new Date(this.state.movie.release_date)).getFullYear()})</h2>
+                                <p>by {this.state.movie.credits ? this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ') : null}</p>
+                            </div>
+                        </section>
+                        <ul className="unstyled-list clearfix selectable-emotions-list">
+                            {this.state.emotions.map((e, i) => <Emotion name={e.emotion} isSelected={e.selected} key={i} onClick={() => this.selectedEmotion(i)} />)}
+                        </ul>
+                        <div data-col="1-2">
+                            <button data-button="block secondary" onClick={() => this.closeModal()}>Cancel</button>
+                        </div>
+                        <div data-col="1-2">
+                            <button data-button="block">Save Rating</button>
+                        </div>
+                    </section>
                 </section>
             </Modal>
         )

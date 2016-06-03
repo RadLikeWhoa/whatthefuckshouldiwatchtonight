@@ -35,11 +35,7 @@ export default class MovieDetail extends Component {
 
         this.state = {
             isOpen: false,
-            detail: {
-                title: '',
-                directors: [],
-                cast: []
-            }
+            detail: {}
         }
     }
 
@@ -70,11 +66,7 @@ export default class MovieDetail extends Component {
     closeModal() {
         this.setState({
             isOpen: false,
-            detail: {
-                title: '',
-                directors: [],
-                cast: []
-            }
+            detail: {}
         })
     }
 
@@ -82,11 +74,11 @@ export default class MovieDetail extends Component {
         return (
             <Modal isOpen={this.state.isOpen} style={MovieDetail.modalStyle} onRequestClose={() => this.closeModal()}>
                 <section data-grid="gutterless">
-                    <div data-col="1-3" className="detail-poster" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})`}}></div>
+                    <div data-col="1-3" className="detail-poster" style={{ backgroundImage: this.state.detail.poster_path ? `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})` : 'none'}}></div>
                     <div data-col="2-3" className="detail-content">
-                        <h2 className="h3 detail-title">{this.state.detail.title} <span className="muted">({this.state.detail.release_year})</span></h2>
-                        <p>by {this.state.detail.directors.join(', ')} — {this.state.detail.runtime} mins</p>
-                        <p>Cast: {this.state.detail.cast.join(', ')}</p>
+                        <h2 className="h3 detail-title"><span className="highlighted">{this.state.detail.title}</span> ({this.state.detail.release_year})</h2>
+                        <p>by {this.state.detail.directors ? this.state.detail.directors.join(', ') : null} — {this.state.detail.runtime} mins</p>
+                        <p>Cast: {this.state.detail.detail ? this.state.detail.cast.join(', ') : null}</p>
                     </div>
                 </section>
             </Modal>

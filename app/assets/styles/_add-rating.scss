@@ -43,3 +43,30 @@
         border-bottom: 0;
     }
 }
+
+.add-movie-information {
+    margin-bottom: 1.5em;
+}
+
+.selectable-emotion {
+    color: #fff;
+    background-color: transparent;
+    border: 2px solid $main-color;
+    padding: 0.75em;
+    text-align: center;
+    margin-bottom: 0.75em;
+    border-radius: 3px;
+    font: inherit;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+
+    &.is-selected {
+        background-color: $main-color;
+    }
+}
+
+.selectable-emotions-list [data-col]:nth-last-child(-n+3) .selectable-emotion {
+    margin-bottom: 1.5em;
+}
