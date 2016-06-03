@@ -64,7 +64,14 @@ function querySingle($statement, $params = []) {
 }
 
 /**
- * @TODO document
+ * Insert each row of data in a single statement. The transaction is rolled back
+ * if there are any errors. A boolean is returned indicating whether the
+ * insertion was successful or not.
+ *
+ * @param   $statement  string
+ * @param   $params     [AnyObject]
+ *
+ * @return  boolean
  */
 
 function insert($statement, $values = []) {
@@ -107,6 +114,8 @@ $app->get('/emotions/', function (Request $request, Response $response) {
  */
 
 $app->get('/movies/{emotion:[a-z]+}/{orderBy}/{direction}/', function (Request $request, Response $response) {
+    // Return with a 404 status code if the emotion does not exist
+
     if (querySingle('SELECT EXISTS(SELECT * FROM emotions WHERE emotion = :emotion) AS ex', [ 'emotion' => $request->getAttribute('emotion') ])['ex'] == '0') {
         return $response->withStatus(404);
     }
@@ -116,6 +125,8 @@ $app->get('/movies/{emotion:[a-z]+}/{orderBy}/{direction}/', function (Request $
     $orderBy = $request->getAttribute('orderBy');
     $direction = $request->getAttribute('direction');
 
+    // Determine the order criteria based on the URL.
+
     if ($orderBy == 'date-added') {
         $query .= ' ORDER BY ' . ($direction == 'ascending' ? 'first_review_date' : 'latest_review_date');
     } else if ($orderBy == 'release-date') {
@@ -123,6 +134,9 @@ $app->get('/movies/{emotion:[a-z]+}/{orderBy}/{direction}/', function (Request $
     } else if ($orderBy == 'match') {
         $query .= ' ORDER BY percentage';
     }
+
+    // We limit the movies to 102 to have a smaller set of data and to emphasize
+    // the ephermal nature of our tool.
 
     $query .= ($direction == 'ascending' ? ' ASC' : ' DESC') . ' LIMIT 102';
 
@@ -142,6 +156,12 @@ $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response
     $movie = querySingle('SELECT m.* FROM movies m WHERE m.id = :id', [
         'id' => $request->getAttribute('id')
     ]);
+
+    // Return with a 404 status code if no movie was found for the given ID.
+
+    if (is_null($movie)) {
+        return $response->withStatus(404);
+    }
 
     $emotions = query('SELECT e.id, e.emotion, (SELECT COUNT(r.id) FROM reviews r WHERE r.movie_id = :id AND r.emotion_id = e.id) AS count FROM emotions e', [
         'id' => $request->getAttribute('id')
@@ -181,14 +201,21 @@ $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response
 $app->post('/movies/', function (Request $request, Response $response) {
     $body = $request->getParsedBody();
 
+    // Check if the movie already exists in the database.
+
     $exists = query('SELECT EXISTS(SELECT * FROM movies WHERE id = :id) AS ex', [
         'id' => $body['id']
     ]);
 
     if ($exists['ex'] == 0) {
+
+        // Insert a new record for the movie using the information from TMDB.
+
         $i1 = insert('INSERT INTO movies (id, title, poster_path, runtime, release_year) VALUES (?, ?, ?, ?, ?)', [
             [ $body['id'], $body['title'], $body['poster_path'], $body['runtime'], substr($body['release_date'], 0, 4) ]
         ]);
+
+        // Insert the top 5 cast members and all directors for the movie.
 
         $cast = array_map(function ($c) {
             return [ $c['id'], $c['name'], $c['order'] + 1 ];
@@ -204,14 +231,22 @@ $app->post('/movies/', function (Request $request, Response $response) {
             return [ $c[0], $c[1] ];
         }, array_merge($cast, $crew)));
 
+        // Assign persons to the newly created movie.
+
         $i3 = insert('INSERT INTO movie_persons (movie_id, person_id, credit_order) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE movie_id = movie_id', array_map(function ($c) use ($body) {
             return [ $body['id'], $c[0], $c[2] ];
         }, array_merge($cast, $crew)));
     }
 
+    // Add a review for the movie, regardless of whether it previously existed
+    // or not.
+
     $i4 = insert('INSERT INTO reviews (movie_id, emotion_id) VALUES (?, ?)', [
         [ $body['id'], $body['emotionId'] ]
     ]);
+
+    // Return with a 201 status code if the request was successful or with a 500
+    // code if there was an error during one of the insertions.
 
     return $response->withStatus($i1 && $i2 && $i3 && $i4 ? 201 : 500);
 });
@@ -226,6 +261,9 @@ $app->post('/reviews/', function (Request $request, Response $response) {
     $i1 = insert('INSERT INTO reviews (movie_id, emotion_id) VALUES (?, ?)', [
         [ $body['movieId'], $body['emotionId'] ]
     ]);
+
+    // Return with a 201 status code if the request was successful or with a 500
+    // code if there was an error during the insertions.
 
     return $response->withStatus($i1 ? 201 : 500);
 });
