@@ -1,0 +1,43 @@
+.popover-container {
+    position: relative;
+}
+
+.popover {
+    position: absolute;
+    bottom: calc(100% + 1.5em);
+    left: 0;
+    right: 0;
+    background-image: linear-gradient(to bottom, #358AE8, #245D9C);
+    border-radius: 3px;
+    box-shadow: 0 2px 3px rgba(#333, 0.5);
+    opacity: 0;
+    transform: translateY(20%);
+    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out, visibility 0 linear 0.1s;
+    visibility: hidden;
+
+    &.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0;
+        visibility: visible;
+    }
+}
+
+.popover-item {
+    padding: 0.75em;
+    text-align: left;
+    border-bottom: 1px solid lighten(#358AE8, 10%);
+
+    &.is-selected::after {
+        content: "x";
+        float: right;
+    }
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    [data-col]:first-child & {
+        border-right: 1px solid lighten(#358AE8, 10%);
+    }
+}

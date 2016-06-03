@@ -34,23 +34,43 @@ export default class Movies extends Component {
         super(props)
 
         this.state = {
-            movies: []
+            movies: [],
+            order: {
+                by: 'date-added',
+                direction: 'descending'
+            },
+            isOrderPopoverOpen: false
         }
 
         this.getMovies()
     }
 
     /**
+     * Reload the list of movies whenever the order criteria has changed.
+     *
+     * @param  nextProps  object
+     * @param  nextState  object
+     */
+
+    componentWillUpdate(nextProps, nextState) {
+        if (this.state.order.by != nextState.order.by || this.state.order.direction != nextState.order.direction) {
+            this.getMovies(null, nextState.order.by, nextState.order.direction)
+        }
+    }
+
+    /**
      * getMovies() gets a list of all movies that have been reviewed as matching
      * the given emotion. It updates the state once the data has been fetched.
      *
-     * @param  emotion  string
+     * @param  emotion         string
+     * @param  orderBy         string
+     * @param  orderDirection  string
      *
      * @TODO Check for valid emotion and redirect to 404 if invalid.
      */
 
-    getMovies() {
-        request.get(`/api/movies/${this.props.params.emotion}/`)
+    getMovies(emotion, orderBy, orderDirection) {
+        request.get(`/api/movies/${emotion || this.props.params.emotion}/${orderBy || this.state.order.by}/${orderDirection || this.state.order.direction}/`)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
@@ -78,7 +98,22 @@ export default class Movies extends Component {
                     </div>
                     <div data-col="3-6 empty"></div>
                     <div data-col="1-6">
-                        <button data-button="block">Sort by</button>
+                        <button data-button="block" className="popover-container" onClick={() => this.setState({ isOrderPopoverOpen: !this.state.isOrderPopoverOpen })}>
+                            Sort by
+                            <ul className={'unstyled-list popover' + (this.state.isOrderPopoverOpen ? ' is-visible' : '')}>
+                                <li className={'popover-item' + (this.state.order.by == 'date-added' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'date-added', direction: this.state.order.direction } })}>Date added</li>
+                                <li className={'popover-item' + (this.state.order.by == 'match' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'match', direction: this.state.order.direction } })}>Emotion match</li>
+                                <li className={'popover-item' + (this.state.order.by == 'release-date' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'release-date', direction: this.state.order.direction } })}>Release date</li>
+                                <div data-grid="gutterless">
+                                    <div data-col="1-2">
+                                        <li className={'popover-item' + (this.state.order.direction == 'descending' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'descending' } })}>desc.</li>
+                                    </div>
+                                    <div data-col="1-2">
+                                        <li className={'popover-item' + (this.state.order.direction == 'ascending' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'ascending' } })}>asc.</li>
+                                    </div>
+                                </div>
+                            </ul>
+                        </button>
                     </div>
                 </section>
                 <MovieDetail ref={m => this.movieDetail = m} />
