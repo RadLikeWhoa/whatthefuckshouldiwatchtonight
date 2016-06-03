@@ -104,7 +104,12 @@ export default class Movies extends Component {
                 </ul>
                 <section data-grid className="options">
                     <div data-col="1-6">
-                        <Link to="/"><button data-button="block">Change your mood</button></Link>
+                        <Link to="/"><button data-button="block" className="popover-container">
+                            Change your mood
+                            <div className="popover popover-informational">
+                                Tired of feeling {this.props.params.emotion}?
+                            </div>
+                        </button></Link>
                     </div>
                     <div data-col="1-6">
                         <button data-button="block" onClick={() => this.addRating.openModal()}>Rate a movie</button>
