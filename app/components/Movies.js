@@ -37,27 +37,20 @@ export default class Movies extends Component {
             movies: []
         }
 
-        // Grab the emotion name from the request params.
-
-        this.getMoviesForEmotion(this.props.params.emotion)
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log('test')
+        this.getMovies()
     }
 
     /**
-     * getMoviesForEmotion() gets a list of all movies that have been reviewed
-     * as matching the given emotion. It updates the state once the data has
-     * been fetched.
+     * getMovies() gets a list of all movies that have been reviewed as matching
+     * the given emotion. It updates the state once the data has been fetched.
      *
      * @param  emotion  string
      *
      * @TODO Check for valid emotion and redirect to 404 if invalid.
      */
 
-    getMoviesForEmotion(emotion) {
-        request.get(`/api/movies/${emotion}/`)
+    getMovies() {
+        request.get(`/api/movies/${this.props.params.emotion}/`)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
@@ -89,7 +82,7 @@ export default class Movies extends Component {
                     </div>
                 </section>
                 <MovieDetail ref={m => this.movieDetail = m} />
-                <AddRating ref={a => this.addRating = a} />
+                <AddRating ref={a => this.addRating = a} addCallback={() => { this.getMovies(); this.addRating.closeModal() }} />
             </main>
         )
     }

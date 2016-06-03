@@ -128,6 +128,10 @@ export default class AddRating extends Component {
             .end((err, res) => {
                 if (!err) {
                     browserHistory.push(`/${selectedEmotion[0].emotion}/`)
+
+                    if (this.props.addCallback) {
+                        this.props.addCallback(selectedEmotion[0].emotion)
+                    }
                 }
             })
     }
