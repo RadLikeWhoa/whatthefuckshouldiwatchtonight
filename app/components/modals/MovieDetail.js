@@ -78,7 +78,7 @@ export default class MovieDetail extends Component {
                     <div data-col="2-3" className="detail-content">
                         <h2 className="h3 detail-title"><span className="highlighted">{this.state.detail.title}</span> ({this.state.detail.release_year})</h2>
                         <p>by {this.state.detail.directors ? this.state.detail.directors.join(', ') : null} — {this.state.detail.runtime} mins</p>
-                        <p>Cast: {this.state.detail.detail ? this.state.detail.cast.join(', ') : null}</p>
+                        <p>Cast: {this.state.detail.cast ? this.state.detail.cast.join(', ') : null}</p>
                     </div>
                 </section>
             </Modal>
