@@ -1,0 +1,23 @@
+.percentage-list {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-top: 1px solid $main-color;
+}
+
+.percentage {
+    border-right: 1px solid $main-color;
+    border-bottom: 1px solid $main-color;
+    padding: 0.75em 1.5em !important;
+    text-align: center;
+    cursor: pointer;
+
+    &:nth-child(3n) {
+        border-right: 0;
+    }
+
+    &:nth-last-child(-n+3) {
+        border-bottom: 0;
+    }
+}

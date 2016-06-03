@@ -137,7 +137,7 @@ $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response
         'id' => $request->getAttribute('id')
     ]);
 
-    $emotions = query('SELECT e.emotion, (SELECT COUNT(r.id) FROM reviews r WHERE r.movie_id = :id AND r.emotion_id = e.id) AS count FROM emotions e', [
+    $emotions = query('SELECT e.id, e.emotion, (SELECT COUNT(r.id) FROM reviews r WHERE r.movie_id = :id AND r.emotion_id = e.id) AS count FROM emotions e', [
         'id' => $request->getAttribute('id')
     ]);
 
@@ -145,13 +145,9 @@ $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response
         'id' => $request->getAttribute('id')
     ]);
 
-    // Counts are retrieved as an associative array containing name and count.
-    // We want to combine all the emotions into a single associative array
-    // [emotion => count].
+    // Include emotions and their rating percentage in the movie response.
 
-    $movie['emotions'] = array_reduce($emotions, function ($c, $i) {
-	    return array_merge($c, [ $i['emotion'] => $i['count'] ]);
-    }, []);
+    $movie['emotions'] = $emotions;
 
     // Directors don't have a credit order. We only need their full name.
 
@@ -171,6 +167,10 @@ $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response
 
     return $response->withJSON($movie);
 });
+
+/**
+ * @todo document
+ */
 
 $app->post('/movies/', function (Request $request, Response $response) {
     $body = $request->getParsedBody();
@@ -208,6 +208,20 @@ $app->post('/movies/', function (Request $request, Response $response) {
     ]);
 
     return $response->withStatus($i1 && $i2 && $i3 && $i4 ? 201 : 500);
+});
+
+/**
+ * @todo document
+ */
+
+$app->post('/reviews/', function (Request $request, Response $response) {
+    $body = $request->getParsedBody();
+
+    $i1 = insert('INSERT INTO reviews (movie_id, emotion_id) VALUES (?, ?)', [
+        [ $body['movieId'], $body['emotionId'] ]
+    ]);
+
+    return $response->withStatus($i1 ? 201 : 500);
 });
 
 $app->run();

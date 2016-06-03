@@ -54,7 +54,7 @@ export default class Movies extends Component {
 
     componentWillUpdate(nextProps, nextState) {
         if (this.state.order.by != nextState.order.by || this.state.order.direction != nextState.order.direction) {
-            this.getMovies(null, nextState.order.by, nextState.order.direction)
+            this.getMovies(nextState.order.by, nextState.order.direction)
         }
     }
 
@@ -69,8 +69,8 @@ export default class Movies extends Component {
      * @TODO Check for valid emotion and redirect to 404 if invalid.
      */
 
-    getMovies(emotion, orderBy, orderDirection) {
-        request.get(`/api/movies/${emotion || this.props.params.emotion}/${orderBy || this.state.order.by}/${orderDirection || this.state.order.direction}/`)
+    getMovies(orderBy, orderDirection) {
+        request.get(`/api/movies/${this.props.params.emotion}/${orderBy || this.state.order.by}/${orderDirection || this.state.order.direction}/`)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
@@ -79,6 +79,17 @@ export default class Movies extends Component {
                     })
                 }
             })
+    }
+
+    /**
+     * @todo document
+     */
+
+    updateMovieEmotion(movieId, percentage) {
+        const movie = this.state.movies.filter(m => m.id == movieId)[0]
+        const index = this.state.movies.map(m => m.id).indexOf(movieId)
+
+        this.setState({ movies: this.state.movies.slice(0, index).concat(Object.assign({}, movie, { percentage: percentage } )).concat(this.state.movies.slice(index + 1))})
     }
 
     render() {
@@ -116,7 +127,7 @@ export default class Movies extends Component {
                         </button>
                     </div>
                 </section>
-                <MovieDetail ref={m => this.movieDetail = m} />
+                <MovieDetail ref={m => this.movieDetail = m} emotion={this.props.params.emotion} rateCallback={(m, p) => this.updateMovieEmotion(m, p)} />
                 <AddRating ref={a => this.addRating = a} addCallback={() => { this.getMovies(); this.addRating.closeModal() }} />
             </main>
         )

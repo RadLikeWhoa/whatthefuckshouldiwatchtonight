@@ -35,7 +35,7 @@ export default class AddRating extends Component {
             width: '40em',
             height: '30em',
             padding: '1.5em',
-            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.8)'
+            boxShadow: '0 2px 5px rgba(0, 0, 0, 0.6)'
         }
     }
 

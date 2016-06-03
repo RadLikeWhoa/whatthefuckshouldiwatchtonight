@@ -32,8 +32,9 @@ CREATE TABLE reviews (
     id           INT(9)     AUTO_INCREMENT,
     movie_id     INT(9)     NOT NULL,
     emotion_id   INT(9)     NOT NULL,
-    review_date  TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    review_date  TIMESTAMP  DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
+    FOREIGN KEY (movie_id) REFERENCES movies (id),
     FOREIGN KEY (emotion_id) REFERENCES emotions (id)
 ) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
