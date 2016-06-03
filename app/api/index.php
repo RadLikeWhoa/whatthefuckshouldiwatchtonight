@@ -102,9 +102,15 @@ $app->get('/emotions/', function (Request $request, Response $response) {
 /**
  * /movies/{emotion}/ lists all movies that have been reviewed as matching a
  * given emotion. It includes the share of reviews for the given emotion.
+ *
+ * Invalid emotion names return a 404 status code.
  */
 
 $app->get('/movies/{emotion:[a-z]+}/{orderBy}/{direction}/', function (Request $request, Response $response) {
+    if (querySingle('SELECT EXISTS(SELECT * FROM emotions WHERE emotion = :emotion) AS ex', [ 'emotion' => $request->getAttribute('emotion') ])['ex'] == '0') {
+        return $response->withStatus(404);
+    }
+
     $query = 'SELECT m.*, (SELECT COUNT(*) FROM reviews r WHERE r.emotion_id = (SELECT e.id FROM emotions e WHERE e.emotion = :emotion) AND r.movie_id = m.id) / (SELECT COUNT(*) FROM reviews r WHERE r.movie_id = m.id) AS percentage, (SELECT r.review_date FROM reviews r WHERE r.movie_id = m.id ORDER BY r.review_date DESC LIMIT 1) AS latest_review_date, (SELECT r.review_date FROM reviews r WHERE r.movie_id = m.id ORDER BY r.review_date ASC LIMIT 1) AS first_review_date FROM movies m HAVING percentage > 0';
 
     $orderBy = $request->getAttribute('orderBy');
@@ -175,11 +181,11 @@ $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response
 $app->post('/movies/', function (Request $request, Response $response) {
     $body = $request->getParsedBody();
 
-    $exists = query('SELECT EXISTS(SELECT * FROM movies WHERE id = :id) AS exists', [
+    $exists = query('SELECT EXISTS(SELECT * FROM movies WHERE id = :id) AS ex', [
         'id' => $body['id']
     ]);
 
-    if ($exists['exists'] == 0) {
+    if ($exists['ex'] == 0) {
         $i1 = insert('INSERT INTO movies (id, title, poster_path, runtime, release_year) VALUES (?, ?, ?, ?, ?)', [
             [ $body['id'], $body['title'], $body['poster_path'], $body['runtime'], substr($body['release_date'], 0, 4) ]
         ]);

@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import request from 'superagent'
 import MovieDetail from './modals/MovieDetail'
 import AddRating from './modals/AddRating'
@@ -65,18 +66,19 @@ export default class Movies extends Component {
      * @param  emotion         string
      * @param  orderBy         string
      * @param  orderDirection  string
-     *
-     * @TODO Check for valid emotion and redirect to 404 if invalid.
      */
 
     getMovies(orderBy, orderDirection) {
         request.get(`/api/movies/${this.props.params.emotion}/${orderBy || this.state.order.by}/${orderDirection || this.state.order.direction}/`)
             .set('Accept', 'application/json')
             .end((err, res) => {
+                console.log(err, res.statusCode)
                 if (!err) {
                     this.setState({
                         movies: res.body.movies
                     })
+                } else if (res.statusCode == 404) {
+                    browserHistory.push('/')
                 }
             })
     }
