@@ -65,7 +65,8 @@ export default class AddRating extends Component {
             isOpen: false,
             movie: {},
             emotions: [],
-            searchResults: []
+            searchResults: [],
+            searching: false
         }
 
         this.getEmotions()
@@ -128,7 +129,8 @@ export default class AddRating extends Component {
                         // this application.
 
                         this.setState({
-                            searchResults: res.body.results.filter(m => m.poster_path)
+                            searchResults: res.body.results.filter(m => m.poster_path),
+                            searching: false
                         })
                     }
                 })
@@ -137,7 +139,8 @@ export default class AddRating extends Component {
             // Remove all movies if the query is empty.
 
             this.setState({
-                searchResults: []
+                searchResults: [],
+                searching: false
             })
         }
     }
@@ -276,9 +279,9 @@ export default class AddRating extends Component {
         return (
             <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()} onAfterOpen={() => this.onAfterOpen()}>
                 <section style={{ display: isEmpty(this.state.movie) ? 'block' : 'none' }}>
-                    <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => this.search(ev.target.value)}/>
+                    <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => { this.setState({ searching: true }); this.search(ev.target.value) }}/>
                     <section className="search-results">
-                        <ul className="search-results-list unstyled-list">
+                        <ul className={`search-results-list unstyled-list ${this.state.searching ? ' is-loading' : ''}`}>
                             {this.state.searchResults.map(r => <li className="search-result-item" key={r.id} onClick={() => this.selectedSearchResult(r.id)}>{r.title}{(() => { const date = (new Date(r.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}</li>)}
                         </ul>
                     </section>
