@@ -76,7 +76,7 @@ export default class MovieDetail extends Component {
                     emotions[emotions.indexOf(emotions.filter(e => e.id == emotionId)[0])].count = +count + 1
 
                     this.setState({
-                        detail: Object.assign({}, this.state.detail, emotions),
+                        detail: { ...this.state.detail, emotions },
                         totalRatings: this.state.totalRatings + 1
                     })
                 }

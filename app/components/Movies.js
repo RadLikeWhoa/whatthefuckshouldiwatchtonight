@@ -84,17 +84,29 @@ export default class Movies extends Component {
     }
 
     /**
-     * @todo document
+     * Update the list of movies whenever a rating has been cast inside the
+     * detail modal. The old entry for the movie is replaced with a new object
+     * containing the new percentage. This affects only the list of movies, not
+     * the detail modal.
+     *
+     * @param  movieId     integer
+     * @param  percentage  float
      */
 
     updateMovieEmotion(movieId, percentage) {
         const movie = this.state.movies.filter(m => m.id == movieId)[0]
         const index = this.state.movies.map(m => m.id).indexOf(movieId)
 
-        this.setState({ movies: this.state.movies.slice(0, index).concat(Object.assign({}, movie, { percentage: percentage } )).concat(this.state.movies.slice(index + 1))})
+        // Make use of the spread operator to avoid Object.assign and
+        // Array.concat.
+
+        this.setState({ movies: [ ...this.state.movies.slice(0, index), { ...movie, percentage: percentage }, ...this.state.movies.slice(index + 1) ] })
     }
 
     render() {
+
+        // Set the document title based on the current emotion.
+        
         document.title = `Movies that'll make you feel ${this.props.params.emotion}!`
 
         return (

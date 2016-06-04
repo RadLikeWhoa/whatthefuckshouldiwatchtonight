@@ -125,7 +125,7 @@ export default class AddRating extends Component {
 
         request.post('/api/movies/')
             .set('Content-Type', 'application/json')
-            .send(JSON.stringify(Object.assign({}, this.state.movie, { emotionId: selectedEmotion[0].id })))
+            .send(JSON.stringify({ ...this.state.movie, emotionId: selectedEmotion[0].id }))
             .end((err, res) => {
                 if (!err) {
                     browserHistory.push(`/${selectedEmotion[0].emotion}/`)

@@ -11,8 +11,6 @@ import AddRating from './modals/AddRating'
 /**
  * Emotion is the component that renders a single emotion inside the grid. It is
  * a stateless component, as such it was written using the shorthand notation.
- *
- * @TODO Add icon
  */
 
 const Emotion = ({name}) => (
@@ -56,6 +54,9 @@ export default class Emotions extends Component {
     }
 
     render() {
+
+        // Set the document title to the default title.
+
         document.title = 'What the fuck should I watch tonight?!'
 
         return (

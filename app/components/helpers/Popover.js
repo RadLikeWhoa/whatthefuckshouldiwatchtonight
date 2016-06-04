@@ -1,3 +1,10 @@
+/**
+ * Popovers show additional information above a component. They can be shown as
+ * a list of options (default) or as a simple bit of text (informational). This
+ * component handles the interactivity of the popover, the content is defined as
+ * the children of the component.
+ */
+
 import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 
@@ -9,9 +16,18 @@ export default class Popover extends Component {
             isOpen: false
         }
 
+        // Correctly bind `this` to the current class when calling the handler
+        // methods.
+
         this.handleClickOutside = this.handleClickOutside.bind(this)
         this.handleEscapePress = this.handleEscapePress.bind(this)
     }
+
+    /**
+     * The popover should be closed when the user clicks outside of it.
+     *
+     * @param  e  EventObject
+     */
 
     handleClickOutside(e) {
         const node = findDOMNode(this.list)
@@ -21,11 +37,23 @@ export default class Popover extends Component {
         }
     }
 
+    /**
+     * The popover should be closed when the user presses the escape key (key
+     * code = 27).
+     *
+     * @param  e  EventObject
+     */
+
     handleEscapePress(e) {
         if (e.keyCode == 27) {
             this.closePopover()
         }
     }
+
+    /**
+     * Make the popover visible and add both handler methods to the document.
+     * Only default popovers need the handler methods.
+     */
 
     openPopover() {
         this.setState({
@@ -37,6 +65,11 @@ export default class Popover extends Component {
             document.addEventListener('keydown', this.handleEscapePress, false)
         }
     }
+
+    /**
+     * Close the popover and remove both handler methods from the document. Only
+     * default popovers need to have the handler methods removed.
+     */
 
     closePopover() {
         this.setState({
