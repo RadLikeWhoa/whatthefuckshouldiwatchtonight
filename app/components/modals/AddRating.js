@@ -80,7 +80,7 @@ export default class AddRating extends Component {
                 .end((err, res) => {
                     if (!err) {
                         this.setState({
-                            searchResults: res.body.results
+                            searchResults: res.body.results.filter(m => m.poster_path)
                         })
                     }
                 })

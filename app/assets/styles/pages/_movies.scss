@@ -52,29 +52,3 @@
     right: 1.5em;
     bottom: 1.5em;
 }
-
-.detail-poster {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background-size: cover;
-    background-position: 50% 50%;
-}
-
-.detail-content {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 33.333%;
-    bottom: 0;
-    padding: 1.5em !important;
-}
-
-.detail-title {
-    margin-bottom: 0;
-}
-
-.result-poster {
-    max-width: 100%;
-}
