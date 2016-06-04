@@ -4,7 +4,7 @@
  * matching a given emotion.
  */
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
 import MovieDetail from './modals/MovieDetail'
@@ -18,12 +18,22 @@ import Popover from './helpers/Popover'
  * component, as such it was written using the shorthand notation.
  */
 
-const Movie = ({movie, onClick}) => (
-    <li className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${movie.poster_path})`}} onClick={onClick}>
-        <h2 className="h3 movie-title">{movie.title}</h2>
-        <div className="movie-emotion" style={{ opacity: movie.percentage }}>a</div>
+const Movie = ({title, posterPath, percentage, onClick}) => (
+    <li className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${posterPath})`}} onClick={onClick}>
+        <h2 className="h3 movie-title">{title}</h2>
+        <div className="movie-emotion" style={{ opacity: percentage }}>a</div>
     </li>
 )
+
+Movie.propTypes = {
+    title: PropTypes.string.isRequired,
+    posterPath: PropTypes.string.isRequired,
+    percentage: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]).isRequired,
+    onClick: PropTypes.func.isRequired
+}
 
 /**
  * Movies is the container Component for the movie overview. It is responsible
@@ -32,6 +42,10 @@ const Movie = ({movie, onClick}) => (
  */
 
 export default class Movies extends Component {
+    static propTypes = {
+        params: PropTypes.object.isRequired
+    }
+
     constructor(props) {
         super(props)
 
@@ -106,13 +120,13 @@ export default class Movies extends Component {
     render() {
 
         // Set the document title based on the current emotion.
-        
+
         document.title = `Movies that'll make you feel ${this.props.params.emotion}!`
 
         return (
             <main className="wrapper">
                 <ul className="unstyled-list movies-list" data-grid="gutterless">
-                    {this.state.movies.map(m => <Movie key={m.id} movie={m} onClick={() => this.movieDetail.openModal(m.id)} />)}
+                    {this.state.movies.map(m => <Movie key={m.id} title={m.title} posterPath={m.poster_path} percentage={m.percentage} onClick={() => this.movieDetail.openModal(m.id)} />)}
                 </ul>
                 <section data-grid className="options">
                     <div data-col="1-6">

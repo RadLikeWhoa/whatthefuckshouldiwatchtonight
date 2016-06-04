@@ -3,7 +3,7 @@
  * i.e. the page where the user picks their desired emotion.
  */
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import request from 'superagent'
 import AddRating from './modals/AddRating'
@@ -18,6 +18,10 @@ const Emotion = ({name}) => (
         <Link className="emotions-entry" to={`/${name}/`}>{name}</Link>
     </li>
 )
+
+Emotion.propTypes = {
+    name: PropTypes.string.isRequired
+}
 
 /**
  * Emotions is the container Component for the emotion picker. It is responsible

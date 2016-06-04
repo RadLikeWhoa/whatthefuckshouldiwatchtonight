@@ -5,10 +5,18 @@
  * the children of the component.
  */
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 
 export default class Popover extends Component {
+    static propTypes = {
+        informational: PropTypes.bool,
+        children: PropTypes.oneOfType([
+            PropTypes.arrayOf(PropTypes.node),
+            PropTypes.node
+        ])
+    }
+
     constructor(props) {
         super(props)
 

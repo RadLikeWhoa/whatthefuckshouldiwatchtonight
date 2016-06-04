@@ -2,7 +2,7 @@
  * This component is responsible for letting users add ratings for movies.
  */
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
 import Modal from 'react-modal'
@@ -17,7 +17,16 @@ const Emotion = ({name, isSelected, onClick}) => (
     </li>
 )
 
+Emotion.propTypes = {
+    name: PropTypes.string.isRequired,
+    isSelected: PropTypes.bool.isRequired,
+    onClick: PropTypes.func.isRequired
+}
+
 export default class AddRating extends Component {
+    static propTypes = {
+        addCallback: PropTypes.func
+    }
 
     // React Modal expects styling to be passed as inline styles.
 
@@ -126,7 +135,7 @@ export default class AddRating extends Component {
         request.post('/api/movies/')
             .set('Content-Type', 'application/json')
             .send(JSON.stringify({ ...this.state.movie, emotionId: selectedEmotion[0].id }))
-            .end((err, res) => {
+            .end(err => {
                 if (!err) {
                     browserHistory.push(`/${selectedEmotion[0].emotion}/`)
 

@@ -3,12 +3,16 @@
  * movie inside a modal.
  */
 
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import request from 'superagent'
 import Modal from 'react-modal'
 import isEmpty from 'lodash.isempty'
 
 export default class MovieDetail extends Component {
+    static propTypes = {
+        rateCallback: PropTypes.func.isRequired,
+        emotion: PropTypes.string.isRequired
+    }
 
     // React Modal expects styling to be passed as inline styles.
 
@@ -69,7 +73,7 @@ export default class MovieDetail extends Component {
         request.post('/api/reviews/')
             .set('Content-Type', 'application/json')
             .send(`{ "movieId": ${this.state.detail.id}, "emotionId": ${emotionId} }`)
-            .end((err, res) => {
+            .end(err => {
                 if (!err) {
                     const emotions = this.state.detail.emotions
                     const count = emotions[emotions.indexOf(emotions.filter(e => e.id == emotionId)[0])].count
