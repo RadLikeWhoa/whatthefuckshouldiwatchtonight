@@ -43,6 +43,8 @@ export default class Emotions extends Component {
     /**
      * getEmotions() gets a list of all emotions from the database and updates
      * the state once the data was fetched.
+     *
+     * @return  {void}
      */
 
     getEmotions() {

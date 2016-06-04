@@ -64,8 +64,10 @@ export default class Movies extends Component {
     /**
      * Reload the list of movies whenever the order criteria has changed.
      *
-     * @param  nextProps  object
-     * @param  nextState  object
+     * @param   {object}  nextProps  The props after the component was updated.
+     * @param   {object}  nextState  The state after the component was updated.
+     *
+     * @return  {void}
      */
 
     componentWillUpdate(nextProps, nextState) {
@@ -78,9 +80,12 @@ export default class Movies extends Component {
      * getMovies() gets a list of all movies that have been reviewed as matching
      * the given emotion. It updates the state once the data has been fetched.
      *
-     * @param  emotion         string
-     * @param  orderBy         string
-     * @param  orderDirection  string
+     * @param   {string}  orderBy         The criteria to use for sorting the
+     *                                    list of movies.
+     * @param   {string}  orderDirection  The direction in which the list of
+     *                                    movies should be ordered (asc / desc).
+     *
+     * @return  {void}
      */
 
     getMovies(orderBy, orderDirection) {
@@ -103,8 +108,11 @@ export default class Movies extends Component {
      * containing the new percentage. This affects only the list of movies, not
      * the detail modal.
      *
-     * @param  movieId     integer
-     * @param  percentage  float
+     * @param   {integer}  movieId     The ID of the movie that was udpated.
+     * @param   {float}    percentage  The new percentage of the movie that was
+     *                                 updated.
+     *
+     * @return  {void}
      */
 
     updateMovieEmotion(movieId, percentage) {
