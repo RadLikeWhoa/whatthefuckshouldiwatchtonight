@@ -111,20 +111,40 @@ export default class Movies extends Component {
      * @param   {integer}  movieId     The ID of the movie that was udpated.
      * @param   {float}    percentage  The new percentage of the movie that was
      *                                 updated.
+     * @param   {boolean}  hasChanged  Determines whether there was a new vote
+     *                                 for the movie.
      *
      * @return  {void}
      */
 
-    updateMovieEmotion(movieId, percentage) {
+    updateMovieEmotion(movieId, percentage, hasChanged) {
         const movie = this.state.movies.filter(m => m.id == movieId)[0]
         const index = this.state.movies.map(m => m.id).indexOf(movieId)
+
+        // If a vote was cast we want to update the movie's timestamp in order
+        // to list it at the top of the list if the order matches.
+
+        let timestamp
+
+        console.log(hasChanged)
+
+        if (hasChanged) {
+            const d = new Date()
+            timestamp = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
+        }
 
         // Make use of the spread operator to avoid Object.assign and
         // Array.concat.
 
-        this.setState({ movies: [ ...this.state.movies.slice(0, index), { ...movie, percentage: percentage }, ...this.state.movies.slice(index + 1) ].sort((m1, m2) => {
+        this.setState({ movies: [ ...this.state.movies.slice(0, index), { ...movie, latest_review_date: timestamp || movie.latest_review_date, percentage: percentage }, ...this.state.movies.slice(index + 1) ].sort((m1, m2) => {
             if (this.state.order.by == 'date-added' && this.state.order.direction == 'descending') {
-                return m1.id == movieId ? -1 : 1
+                const df1 = m1.latest_review_date.split(/[: -]/)
+                const df2 = m2.latest_review_date.split(/[: -]/)
+
+                const d1 = new Date(df1[0], df1[1] - 1, df1[2], df1[3], df1[4], df1[5])
+                const d2 = new Date(df2[0], df2[1] - 1, df2[2], df2[3], df2[4], df2[5])
+
+                return d1 > d2 ? -1 : 1
             } else if (this.state.order.by == 'match') {
                 const modifier = this.state.order.direction == 'descending' ? 1 : -1
                 return (+m1.percentage > +m2.percentage ? -1 : +m1.percentage < +m2.percentage ? 1 : 0) * modifier
@@ -173,7 +193,7 @@ export default class Movies extends Component {
                         </button>
                     </div>
                 </section>
-                <MovieDetail ref={m => this.movieDetail = m} emotion={this.props.params.emotion} rateCallback={(m, p) => this.updateMovieEmotion(m, p)} />
+                <MovieDetail ref={m => this.movieDetail = m} emotion={this.props.params.emotion} rateCallback={(m, p, h) => this.updateMovieEmotion(m, p, h)} />
                 <AddRating ref={a => this.addRating = a} addCallback={() => { this.getMovies(); this.addRating.closeModal() }} />
             </main>
         )

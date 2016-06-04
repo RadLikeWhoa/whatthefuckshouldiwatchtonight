@@ -44,6 +44,8 @@ export default class MovieDetail extends Component {
             detail: {},
             totalRatings: 0
         }
+
+        this.hasChanged = false
     }
 
     /**
@@ -85,6 +87,7 @@ export default class MovieDetail extends Component {
             .send(`{ "movieId": ${this.state.detail.id}, "emotionId": ${emotionId} }`)
             .end(err => {
                 if (!err) {
+                    this.hasChanged = true
 
                     // Update the count of the just selected emotion. The
                     // totalRatings count is also updated so the percentages all
@@ -112,7 +115,9 @@ export default class MovieDetail extends Component {
      */
 
     closeModal() {
-        this.props.rateCallback(this.state.detail.id, this.state.detail.emotions.filter(e => e.emotion == this.props.emotion)[0].count / +this.state.totalRatings)
+        this.props.rateCallback(this.state.detail.id, this.state.detail.emotions.filter(e => e.emotion == this.props.emotion)[0].count / +this.state.totalRatings, this.hasChanged)
+
+        this.hasChanged = false
 
         this.setState({
             isOpen: false
