@@ -3,6 +3,7 @@
  */
 
 import React, { Component, PropTypes } from 'react'
+import { findDOMNode } from 'react-dom'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
 import Modal from 'react-modal'
@@ -40,7 +41,6 @@ export default class AddRating extends Component {
 
     static modalStyle = {
         overlay: {
-            backgroundColor: 'rgba(30, 30, 30, 0.85)',
             zIndex: 2
         },
         content: {
@@ -50,9 +50,10 @@ export default class AddRating extends Component {
             backgroundColor: '#2c3641',
             right: 'auto',
             bottom: 'auto',
-            transform: 'translate(-50%, -50%)',
             width: '40em',
+            marginLeft: '-20em',
             height: '30em',
+            marginTop: '-15em',
             padding: '1.5em',
             boxShadow: '0 2px 5px rgba(0, 0, 0, 0.6)'
         }
@@ -266,18 +267,23 @@ export default class AddRating extends Component {
         emotions.forEach((e, i) => emotions[i].selected = false)
 
         this.setState({
-            isOpen: false,
+            isOpen: false
+        })
+
+        // Only reset the state of the modal after the animation has finished.
+
+        setTimeout(() => this.setState({
             movie: {},
             emotions: emotions,
             searchResults: []
-        })
+        }), 250)
 
         this.selectedMovie = false
     }
 
     render() {
         return (
-            <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()} onAfterOpen={() => this.onAfterOpen()}>
+            <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()} onAfterOpen={() => this.onAfterOpen()} closeTimeoutMS={250}>
                 <section style={{ display: isEmpty(this.state.movie) ? 'block' : 'none' }}>
                     <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => { this.setState({ searching: true }); this.search(ev.target.value) }}/>
                     <section className="search-results">

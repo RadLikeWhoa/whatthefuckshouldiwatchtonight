@@ -37,3 +37,27 @@ ul {
     display: table;
     clear: both;
 }
+
+.ReactModal__Overlay,
+div.ReactModal__Overlay--before-close {
+    background-color: rgba(#111, 0) !important;
+    transition: background-color 0.35s ease-in-out;
+    will-change: background-color;
+}
+
+.ReactModal__Overlay--after-open {
+    background-color: rgba(#111, 0.75) !important;
+}
+
+.ReactModal__Content,
+div.ReactModal__Content--before-close {
+    transform: scale(1.05);
+    opacity: 0;
+    transition: transform 0.25s ease-in-out, opacity 0.25s ease-in-out;
+    will-change: transform;
+}
+
+.ReactModal__Content--after-open {
+    transform: scale(1);
+    opacity: 1;
+}

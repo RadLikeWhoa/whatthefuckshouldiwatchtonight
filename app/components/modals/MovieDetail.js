@@ -18,7 +18,6 @@ export default class MovieDetail extends Component {
 
     static modalStyle = {
         overlay: {
-            backgroundColor: 'rgba(30, 30, 30, 0.85)',
             zIndex: 2
         },
         content: {
@@ -28,9 +27,10 @@ export default class MovieDetail extends Component {
             backgroundColor: '#2c3641',
             right: 'auto',
             bottom: 'auto',
-            transform: 'translate(-50%, -50%)',
             width: '50em',
+            marginLeft: '-25em',
             height: '25em',
+            marginTop: '-12.5em',
             padding: 0,
             boxShadow: '0 2px 5px rgba(0, 0, 0, 0.6)'
         }
@@ -115,15 +115,20 @@ export default class MovieDetail extends Component {
         this.props.rateCallback(this.state.detail.id, this.state.detail.emotions.filter(e => e.emotion == this.props.emotion)[0].count / +this.state.totalRatings)
 
         this.setState({
-            isOpen: false,
+            isOpen: false
+        })
+
+        // Only reset the state of the modal after the animation has finished.
+
+        setTimeout(() => this.setState({
             detail: {},
             totalRatings: 0
-        })
+        }), 250)
     }
 
     render() {
         return (
-            <Modal isOpen={this.state.isOpen} style={MovieDetail.modalStyle} onRequestClose={() => this.closeModal()}>
+            <Modal isOpen={this.state.isOpen} style={MovieDetail.modalStyle} onRequestClose={() => this.closeModal()} closeTimeoutMS={250}>
                 <section data-grid="gutterless">
                     <div data-col="1-3" className="detail-poster" style={{ backgroundImage: this.state.detail.poster_path ? `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})` : 'none'}}></div>
                     <div data-col="2-3" className="detail-content">
