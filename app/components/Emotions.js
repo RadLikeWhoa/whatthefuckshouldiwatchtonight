@@ -69,7 +69,7 @@ export default class Emotions extends Component {
             <main className="wrapper">
                 <header className="emotions-header">
                     <h1 className="emotions-title">Show me movies that'll make me feel…</h1>
-                    <a data-button onClick={() => this.addRating.openModal()}>…or rate a movie?</a>
+                    <button data-button onClick={() => this.addRating.openModal()}>…or rate a movie?</button>
                 </header>
                 <ul data-grid="gutterless" className="emotions-list unstyled-list">
                     {this.state.emotions.map(e => <Emotion name={e.emotion} key={e.id} />)}

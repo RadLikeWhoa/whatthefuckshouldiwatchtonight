@@ -40,7 +40,8 @@ export default class AddRating extends Component {
 
     static modalStyle = {
         overlay: {
-            backgroundColor: 'rgba(30, 30, 30, 0.85)'
+            backgroundColor: 'rgba(30, 30, 30, 0.85)',
+            zIndex: 2
         },
         content: {
             top: '50%',

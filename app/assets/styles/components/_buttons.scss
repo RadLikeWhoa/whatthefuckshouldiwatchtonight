@@ -1,6 +1,8 @@
 [data-button] {
+    position: relative;
     display: inline-block;
     padding: 0.5em 1.5em;
+    margin: 0;
     color: #fff;
     background-image: linear-gradient(to bottom, map-get($button-colors, "start"), map-get($button-colors, "end"));
     border-radius: 3px;
@@ -8,6 +10,26 @@
     border: 0;
     font: inherit;
     box-shadow: 0 2px 3px rgba(#333, 0.5);
+    z-index: 1;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        background-image: linear-gradient(to bottom, lighten(map-get($button-colors, "start"), 10%), lighten(map-get($button-colors, "end"), 10%));
+        opacity: 0;
+        border-radius: 3px;
+        transition: opacity 0.15s ease-in-out;
+        will-change: opacity;
+    }
+
+    &:hover::before {
+        opacity: 1;
+    }
 }
 
 [data-button~="block"] {
@@ -17,4 +39,8 @@
 
 [data-button~="secondary"] {
     background-image: linear-gradient(to bottom, map-get($button-alt-colors, "start"), map-get($button-alt-colors, "end"));
+
+    &::before {
+        background-image: linear-gradient(to bottom, lighten(map-get($button-alt-colors, "start"), 10%), lighten(map-get($button-alt-colors, "end"), 10%));        
+    }
 }
