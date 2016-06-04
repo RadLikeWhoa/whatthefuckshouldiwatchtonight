@@ -55,7 +55,8 @@
     border-bottom: 1px solid lighten(#358AE8, 10%);
 
     &.is-selected::after {
-        content: "x";
+        @extend %icon;
+        content: "\e902";
         float: right;
     }
 

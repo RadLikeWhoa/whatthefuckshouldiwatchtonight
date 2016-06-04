@@ -123,10 +123,10 @@ export default class Movies extends Component {
                                 <li className={'popover-item' + (this.state.order.by == 'release-date' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'release-date', direction: this.state.order.direction } })}>Release date</li>
                                 <div data-grid="gutterless">
                                     <div data-col="1-2">
-                                        <li className={'popover-item' + (this.state.order.direction == 'descending' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'descending' } })}>desc.</li>
+                                        <li title="Sort descending" className={'popover-item centered-text' + (this.state.order.direction == 'descending' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'descending' } })}><span data-icon="descending"></span></li>
                                     </div>
                                     <div data-col="1-2">
-                                        <li className={'popover-item' + (this.state.order.direction == 'ascending' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'ascending' } })}>asc.</li>
+                                        <li title="Sort ascending" className={'popover-item centered-text' + (this.state.order.direction == 'ascending' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'ascending' } })}><span data-icon="ascending"></span></li>
                                     </div>
                                 </div>
                             </ul>
