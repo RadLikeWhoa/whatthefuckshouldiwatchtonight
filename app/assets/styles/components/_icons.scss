@@ -24,14 +24,14 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+[data-icon~="checkmark"]:before {
+    content: "\e902";
+}
+
 [data-icon~="descending"]:before {
     content: "\e900";
 }
 
 [data-icon~="ascending"]:before {
     content: "\e901";
-}
-
-[data-icon~="checkmark"]:before {
-    content: "\e902";
 }
