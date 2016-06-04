@@ -10,6 +10,7 @@ import request from 'superagent'
 import MovieDetail from './modals/MovieDetail'
 import AddRating from './modals/AddRating'
 import { Link } from 'react-router'
+import Popover from './helpers/Popover'
 
 /**
  * Movie is the component that is responsible for rendering a single movie
@@ -105,9 +106,7 @@ export default class Movies extends Component {
                     <div data-col="1-6">
                         <Link to="/"><button data-button="block" className="popover-container">
                             Change your mood
-                            <div className="popover popover-informational">
-                                Tired of feeling {this.props.params.emotion}?
-                            </div>
+                            <Popover informational>Tired of feeling {this.props.params.emotion}?</Popover>
                         </button></Link>
                     </div>
                     <div data-col="1-6">
@@ -115,9 +114,9 @@ export default class Movies extends Component {
                     </div>
                     <div data-col="3-6 empty"></div>
                     <div data-col="1-6">
-                        <button data-button="block" className="popover-container" onClick={() => this.setState({ isOrderPopoverOpen: !this.state.isOrderPopoverOpen })}>
+                        <button data-button="block" className="popover-container" onClick={() => this.orderPopover.openPopover()}>
                             Sort by
-                            <ul className={'unstyled-list popover' + (this.state.isOrderPopoverOpen ? ' is-visible' : '')}>
+                            <Popover ref={p => this.orderPopover = p}>
                                 <li className={'popover-item' + (this.state.order.by == 'date-added' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'date-added', direction: this.state.order.direction } })}>Date added</li>
                                 <li className={'popover-item' + (this.state.order.by == 'match' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'match', direction: this.state.order.direction } })}>Emotion match</li>
                                 <li className={'popover-item' + (this.state.order.by == 'release-date' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'release-date', direction: this.state.order.direction } })}>Release date</li>
@@ -129,7 +128,7 @@ export default class Movies extends Component {
                                         <li title="Sort ascending" className={'popover-item centered-text' + (this.state.order.direction == 'ascending' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'ascending' } })}><span data-icon="ascending"></span></li>
                                     </div>
                                 </div>
-                            </ul>
+                            </Popover>
                         </button>
                     </div>
                 </section>
