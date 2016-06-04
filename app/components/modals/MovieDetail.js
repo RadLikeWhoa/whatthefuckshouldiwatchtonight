@@ -48,11 +48,14 @@ export default class MovieDetail extends Component {
     /**
      * Open the modal and fetch information about the selected movie.
      *
-     * @param  id  integer
+     * @param   {integer}  movieId  The ID of the movie to load information
+     *                              about.
+     *
+     * @return  {void}
      */
 
-    openModal(id) {
-        request.get(`/api/movies/${id}/`)
+    openModal(movieId) {
+        request.get(`/api/movies/${movieId}/`)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
@@ -66,7 +69,13 @@ export default class MovieDetail extends Component {
     }
 
     /**
-     * @todo document
+     * addRating() adds a new rating for the currently displayed movie with the
+     * given emotionId. The modal is updated with the new percentages of
+     * emotional matches.
+     *
+     * @param   {integer}  emotionId  The emotion to use for the rating.
+     *
+     * @return  {void}
      */
 
     addRating(emotionId) {
@@ -75,6 +84,11 @@ export default class MovieDetail extends Component {
             .send(`{ "movieId": ${this.state.detail.id}, "emotionId": ${emotionId} }`)
             .end(err => {
                 if (!err) {
+
+                    // Update the count of the just selected emotion. The
+                    // totalRatings count is also updated so the percentages all
+                    // work correctly.
+
                     const emotions = this.state.detail.emotions
                     const count = emotions[emotions.indexOf(emotions.filter(e => e.id == emotionId)[0])].count
                     emotions[emotions.indexOf(emotions.filter(e => e.id == emotionId)[0])].count = +count + 1
@@ -89,7 +103,11 @@ export default class MovieDetail extends Component {
 
     /**
      * Close the modal and clear information about the previously selected
-     * movie.
+     * movie. A rateCallback() function is called so other components are
+     * informed about the changes to the movie's percentage of emotional
+     * matches.
+     *
+     * @return  {void}
      */
 
     closeModal() {

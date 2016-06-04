@@ -12,7 +12,7 @@ require 'config.php';
  * Attempt to create a new PDO connection using the values entered in the
  * config file.
  *
- * @return  PDO
+ * @return  {PDO}  A PDO for the database settings defined in config.php.
  */
 
 function connect() {
@@ -30,10 +30,13 @@ function connect() {
  * Query the database using a prepared statement with optional parameter
  * bindings.
  *
- * @param   $statement  string
- * @param   $params     [string => string]
+ * @param   {string}              $statement  The statement to prepare and
+ *                                            execute against the database.
+ * @param   {[string => string]}  $params     The parameters to use when
+ *                                            preparing the statement.
  *
- * @return  [string => string]
+ * @return  [string => string]                An associative array consisting of
+ *                                            column names and values.
  */
 
 function query($statement, $params = []) {
@@ -68,10 +71,11 @@ function querySingle($statement, $params = []) {
  * if there are any errors. A boolean is returned indicating whether the
  * insertion was successful or not.
  *
- * @param   $statement  string
- * @param   $params     [AnyObject]
+ * @param   {string}       $statement  The statement to prepare and execute.
+ * @param   {[AnyObject]}  $params     The parameters to be inserted.
  *
- * @return  boolean
+ * @return  {boolean}                  Determines whether the insertion was
+ *                                     successful.
  */
 
 function insert($statement, $values = []) {
@@ -195,7 +199,9 @@ $app->get('/movies/{id:[0-9]+}/', function (Request $request, Response $response
 });
 
 /**
- * @todo document
+ * /movies/ creates a new review for the given movie with the given emotion. If
+ * the movie is not yet present in the database it is added, along with its
+ * actors and directors.
  */
 
 $app->post('/movies/', function (Request $request, Response $response) {
@@ -252,7 +258,8 @@ $app->post('/movies/', function (Request $request, Response $response) {
 });
 
 /**
- * @todo document
+ * /reviews/ creates a new review for the given movie. It is assumed that the
+ * movie exists.
  */
 
 $app->post('/reviews/', function (Request $request, Response $response) {

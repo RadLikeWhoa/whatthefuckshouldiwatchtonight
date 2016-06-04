@@ -84,7 +84,7 @@ export default class Popover extends Component {
      * Close the popover and remove both handler methods from the document. Only
      * default popovers need to have the handler methods removed.
      *
-     * @return  void
+     * @return  {void}
      */
 
     closePopover() {

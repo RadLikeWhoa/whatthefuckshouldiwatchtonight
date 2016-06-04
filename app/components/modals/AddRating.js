@@ -9,7 +9,15 @@ import Modal from 'react-modal'
 import isEmpty from 'lodash.isempty'
 import debounce from 'lodash.debounce'
 
+// The API key is used when communicating with the TMDB API.
+
 const apiKey = '3b699b130bdb1b0397cd703da00dcbeb'
+
+/**
+ * Emotion is a component that is rendered when giving the user the option to
+ * select an emotion for the movie they are currently rating. It is a stateless
+ * component, as such it was written using the shorthand notation.
+ */
 
 const Emotion = ({name, isSelected, onClick}) => (
     <li data-col="1-3">
@@ -61,10 +69,23 @@ export default class AddRating extends Component {
 
         this.getEmotions()
 
-        this.searchInProgress = false
+        // selectedMovie prevents the user from selecting two movies from the
+        // list of search results.
+
+        this.selectedMovie = false
+
+        // In order to not overload the TMDB API request, the search function is
+        // debounced. That means that it is only called every 500ms at most.
 
         this.search = debounce(this.search, 500)
     }
+
+    /**
+     * Retrieve the list of emotions the user will be able to select after
+     * choosing a movie.
+     *
+     * @return  {void}
+     */
 
     getEmotions() {
         request.get('/api/emotions/')
@@ -72,6 +93,8 @@ export default class AddRating extends Component {
             .end((err, res) => {
                 if (!err) {
                     const emotions = res.body.emotions
+
+                    // Add a `selected` flag to each emotion.
 
                     emotions.forEach((e, i) => emotions[i].selected = false)
 
@@ -82,30 +105,60 @@ export default class AddRating extends Component {
             })
     }
 
+    /**
+     * Search for a given query on the TMDB API. It returns a list of movies.
+     * The state is updated after movies have been fetched.
+     *
+     * @param   {string}  query  The query to use when fetching movies from the
+     *                           search endpoint.
+     *
+     * @return  {void}
+     */
+
     search(query) {
         if (query) {
             request.get(`http://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
                 .set('Accept', 'application/json')
                 .end((err, res) => {
                     if (!err) {
+
+                        // Only include movies that actually have a poster path
+                        // defined. Otherwise they would not make much sense in
+                        // this application.
+
                         this.setState({
                             searchResults: res.body.results.filter(m => m.poster_path)
                         })
                     }
                 })
         } else {
+
+            // Remove all movies if the query is empty.
+
             this.setState({
                 searchResults: []
             })
         }
     }
 
-    selectedSearchResult(id) {
-        if (this.searchInProgress) return
+    /**
+     * selectedSearchResult() creates a transition from the search results view
+     * to the movie view. This method loads information about the movie itself
+     * and about its cast and combines them in a single response.
+     *
+     * @param   {integer}  The ID of the movie to load information about.
+     *
+     * @return  {void}
+     */
 
-        this.searchInProgress = true
+    selectedSearchResult(movieId) {
 
-        request.get(`http://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&append_to_response=credits`)
+        // Prevent the user from selecting two different movies.
+
+        if (this.selectedMovie) return
+        this.selectedMovie = true
+
+        request.get(`http://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&append_to_response=credits`)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
@@ -116,8 +169,20 @@ export default class AddRating extends Component {
             })
     }
 
+    /**
+     * selectedEmotion() marks a single emotion as selected and sets the flag on
+     * all other emotions to false.
+     *
+     * @param   {integer}  index  The index of the emotion inside the state
+     *                            array.
+     *
+     * @return  {void}
+     */
+
     selectedEmotion(index) {
         const emotions = this.state.emotions
+
+        // Completely reset and then set the flag.
 
         emotions.forEach((e, i) => emotions[i].selected = false)
         emotions[index].selected = true
@@ -126,6 +191,15 @@ export default class AddRating extends Component {
             emotions: emotions
         })
     }
+
+    /**
+     * saveRating() saves the current movie along with the selected emotion.
+     * Once the request is done, the user is redirected to the page of the
+     * emotion they've just selected. If an addCallback() is defined, it is
+     * called here.
+     *
+     * @return  {void}
+     */
 
     saveRating() {
         const selectedEmotion = this.state.emotions.filter(e => e.selected)
@@ -139,6 +213,9 @@ export default class AddRating extends Component {
                 if (!err) {
                     browserHistory.push(`/${selectedEmotion[0].emotion}/`)
 
+                    // Call the callback function with the just selected
+                    // emotion.
+
                     if (this.props.addCallback) {
                         this.props.addCallback(selectedEmotion[0].emotion)
                     }
@@ -146,18 +223,41 @@ export default class AddRating extends Component {
             })
     }
 
+    /**
+     * Open and display the modal.
+     *
+     * @return  {void}
+     */
+
     openModal() {
         this.setState({
             isOpen: true
         })
     }
 
+    /**
+     * Automatically focus the search box once the modal has been opened and all
+     * refs have been synchronized.
+     *
+     * @return  {void}
+     */
+
     onAfterOpen() {
         this.searchBox.focus()
     }
 
+    /**
+     * Close the modal and reset all its information. The modal retains
+     * information about the emotions as they don't need to be refetched every
+     * time the modal is opened.
+     *
+     * @return  {void}
+     */
+
     closeModal() {
         const emotions = this.state.emotions
+
+        // Reset the `selected` flag on all emotions.
 
         emotions.forEach((e, i) => emotions[i].selected = false)
 
@@ -168,7 +268,7 @@ export default class AddRating extends Component {
             searchResults: []
         })
 
-        this.searchInProgress = false
+        this.selectedMovie = false
     }
 
     render() {
