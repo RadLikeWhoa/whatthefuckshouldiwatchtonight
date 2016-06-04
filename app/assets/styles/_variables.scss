@@ -1,4 +1,14 @@
 $main-color: #BDD6F2;
 $background-color: #2c3641;
 
-$columns: 2 3 4 6;
+$button-colors: (
+    start: #358AE8,
+    end: #245D9C
+);
+
+$button-alt-colors: (
+    start: #708399,
+    end: #4A5866
+);
+
+$ssgs-columns: 2 3 6;

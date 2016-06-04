@@ -1,17 +1,15 @@
 @import "variables";
 
-@import "mq";
-@import "grid";
+@import "lib/ssgs";
 
-@import "fonts";
-@import "typography";
-@import "forms";
-@import "buttons";
-@import "popover";
+@import "components/icons";
+@import "components/typography";
+@import "components/forms";
+@import "components/buttons";
+@import "components/popover";
 
-@import "base";
-@import "emotions";
-@import "movies";
-
-@import "add-rating";
-@import "movie-detail";
+@import "pages/base";
+@import "pages/emotions";
+@import "pages/movies";
+@import "pages/add-rating";
+@import "pages/movie-detail";

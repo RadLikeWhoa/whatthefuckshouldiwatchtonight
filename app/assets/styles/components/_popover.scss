@@ -2,12 +2,16 @@
     position: relative;
 }
 
+/**
+ * Default popovers are used to show a list of options above a component.
+ */
+
 .popover {
     position: absolute;
     bottom: calc(100% + 1.5em);
     left: 0;
     right: 0;
-    background-image: linear-gradient(to bottom, #358AE8, #245D9C);
+    background-image: linear-gradient(to bottom, map-get($button-colors, "start"), map-get($button-colors, "end"));
     border-radius: 3px;
     box-shadow: 0 2px 3px rgba(#333, 0.5);
     opacity: 0;
@@ -22,6 +26,11 @@
         visibility: visible;
     }
 }
+
+/**
+ * Informational popovers are used to show small bits of text above a component.
+ * Don't include complex child elements in informational popovers.
+ */
 
 .popover-informational {
     background-image: none;
@@ -52,7 +61,7 @@
 .popover-item {
     padding: 0.75em;
     text-align: left;
-    border-bottom: 1px solid lighten(#358AE8, 10%);
+    border-bottom: 1px solid lighten(map-get($button-colors, "start"), 10%);
 
     &.is-selected::after {
         @extend %icon;
@@ -65,6 +74,6 @@
     }
 
     [data-col]:first-child & {
-        border-right: 1px solid lighten(#358AE8, 10%);
+        border-right: 1px solid lighten(map-get($button-colors, "start"), 10%);
     }
 }
