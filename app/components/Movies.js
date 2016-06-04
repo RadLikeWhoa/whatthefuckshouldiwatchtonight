@@ -122,7 +122,14 @@ export default class Movies extends Component {
         // Make use of the spread operator to avoid Object.assign and
         // Array.concat.
 
-        this.setState({ movies: [ ...this.state.movies.slice(0, index), { ...movie, percentage: percentage }, ...this.state.movies.slice(index + 1) ] })
+        this.setState({ movies: [ ...this.state.movies.slice(0, index), { ...movie, percentage: percentage }, ...this.state.movies.slice(index + 1) ].sort((m1, m2) => {
+            if (this.state.order.by == 'date-added' && this.state.order.direction == 'descending') {
+                return m1.id == movieId ? -1 : 1
+            } else if (this.state.order.by == 'match') {
+                const modifier = this.state.order.direction == 'descending' ? 1 : -1
+                return (+m1.percentage > +m2.percentage ? -1 : +m1.percentage < +m2.percentage ? 1 : 0) * modifier
+            }
+        }) })
     }
 
     render() {
