@@ -9,8 +9,8 @@
 .popover {
     position: absolute;
     bottom: calc(100% + 1.5em);
-    left: 1.5em;
-    right: 1.5em;
+    left: 0;
+    right: 0;
     background-image: linear-gradient(to bottom, map-get($button-colors, "start"), map-get($button-colors, "end"));
     border-radius: 3px;
     box-shadow: 0 2px 3px rgba(#333, 0.5);
@@ -34,6 +34,8 @@
  */
 
 .popover-informational {
+    left: 1.5em;
+    right: 1.5em;
     background-image: none;
     background-color: rgba(#333, 0.85);
     padding: 0.75em 1.5em !important;

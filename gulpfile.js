@@ -12,6 +12,7 @@ var concat = require('gulp-concat')
 var sass = require('gulp-sass')
 var csso = require('gulp-csso')
 var svgo = require('gulp-svgo')
+var autoprefixer = require('gulp-autoprefixer')
 
 gulp.task('build', function () {
     return browserify({ entries: 'app/main.js', extensions: ['.js'], debug: true })
@@ -25,6 +26,7 @@ gulp.task('build', function () {
 gulp.task('styles', function () {
     return gulp.src('app/assets/styles/style.scss')
         .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer({ browsers: [ 'last 2 versions' ] }))
         .pipe(gulp.dest('app/dist/css/'))
 })
 
@@ -45,6 +47,7 @@ gulp.task('release', function () {
 
     var styles = gulp.src('app/assets/styles/style.scss')
         .pipe(sass().on('error', sass.logError))
+        .pipe(autoprefixer({ browsers: [ 'last 2 versions' ] }))
         .pipe(csso())
         .pipe(gulp.dest('app/release/css/'))
 
