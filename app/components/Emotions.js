@@ -17,7 +17,7 @@ import Popover from './helpers/Popover'
 const Emotion = ({name}) => (
     <li data-col="1-3">
         <div className="popover-container">
-            <Link className="emotions-entry" to={`/${name}/`}><img src={`/dist/svg/${name}.svg`} />
+            <Link className={`emotions-entry emotion-${name}`} to={`/${name}/`}><img src={`/dist/svg/${name}.svg`} />
                 <Popover informational>{name}</Popover>
             </Link>
         </div>

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="272px" height="272px" viewBox="0 0 272 272" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="256px" height="256px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 3.6.1 (26313) - http://www.bohemiancoding.com/sketch -->
     <title>scared</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="scared" transform="translate(8.000000, 8.000000)">
-            <circle id="Oval-1" stroke="#fff" stroke-width="15" cx="128" cy="128" r="128"></circle>
-            <circle id="Oval-2" fill="#fff" cx="84.5" cy="94.5" r="32.5"></circle>
-            <circle id="Oval-2-Copy" fill="#fff" cx="170.5" cy="94.5" r="32.5"></circle>
-            <path d="M128.562469,193.65868 C152.578741,193.65868 190.624939,157.5 190.624939,157.5 C190.624939,157.5 149.172889,162.013508 128.562469,162.013508 C107.797909,162.013508 66.5,157.5 66.5,157.5 C66.5,157.5 104.537095,193.65868 128.562469,193.65868 Z" id="Line" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" fill="#fff" transform="translate(128.562469, 175.579340) scale(1, -1) translate(-128.562469, -175.579340) "></path>
+        <g id="filled" transform="translate(-1058.000000, 0.000000)" fill="#38E138">
+            <g id="scared" transform="translate(1058.000000, 0.000000)">
+                <path d="M128,256 C198.692448,256 256,198.692448 256,128 C256,57.307552 198.692448,0 128,0 C57.307552,0 0,57.307552 0,128 C0,198.692448 57.307552,256 128,256 Z M84.5,127 C102.449254,127 117,112.449254 117,94.5 C117,76.5507456 102.449254,62 84.5,62 C66.5507456,62 52,76.5507456 52,94.5 C52,112.449254 66.5507456,127 84.5,127 Z M170.5,127 C188.449254,127 203,112.449254 203,94.5 C203,76.5507456 188.449254,62 170.5,62 C152.550746,62 138,76.5507456 138,94.5 C138,112.449254 152.550746,127 170.5,127 Z M128.062469,158 C152.078741,158 190.124939,189.166514 190.124939,194.15868 C190.124939,199.150846 148.672889,187.645172 128.062469,187.645172 C107.297909,187.645172 66,199.14867 66,194.15868 C66,189.16869 104.037095,158 128.062469,158 Z" id="Combined-Shape"></path>
+            </g>
         </g>
     </g>
 </svg>

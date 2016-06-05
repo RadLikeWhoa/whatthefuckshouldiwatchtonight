@@ -23,6 +23,8 @@
     border-bottom: 1px solid $main-color;
     border-right: 1px solid $main-color;
     height: calc((100vh - 13em) / 2);
+    transition: background-color 0.1s ease-in-out;
+    will-change: background-color;
 
     img {
         position: absolute;
@@ -42,5 +44,20 @@
 
     &:hover img {
         transform: rotateZ(10deg) translateY(-1.5em);
+    }
+}
+
+$colors: (
+    'excited': #EB664B,
+    'amused': #EBB54B,
+    'sad': #4B78EB,
+    'scared': #38E038,
+    'weird': #AC4CEB,
+    'inspired': #4CADEB
+);
+
+@each $name, $color in $colors {
+    .emotion-#{$name}:hover {
+        background-color: transparentize($color, 0.85);
     }
 }

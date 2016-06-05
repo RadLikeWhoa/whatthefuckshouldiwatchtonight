@@ -21,7 +21,7 @@ import Popover from './helpers/Popover'
 const Movie = ({title, posterPath, percentage, onClick, emotion}) => (
     <li className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${posterPath})`}} onClick={onClick}>
         <h2 className="h3 movie-title">{title}</h2>
-        <div className="movie-emotion popover-container" style={{ opacity: Math.min(+percentage + 0.2, 1) }}>
+        <div className="movie-emotion popover-container" style={{ opacity: Math.min(+percentage + 0.3, 1) }}>
             <img src={`/dist/svg/${emotion}.svg`} />
             <Popover informational>{`${Math.round(+percentage * 100)}%`}</Popover>
         </div>
