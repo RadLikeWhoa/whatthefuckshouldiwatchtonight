@@ -3,13 +3,11 @@
  */
 
 import React, { Component, PropTypes } from 'react'
-import { findDOMNode } from 'react-dom'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
 import Modal from 'react-modal'
 import isEmpty from 'lodash.isempty'
 import debounce from 'lodash.debounce'
-import Popover from '../helpers/Popover'
 
 // The API key is used when communicating with the TMDB API.
 

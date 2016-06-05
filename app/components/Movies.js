@@ -35,7 +35,8 @@ Movie.propTypes = {
         PropTypes.string,
         PropTypes.number
     ]).isRequired,
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
+    emotion: PropTypes.string.isRequired
 }
 
 /**
