@@ -98,7 +98,7 @@
     border: 2px solid $main-color;
     padding: 0.75em;
     text-align: center;
-    margin-bottom: 0.75em;
+    margin-bottom: 0.65em;
     border-radius: 3px;
     font: inherit;
     display: block;
@@ -106,6 +106,18 @@
     cursor: pointer;
     transition: background-color 0.1s ease-in-out;
     will-change: background-color;
+
+    img {
+        display: block;
+        height: 3em;
+        margin: 0 auto 0.5em;
+        transition: transform 0.1s ease-in-out;
+        will-change: transform;
+    }
+
+    &:hover img {
+        transform: rotateZ(10deg) scale(1.05);
+    }
 
     &.is-selected {
         background-color: $main-color;

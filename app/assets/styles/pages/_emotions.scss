@@ -22,5 +22,25 @@
     color: #fff;
     border-bottom: 1px solid $main-color;
     border-right: 1px solid $main-color;
-    height: calc((100vh - 13em) / 3);
+    height: calc((100vh - 13em) / 2);
+
+    img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10em;
+        height: 10em;
+        margin-top: -5em;
+        margin-left: -5em;
+        transition: transform 0.1s ease-in-out;
+        will-change: transform;
+    }
+
+    .popover {
+        bottom: 1.5em;
+    }
+
+    &:hover img {
+        transform: rotateZ(10deg) translateY(-1.5em);
+    }
 }

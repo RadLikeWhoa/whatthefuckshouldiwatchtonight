@@ -2,12 +2,9 @@ INSERT INTO emotions (emotion) VALUES
   ("amused"),
   ("sad"),
   ("excited"),
-  ("uplifted"),
   ("scared"),
   ("inspired"),
-  ("joyful"),
-  ("weird"),
-  ("sentimental");
+  ("weird");
 
 INSERT INTO movies (id, title, poster_path, runtime, release_year) VALUES
   (1, "Captain America: Civil War", "rDT86hJCxnoOs4ARjrCiRej7pOi.jpg", 146, 2016),
@@ -33,27 +30,27 @@ INSERT INTO movies (id, title, poster_path, runtime, release_year) VALUES
 
 INSERT INTO reviews (movie_id, emotion_id, review_date) VALUES
   (1, 3, "2016-07-04"),
-  (20, 9, "2004-05-22"),
+  (20, 6, "2004-05-22"),
   (2, 1, "2016-03-12"),
   (19, 3, "2009-08-19"),
   (3, 3, "2015-12-25"),
-  (18, 1, "2014-01-30"),
-  (4, 3, "2015-12-15"),
-  (17, 3, "2013-12-13"),
+  (18, 2, "2014-01-30"),
+  (4, 5, "2015-12-15"),
+  (17, 5, "2013-12-13"),
   (5, 5, "2016-04-07"),
-  (16, 7, "2016-02-14"),
+  (16, 4, "2016-02-14"),
   (6, 2, "2012-07-23"),
-  (15, 5, "2014-05-28"),
+  (15, 4, "2014-05-28"),
   (7, 2, "2005-06-16"),
-  (14, 7, "2009-06-20"),
+  (14, 6, "2009-06-20"),
   (8, 3, "1982-06-12"),
   (13, 4, "2012-12-30"),
   (9, 6, "2013-10-17"),
   (12, 3, "2015-12-14"),
-  (10, 8, "2009-06-21"),
+  (10, 2, "2009-06-21"),
   (11, 4, "2009-07-28"),
   (16, 3, "2016-03-30"),
-  (3, 6, "2016-02-20");
+  (3, 1, "2016-02-20");
 
 INSERT INTO persons (id, full_name) VALUES
   (1, "Ryan Gosling"),

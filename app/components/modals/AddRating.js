@@ -9,6 +9,7 @@ import request from 'superagent'
 import Modal from 'react-modal'
 import isEmpty from 'lodash.isempty'
 import debounce from 'lodash.debounce'
+import Popover from '../helpers/Popover'
 
 // The API key is used when communicating with the TMDB API.
 
@@ -22,7 +23,10 @@ const apiKey = '3b699b130bdb1b0397cd703da00dcbeb'
 
 const Emotion = ({name, isSelected, onClick}) => (
     <li data-col="1-3">
-        <button onClick={onClick} className={'selectable-emotion' + (isSelected ? ' is-selected' : '')}>{name}</button>
+        <button onClick={onClick} className={`selectable-emotion ${isSelected ? ' is-selected' : ''}`}>
+            <img src={`/dist/svg/${name}.svg`} />
+            {name}
+        </button>
     </li>
 )
 
@@ -262,28 +266,30 @@ export default class AddRating extends Component {
     closeModal() {
         const emotions = this.state.emotions
 
-        // Reset the `selected` flag on all emotions.
-
-        emotions.forEach((e, i) => emotions[i].selected = false)
-
         this.setState({
             isOpen: false
         })
 
         // Only reset the state of the modal after the animation has finished.
 
-        setTimeout(() => this.setState({
-            movie: {},
-            emotions: emotions,
-            searchResults: []
-        }), 250)
+        setTimeout(() => {
+            this.setState({
+                movie: {},
+                emotions: emotions,
+                searchResults: []
+            })
+
+            // Reset the `selected` flag on all emotions.
+
+            emotions.forEach((e, i) => emotions[i].selected = false)
+        }, 250)
 
         this.selectedMovie = false
     }
 
     render() {
         return (
-            <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()} onAfterOpen={() => this.onAfterOpen()} closeTimeoutMS={250}>
+            <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()} onAfterOpen={() => this.onAfterOpen()} closeTimeoutMS={350}>
                 <section style={{ display: isEmpty(this.state.movie) ? 'block' : 'none' }}>
                     <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => { this.setState({ searching: true }); this.search(ev.target.value) }}/>
                     <section className="search-results">

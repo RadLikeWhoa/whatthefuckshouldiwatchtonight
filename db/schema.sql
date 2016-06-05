@@ -3,8 +3,8 @@ USE wtfsiwt;
 
 DROP TABLE IF EXISTS movie_persons;
 DROP TABLE IF EXISTS persons;
-DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS reviews;
+DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS emotions;
 
 CREATE TABLE movies (

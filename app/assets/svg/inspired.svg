@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="272px" height="272px" viewBox="0 0 272 272" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.6.1 (26313) - http://www.bohemiancoding.com/sketch -->
+    <title>inspired</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="inspired" transform="translate(8.000000, 8.000000)">
+            <circle id="Oval-1" stroke="#fff" stroke-width="15" cx="128" cy="128" r="128"></circle>
+            <path d="M128.562469,193.65868 C152.578741,193.65868 190.624939,157.5 190.624939,157.5 C190.624939,157.5 149.172889,186.013508 128.562469,186.013508 C107.797909,186.013508 66.5,157.5 66.5,157.5 C66.5,157.5 104.537095,193.65868 128.562469,193.65868 Z" id="Line" stroke="#fff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" fill="#fff"></path>
+            <polygon id="Star-1" fill="#fff" points="84.2029977 112.049431 64.3828962 122.469475 68.1681988 100.399468 52.1333998 84.7694019 74.2929469 81.5494312 84.2029977 61.4694752 94.1130484 81.5494312 116.272596 84.7694019 100.237797 100.399468 104.023099 122.469475 "></polygon>
+            <polygon id="Star-1-Copy" fill="#fff" points="170.202998 112.049431 150.382896 122.469475 154.168199 100.399468 138.1334 84.7694019 160.292947 81.5494312 170.202998 61.4694752 180.113048 81.5494312 202.272596 84.7694019 186.237797 100.399468 190.023099 122.469475 "></polygon>
+        </g>
+    </g>
+</svg>

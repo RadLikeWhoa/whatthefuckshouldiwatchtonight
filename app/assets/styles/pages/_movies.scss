@@ -10,8 +10,15 @@
     background-position: 50% 50%;
     cursor: pointer;
 
-    &:hover .movie-title {
-        opacity: 1;
+    &:hover {
+        .movie-title {
+            opacity: 1;
+        }
+
+        .movie-emotion {
+            opacity: 1 !important;
+            transform: rotateZ(10deg) scale(1.05);
+        }
     }
 }
 
@@ -45,6 +52,18 @@
     background-color: $main-color;
     border-radius: 100%;
     box-shadow: 0 2px 3px rgba(#333, 0.35);
+    transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
+    will-change: opacity, transform;
+
+    img {
+        max-width: 100%;
+    }
+
+    .popover {
+        left: -1.5em;
+        right: -1.5em;
+        padding: 0.25em !important;
+    }
 }
 
 .options {

@@ -7,6 +7,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import request from 'superagent'
 import AddRating from './modals/AddRating'
+import Popover from './helpers/Popover'
 
 /**
  * Emotion is the component that renders a single emotion inside the grid. It is
@@ -15,7 +16,11 @@ import AddRating from './modals/AddRating'
 
 const Emotion = ({name}) => (
     <li data-col="1-3">
-        <Link className="emotions-entry" to={`/${name}/`}>{name}</Link>
+        <div className="popover-container">
+            <Link className="emotions-entry" to={`/${name}/`}><img src={`/dist/svg/${name}.svg`} />
+                <Popover informational>{name}</Popover>
+            </Link>
+        </div>
     </li>
 )
 

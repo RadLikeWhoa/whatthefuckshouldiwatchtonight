@@ -18,10 +18,13 @@ import Popover from './helpers/Popover'
  * component, as such it was written using the shorthand notation.
  */
 
-const Movie = ({title, posterPath, percentage, onClick}) => (
+const Movie = ({title, posterPath, percentage, onClick, emotion}) => (
     <li className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${posterPath})`}} onClick={onClick}>
         <h2 className="h3 movie-title">{title}</h2>
-        <div className="movie-emotion" style={{ opacity: percentage }}>a</div>
+        <div className="movie-emotion popover-container" style={{ opacity: Math.min(+percentage + 0.2, 1) }}>
+            <img src={`/dist/svg/${emotion}.svg`} />
+            <Popover informational>{`${Math.round(+percentage * 100)}%`}</Popover>
+        </div>
     </li>
 )
 
@@ -118,6 +121,8 @@ export default class Movies extends Component {
      */
 
     updateMovieEmotion(movieId, percentage, hasChanged) {
+        if (!hasChanged) return
+
         const movie = this.state.movies.filter(m => m.id == movieId)[0]
         const index = this.state.movies.map(m => m.id).indexOf(movieId)
 
@@ -126,12 +131,8 @@ export default class Movies extends Component {
 
         let timestamp
 
-        console.log(hasChanged)
-
-        if (hasChanged) {
-            const d = new Date()
-            timestamp = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
-        }
+        const d = new Date()
+        timestamp = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
 
         // Make use of the spread operator to avoid Object.assign and
         // Array.concat.
@@ -161,7 +162,7 @@ export default class Movies extends Component {
         return (
             <main className="wrapper">
                 <ul className="unstyled-list movies-list" data-grid="gutterless">
-                    {this.state.movies.map(m => <Movie key={m.id} title={m.title} posterPath={m.poster_path} percentage={m.percentage} onClick={() => this.movieDetail.openModal(m.id)} />)}
+                    {this.state.movies.map(m => <Movie key={m.id} title={m.title} posterPath={m.poster_path} percentage={m.percentage} onClick={() => this.movieDetail.openModal(m.id)} emotion={this.props.params.emotion} />)}
                 </ul>
                 <section data-grid className="options">
                     <div data-col="1-6">

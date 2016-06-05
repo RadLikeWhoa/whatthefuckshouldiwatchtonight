@@ -124,7 +124,7 @@ $app->get('/movies/{emotion:[a-z]+}/{orderBy}/{direction}/', function (Request $
         return $response->withStatus(404);
     }
 
-    $query = 'SELECT m.*, (SELECT COUNT(*) FROM reviews r WHERE r.emotion_id = (SELECT e.id FROM emotions e WHERE e.emotion = :emotion) AND r.movie_id = m.id) / (SELECT COUNT(*) FROM reviews r WHERE r.movie_id = m.id) AS percentage, (SELECT r.review_date FROM reviews r WHERE r.movie_id = m.id ORDER BY r.review_date DESC LIMIT 1) AS latest_review_date, (SELECT r.review_date FROM reviews r WHERE r.movie_id = m.id ORDER BY r.review_date ASC LIMIT 1) AS first_review_date FROM movies m HAVING percentage > 0';
+    $query = 'SELECT m.*, (SELECT COUNT(*) FROM reviews r WHERE r.emotion_id = (SELECT e.id FROM emotions e WHERE e.emotion = :emotion) AND r.movie_id = m.id) / (SELECT COUNT(*) FROM reviews r WHERE r.movie_id = m.id) AS percentage, (SELECT r.review_date FROM reviews r WHERE r.movie_id = m.id ORDER BY r.review_date DESC LIMIT 1) AS latest_review_date, (SELECT r.review_date FROM reviews r WHERE r.movie_id = m.id ORDER BY r.review_date ASC LIMIT 1) AS first_review_date FROM movies m HAVING percentage > 0.3';
 
     $orderBy = $request->getAttribute('orderBy');
     $direction = $request->getAttribute('direction');
