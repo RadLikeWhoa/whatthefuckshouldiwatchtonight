@@ -5,12 +5,11 @@
  */
 
 import React, { Component, PropTypes } from 'react'
-import { browserHistory } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import request from 'superagent'
-import MovieDetail from './modals/MovieDetail'
-import AddRating from './modals/AddRating'
-import { Link } from 'react-router'
-import Popover from './helpers/Popover'
+import MovieDetail from '../modals/MovieDetail'
+import AddRating from '../modals/AddRating'
+import Popover from '../helpers/Popover'
 
 /**
  * Movie is the component that is responsible for rendering a single movie
@@ -163,14 +162,23 @@ export default class Movies extends Component {
         return (
             <main className="wrapper">
                 <ul className="unstyled-list movies-list" data-grid="gutterless">
-                    {this.state.movies.map(m => <Movie key={m.id} title={m.title} posterPath={m.poster_path} percentage={m.percentage} onClick={() => this.movieDetail.openModal(m.id)} emotion={this.props.params.emotion} />)}
+                    {this.state.movies.map(m => (
+                        <Movie key={m.id}
+                               title={m.title}
+                               posterPath={m.poster_path}
+                               percentage={m.percentage}
+                               onClick={() => this.movieDetail.openModal(m.id)}
+                               emotion={this.props.params.emotion} />
+                    ))}
                 </ul>
                 <section data-grid className="options">
                     <div data-col="1-6">
-                        <Link to="/"><button data-button="block" className="popover-container">
-                            Change your mood
-                            <Popover informational>Tired of feeling {this.props.params.emotion}?</Popover>
-                        </button></Link>
+                        <Link to="/">
+                            <button data-button="block" className="popover-container">
+                                Change your mood
+                                <Popover informational>Tired of feeling {this.props.params.emotion}?</Popover>
+                            </button>
+                        </Link>
                     </div>
                     <div data-col="1-6">
                         <button data-button="block" onClick={() => this.addRating.openModal()}>Rate a movie</button>
@@ -195,7 +203,9 @@ export default class Movies extends Component {
                         </button>
                     </div>
                 </section>
-                <MovieDetail ref={m => this.movieDetail = m} emotion={this.props.params.emotion} rateCallback={(m, p, h) => this.updateMovieEmotion(m, p, h)} />
+                <MovieDetail ref={m => this.movieDetail = m}
+                             emotion={this.props.params.emotion}
+                             rateCallback={(m, p, h) => this.updateMovieEmotion(m, p, h)} />
                 <AddRating ref={a => this.addRating = a} addCallback={() => { this.getMovies(); this.addRating.closeModal() }} />
             </main>
         )

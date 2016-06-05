@@ -6,33 +6,13 @@ import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
 import Modal from 'react-modal'
-import isEmpty from 'lodash.isempty'
-import debounce from 'lodash.debounce'
+import isEmpty from 'lodash/isempty'
+import debounce from 'lodash/debounce'
+import { SelectableEmotion } from '../emotions/Emotion'
 
 // The API key is used when communicating with the TMDB API.
 
 const apiKey = '3b699b130bdb1b0397cd703da00dcbeb'
-
-/**
- * Emotion is a component that is rendered when giving the user the option to
- * select an emotion for the movie they are currently rating. It is a stateless
- * component, as such it was written using the shorthand notation.
- */
-
-const Emotion = ({name, isSelected, onClick}) => (
-    <li data-col="1-3">
-        <button onClick={onClick} className={`selectable-emotion ${isSelected ? ' is-selected' : ''}`}>
-            <img src={`/dist/svg/${name}.svg`} />
-            {name}
-        </button>
-    </li>
-)
-
-Emotion.propTypes = {
-    name: PropTypes.string.isRequired,
-    isSelected: PropTypes.bool.isRequired,
-    onClick: PropTypes.func.isRequired
-}
 
 export default class AddRating extends Component {
     static propTypes = {
@@ -287,12 +267,18 @@ export default class AddRating extends Component {
 
     render() {
         return (
-            <Modal isOpen={this.state.isOpen} style={AddRating.modalStyle} onRequestClose={() => this.closeModal()} onAfterOpen={() => this.onAfterOpen()} closeTimeoutMS={350}>
+            <Modal isOpen={this.state.isOpen}
+                   style={AddRating.modalStyle}
+                   onRequestClose={() => this.closeModal()}
+                   onAfterOpen={() => this.onAfterOpen()}
+                   closeTimeoutMS={350}>
                 <section style={{ display: isEmpty(this.state.movie) ? 'block' : 'none' }}>
                     <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => { this.setState({ searching: true }); this.search(ev.target.value) }}/>
                     <section className="search-results">
                         <ul className={`search-results-list unstyled-list ${this.state.searching ? ' is-loading' : ''}`}>
-                            {this.state.searchResults.map(r => <li className="search-result-item" key={r.id} onClick={() => this.selectedSearchResult(r.id)}>{r.title}{(() => { const date = (new Date(r.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}</li>)}
+                            {this.state.searchResults.map(r => (
+                                <li className="search-result-item" key={r.id} onClick={() => this.selectedSearchResult(r.id)}>{r.title}{(() => { const date = (new Date(r.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}</li>
+                            ))}
                         </ul>
                     </section>
                 </section>
@@ -308,7 +294,12 @@ export default class AddRating extends Component {
                             </div>
                         </section>
                         <ul className="unstyled-list clearfix selectable-emotions-list">
-                            {this.state.emotions.map((e, i) => <Emotion name={e.emotion} isSelected={e.selected} key={i} onClick={() => this.selectedEmotion(i)} />)}
+                            {this.state.emotions.map((e, i) => (
+                                <SelectableEmotion name={e.emotion}
+                                                   isSelected={e.selected}
+                                                   key={i}
+                                                   onClick={() => this.selectedEmotion(i)} />
+                            ))}
                         </ul>
                         <div data-col="1-2">
                             <button data-button="block secondary" onClick={() => this.closeModal()}>Cancel</button>

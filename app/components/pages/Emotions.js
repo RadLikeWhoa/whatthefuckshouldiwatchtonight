@@ -3,30 +3,10 @@
  * i.e. the page where the user picks their desired emotion.
  */
 
-import React, { Component, PropTypes } from 'react'
-import { Link } from 'react-router'
+import React, { Component } from 'react'
 import request from 'superagent'
-import AddRating from './modals/AddRating'
-import Popover from './helpers/Popover'
-
-/**
- * Emotion is the component that renders a single emotion inside the grid. It is
- * a stateless component, as such it was written using the shorthand notation.
- */
-
-const Emotion = ({name}) => (
-    <li data-col="1-3">
-        <div className="popover-container">
-            <Link className={`emotions-entry emotion-${name}`} to={`/${name}/`}><img src={`/dist/svg/${name}.svg`} />
-                <Popover informational>{name}</Popover>
-            </Link>
-        </div>
-    </li>
-)
-
-Emotion.propTypes = {
-    name: PropTypes.string.isRequired
-}
+import AddRating from '../modals/AddRating'
+import { DisplayEmotion } from '../emotions/Emotion'
 
 /**
  * Emotions is the container Component for the emotion picker. It is responsible
@@ -77,7 +57,9 @@ export default class Emotions extends Component {
                     <button data-button onClick={() => this.addRating.openModal()}>…or rate a movie?</button>
                 </header>
                 <ul data-grid="gutterless" className="emotions-list unstyled-list">
-                    {this.state.emotions.map(e => <Emotion name={e.emotion} key={e.id} />)}
+                    {this.state.emotions.map(e => (
+                        <DisplayEmotion name={e.emotion} key={e.id} />
+                    ))}
                 </ul>
                 <AddRating ref={a => this.addRating = a} />
             </main>
