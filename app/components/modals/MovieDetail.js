@@ -7,6 +7,7 @@ import React, { Component, PropTypes } from 'react'
 import request from 'superagent'
 import Modal from 'react-modal'
 import isEmpty from 'lodash/isempty'
+
 import { PercentageEmotion } from '../emotions/Emotion'
 
 export default class MovieDetail extends Component {
@@ -139,19 +140,29 @@ export default class MovieDetail extends Component {
                    onRequestClose={() => this.closeModal()}
                    closeTimeoutMS={350}>
                 <section data-grid="gutterless">
-                    <div data-col="1-3" className="detail-poster" style={{ backgroundImage: this.state.detail.poster_path ? `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})` : 'none'}}></div>
-                    <div data-col="2-3" className="detail-content">
-                        <h2 className="h3 detail-title"><span className="highlighted">{this.state.detail.title}</span> ({this.state.detail.release_year})</h2>
-                        <p>{!isEmpty(this.state.detail.directors) ? `by ${this.state.detail.directors.join(', ')} — ` : null}{this.state.detail.runtime} mins</p>
-                        {!isEmpty(this.state.detail.cast) ? <p>Cast: {this.state.detail.cast.join(', ')}</p> : null}
+                    <div data-col="1-3"
+                         className="detail-poster"
+                         style={{ backgroundImage: this.state.detail.poster_path ? `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})` : 'none'}}></div>
+                    <div data-col="2-3"
+                         className="detail-content">
+                        <h2 className="h3 detail-title">
+                            <span className="highlighted">{this.state.detail.title}</span>
+                            ({this.state.detail.release_year})
+                        </h2>
+                        <p>{!isEmpty(this.state.detail.directors) && `by ${this.state.detail.directors.join(', ')} — `}{this.state.detail.runtime} mins</p>
+                        {!isEmpty(this.state.detail.cast) &&
+                            <p>Cast: {this.state.detail.cast.join(', ')}</p>
+                        }
                         <ul className="unstyled-list percentage-list">
-                            {!isEmpty(this.state.detail.emotions) ? this.state.detail.emotions.map(e => (
-                                <PercentageEmotion key={e.id}
-                                                   percentage={e.count / +this.state.totalRatings}
-                                                   emotion={e.emotion}
-                                                   id={e.id}
-                                                   onClick={i => this.addRating(i)} />)
-                            ) : null}
+                            {!isEmpty(this.state.detail.emotions) &&
+                                this.state.detail.emotions.map(e => (
+                                    <PercentageEmotion key={e.id}
+                                                       percentage={e.count / +this.state.totalRatings}
+                                                       emotion={e.emotion}
+                                                       id={e.id}
+                                                       onClick={i => this.addRating(i)} />
+                                ))
+                            }
                         </ul>
                     </div>
                 </section>

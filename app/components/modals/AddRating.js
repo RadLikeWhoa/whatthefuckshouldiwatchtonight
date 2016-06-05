@@ -8,6 +8,7 @@ import request from 'superagent'
 import Modal from 'react-modal'
 import isEmpty from 'lodash/isempty'
 import debounce from 'lodash/debounce'
+
 import { SelectableEmotion } from '../emotions/Emotion'
 
 // The API key is used when communicating with the TMDB API.
@@ -273,11 +274,20 @@ export default class AddRating extends Component {
                    onAfterOpen={() => this.onAfterOpen()}
                    closeTimeoutMS={350}>
                 <section style={{ display: isEmpty(this.state.movie) ? 'block' : 'none' }}>
-                    <input name="movie-name" type="text" className="text-input full-width search-box" placeholder="Search for a movie…" ref={i => this.searchBox = i} onChange={(ev) => { this.setState({ searching: true }); this.search(ev.target.value) }}/>
+                    <input name="movie-name"
+                           type="text"
+                           className="text-input full-width search-box"
+                           placeholder="Search for a movie…"
+                           ref={i => this.searchBox = i}
+                           onChange={(ev) => { this.setState({ searching: true }); this.search(ev.target.value) }}/>
                     <section className="search-results">
                         <ul className={`search-results-list unstyled-list ${this.state.searching ? ' is-loading' : ''}`}>
                             {this.state.searchResults.map(r => (
-                                <li className="search-result-item" key={r.id} onClick={() => this.selectedSearchResult(r.id)}>{r.title}{(() => { const date = (new Date(r.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}</li>
+                                <li className="search-result-item"
+                                    key={r.id}
+                                    onClick={() => this.selectedSearchResult(r.id)}>
+                                    {r.title}{(() => { const date = (new Date(r.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}
+                                </li>
                             ))}
                         </ul>
                     </section>
@@ -286,11 +296,17 @@ export default class AddRating extends Component {
                     <section data-grid>
                         <section className="clearfix add-movie-information">
                             <div data-col="1-6">
-                                <img className="result-poster" src={this.state.movie.poster_path ? `https://image.tmdb.org/t/p/w185${this.state.movie.poster_path}` : ''} />
+                                <img className="result-poster"
+                                     src={this.state.movie.poster_path ? `https://image.tmdb.org/t/p/w185${this.state.movie.poster_path}` : ''} />
                             </div>
                             <div data-col="5-6">
-                                <h2 className="h3 detail-title"><span className="highlighted">{this.state.movie.title}</span>{(() => { const date = (new Date(this.state.movie.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}</h2>
-                                {!isEmpty(this.state.movie.credits) ? <p>{this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ')}</p> : null}
+                                <h2 className="h3 detail-title">
+                                    <span className="highlighted">{this.state.movie.title}</span>
+                                    {(() => { const date = (new Date(this.state.movie.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}
+                                </h2>
+                                {!isEmpty(this.state.movie.credits) &&
+                                    <p>{this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ')}</p>
+                                }
                             </div>
                         </section>
                         <ul className="unstyled-list clearfix selectable-emotions-list">
@@ -302,10 +318,16 @@ export default class AddRating extends Component {
                             ))}
                         </ul>
                         <div data-col="1-2">
-                            <button data-button="block secondary" onClick={() => this.closeModal()}>Cancel</button>
+                            <button data-button="block secondary"
+                                    onClick={() => this.closeModal()}>
+                                Cancel
+                            </button>
                         </div>
                         <div data-col="1-2">
-                            <button data-button="block" onClick={() => this.saveRating()}>Save Rating</button>
+                            <button data-button="block"
+                                    onClick={() => this.saveRating()}>
+                                Save Rating
+                            </button>
                         </div>
                     </section>
                 </section>

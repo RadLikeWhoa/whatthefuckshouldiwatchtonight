@@ -100,7 +100,8 @@ export default class Popover extends Component {
 
     render() {
         return (
-            <ul ref={u => this.list = u} className={`unstyled-list popover ${this.props.informational ? 'popover-informational' : ''} ${(this.state.isOpen ? 'is-visible' : '')}`}>
+            <ul ref={u => this.list = u}
+                className={`unstyled-list popover ${this.props.informational ? 'popover-informational' : ''} ${(this.state.isOpen ? 'is-visible' : '')}`}>
                 {this.props.children}
             </ul>
         )

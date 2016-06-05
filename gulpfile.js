@@ -71,7 +71,7 @@ gulp.task('release', function () {
 })
 
 gulp.task('watch', [ 'build', 'styles', 'svg', 'sql' ], function () {
-    gulp.watch([ 'app/main.js', 'app/components/**/*.js' ], [ 'build' ])
+    gulp.watch([ 'app/main.js', 'app/components/**/*.js', 'app/pages/**/*.js' ], [ 'build' ])
     gulp.watch('app/assets/styles/**/*.scss', [ 'styles' ])
     gulp.watch('db/**/*.sql', [ 'sql' ])
     gulp.watch('app/assets/svg/*.svg', [ 'svg' ])

@@ -7,9 +7,10 @@
 import React, { Component, PropTypes } from 'react'
 import { Link, browserHistory } from 'react-router'
 import request from 'superagent'
-import MovieDetail from '../modals/MovieDetail'
-import AddRating from '../modals/AddRating'
-import Popover from '../helpers/Popover'
+
+import MovieDetail from '../components/modals/MovieDetail'
+import AddRating from '../components/modals/AddRating'
+import Popover from '../components/helpers/Popover'
 
 /**
  * Movie is the component that is responsible for rendering a single movie
@@ -18,9 +19,13 @@ import Popover from '../helpers/Popover'
  */
 
 const Movie = ({title, posterPath, percentage, onClick, emotion}) => (
-    <li className="movie-entry" data-col="1-6" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${posterPath})`}} onClick={onClick}>
+    <li className="movie-entry"
+        data-col="1-6"
+        style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${posterPath})`}}
+        onClick={onClick}>
         <h2 className="h3 movie-title">{title}</h2>
-        <div className="movie-emotion popover-container" style={{ opacity: Math.min(+percentage + 0.3, 1) }}>
+        <div className="movie-emotion popover-container"
+             style={{ opacity: Math.min(+percentage + 0.3, 1) }}>
             <img src={`/dist/svg/${emotion}.svg`} />
             <Popover informational>{`${Math.round(+percentage * 100)}%`}</Popover>
         </div>
@@ -129,28 +134,36 @@ export default class Movies extends Component {
         // If a vote was cast we want to update the movie's timestamp in order
         // to list it at the top of the list if the order matches.
 
-        let timestamp
-
         const d = new Date()
-        timestamp = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
+        const timestamp = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
 
         // Make use of the spread operator to avoid Object.assign and
         // Array.concat.
 
-        this.setState({ movies: [ ...this.state.movies.slice(0, index), { ...movie, latest_review_date: timestamp || movie.latest_review_date, percentage: percentage }, ...this.state.movies.slice(index + 1) ].sort((m1, m2) => {
-            if (this.state.order.by == 'date-added' && this.state.order.direction == 'descending') {
-                const df1 = m1.latest_review_date.split(/[: -]/)
-                const df2 = m2.latest_review_date.split(/[: -]/)
+        this.setState({
+            movies: [
+                ...this.state.movies.slice(0, index),
+                {
+                    ...movie,
+                    latest_review_date: timestamp || movie.latest_review_date,
+                    percentage: percentage
+                },
+                ...this.state.movies.slice(index + 1)
+            ].sort((m1, m2) => {
+                if (this.state.order.by == 'date-added' && this.state.order.direction == 'descending') {
+                    const df1 = m1.latest_review_date.split(/[: -]/)
+                    const df2 = m2.latest_review_date.split(/[: -]/)
 
-                const d1 = new Date(df1[0], df1[1] - 1, df1[2], df1[3], df1[4], df1[5])
-                const d2 = new Date(df2[0], df2[1] - 1, df2[2], df2[3], df2[4], df2[5])
+                    const d1 = new Date(df1[0], df1[1] - 1, df1[2], df1[3], df1[4], df1[5])
+                    const d2 = new Date(df2[0], df2[1] - 1, df2[2], df2[3], df2[4], df2[5])
 
-                return d1 > d2 ? -1 : 1
-            } else if (this.state.order.by == 'match') {
-                const modifier = this.state.order.direction == 'descending' ? 1 : -1
-                return (+m1.percentage > +m2.percentage ? -1 : +m1.percentage < +m2.percentage ? 1 : 0) * modifier
-            }
-        }) })
+                    return d1 > d2 ? -1 : 1
+                } else if (this.state.order.by == 'match') {
+                    const modifier = this.state.order.direction == 'descending' ? 1 : -1
+                    return (+m1.percentage > +m2.percentage ? -1 : +m1.percentage < +m2.percentage ? 1 : 0) * modifier
+                }
+            })
+        })
     }
 
     render() {
@@ -161,7 +174,8 @@ export default class Movies extends Component {
 
         return (
             <main className="wrapper">
-                <ul className="unstyled-list movies-list" data-grid="gutterless">
+                <ul className="unstyled-list movies-list"
+                    data-grid="gutterless">
                     {this.state.movies.map(m => (
                         <Movie key={m.id}
                                title={m.title}
@@ -171,32 +185,56 @@ export default class Movies extends Component {
                                emotion={this.props.params.emotion} />
                     ))}
                 </ul>
-                <section data-grid className="options">
+                <section data-grid
+                         className="options">
                     <div data-col="1-6">
                         <Link to="/">
-                            <button data-button="block" className="popover-container">
+                            <button data-button="block"
+                                    className="popover-container">
                                 Change your mood
                                 <Popover informational>Tired of feeling {this.props.params.emotion}?</Popover>
                             </button>
                         </Link>
                     </div>
                     <div data-col="1-6">
-                        <button data-button="block" onClick={() => this.addRating.openModal()}>Rate a movie</button>
+                        <button data-button="block"
+                                onClick={() => this.addRating.openModal()}>
+                            Rate a movie
+                        </button>
                     </div>
                     <div data-col="3-6 empty"></div>
                     <div data-col="1-6">
-                        <button data-button="block" className="popover-container" onClick={() => this.orderPopover.openPopover()}>
+                        <button data-button="block"
+                                className="popover-container"
+                                onClick={() => this.orderPopover.openPopover()}>
                             Sort by
                             <Popover ref={p => this.orderPopover = p}>
-                                <li className={'popover-item' + (this.state.order.by == 'date-added' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'date-added', direction: this.state.order.direction } })}>Date added</li>
-                                <li className={'popover-item' + (this.state.order.by == 'match' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'match', direction: this.state.order.direction } })}>Emotion match</li>
-                                <li className={'popover-item' + (this.state.order.by == 'release-date' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: 'release-date', direction: this.state.order.direction } })}>Release date</li>
+                                <li className={`popover-item ${this.state.order.by == 'date-added' ? ' is-selected' : ''}`}
+                                    onClick={() => this.setState({ order: { by: 'date-added', direction: this.state.order.direction } })}>
+                                    Date added
+                                </li>
+                                <li className={`popover-item ${this.state.order.by == 'match' ? ' is-selected' : ''}`}
+                                    onClick={() => this.setState({ order: { by: 'match', direction: this.state.order.direction } })}>
+                                    Emotion match
+                                </li>
+                                <li className={`popover-item ${this.state.order.by == 'release-date' ? ' is-selected' : ''}`}
+                                    onClick={() => this.setState({ order: { by: 'release-date', direction: this.state.order.direction } })}>
+                                    Release date
+                                </li>
                                 <div data-grid="gutterless">
                                     <div data-col="1-2">
-                                        <li title="Sort descending" className={'popover-item centered-text' + (this.state.order.direction == 'descending' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'descending' } })}><span data-icon="descending"></span></li>
+                                        <li title="Sort descending"
+                                            className={`popover-item centered-text ${this.state.order.direction == 'descending' ? ' is-selected' : ''}`}
+                                            onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'descending' } })}>
+                                            <span data-icon="descending"></span>
+                                        </li>
                                     </div>
                                     <div data-col="1-2">
-                                        <li title="Sort ascending" className={'popover-item centered-text' + (this.state.order.direction == 'ascending' ? ' is-selected' : '')} onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'ascending' } })}><span data-icon="ascending"></span></li>
+                                        <li title="Sort ascending"
+                                            className={`popover-item centered-text ${this.state.order.direction == 'ascending' ? ' is-selected' : ''}`}
+                                            onClick={() => this.setState({ order: { by: this.state.order.by, direction: 'ascending' } })}>
+                                            <span data-icon="ascending"></span>
+                                        </li>
                                     </div>
                                 </div>
                             </Popover>
@@ -206,7 +244,8 @@ export default class Movies extends Component {
                 <MovieDetail ref={m => this.movieDetail = m}
                              emotion={this.props.params.emotion}
                              rateCallback={(m, p, h) => this.updateMovieEmotion(m, p, h)} />
-                <AddRating ref={a => this.addRating = a} addCallback={() => { this.getMovies(); this.addRating.closeModal() }} />
+                <AddRating ref={a => this.addRating = a}
+                           addCallback={() => { this.getMovies(); this.addRating.closeModal() }} />
             </main>
         )
     }

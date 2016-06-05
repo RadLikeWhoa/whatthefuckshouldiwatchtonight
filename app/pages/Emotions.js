@@ -5,8 +5,9 @@
 
 import React, { Component } from 'react'
 import request from 'superagent'
-import AddRating from '../modals/AddRating'
-import { DisplayEmotion } from '../emotions/Emotion'
+
+import AddRating from '../components/modals/AddRating'
+import { DisplayEmotion } from '../components/emotions/Emotion'
 
 /**
  * Emotions is the container Component for the emotion picker. It is responsible
@@ -54,9 +55,13 @@ export default class Emotions extends Component {
             <main className="wrapper">
                 <header className="emotions-header">
                     <h1 className="emotions-title">Show me movies that'll make me feel…</h1>
-                    <button data-button onClick={() => this.addRating.openModal()}>…or rate a movie?</button>
+                    <button data-button
+                            onClick={() => this.addRating.openModal()}>
+                        …or rate a movie?
+                    </button>
                 </header>
-                <ul data-grid="gutterless" className="emotions-list unstyled-list">
+                <ul data-grid="gutterless"
+                    className="emotions-list unstyled-list">
                     {this.state.emotions.map(e => (
                         <DisplayEmotion name={e.emotion} key={e.id} />
                     ))}
