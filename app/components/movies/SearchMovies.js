@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Alert from 'react-s-alert'
 import request from 'superagent'
 import debounce from 'lodash/debounce'
 
@@ -35,7 +36,7 @@ class SearchMovies extends Component {
 
     search(query) {
         if (query) {
-            request.get(`http://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
+            this.searchRequest = request.get(`http://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
                 .set('Accept', 'application/json')
                 .end((err, res) => {
                     if (!err) {
@@ -48,7 +49,15 @@ class SearchMovies extends Component {
                             searchResults: res.body.results.filter(m => m.poster_path),
                             searching: false
                         })
+                    } else {
+                        this.setState({
+                            searching: false
+                        })
+
+                        Alert.error('Could not communicate to the themoviedb.org servers. Please try again.')
                     }
+
+                    this.searchRequest = null
                 })
         } else {
 
@@ -58,6 +67,19 @@ class SearchMovies extends Component {
                 searchResults: [],
                 searching: false
             })
+        }
+    }
+
+    /**
+     * Cancel all requests before the component is unmounted.
+     *
+     * @return  {void}
+     */
+
+    componentWillUnmount() {
+        if (this.searchRequest) {
+            this.searchRequest.abort()
+            this.searchRequest = null
         }
     }
 

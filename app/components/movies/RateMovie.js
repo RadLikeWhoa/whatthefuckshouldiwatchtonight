@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
+import Alert from 'react-s-alert'
 import request from 'superagent'
 import isEmpty from 'lodash/isempty'
 
@@ -9,7 +10,8 @@ import { apiKey } from '../../settings.js'
 class RateMovie extends Component {
     static propTypes = {
         movieId: PropTypes.number.isRequired,
-        addCallback: PropTypes.func
+        addCallback: PropTypes.func,
+        errorCallback: PropTypes.func
     }
 
     constructor(props) {
@@ -34,14 +36,19 @@ class RateMovie extends Component {
      */
 
     getMovie(movieId) {
-        request.get(`http://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&append_to_response=credits`)
+        this.movieRequest = request.get(`http://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&append_to_response=credits`)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
                     this.setState({
                         movie: res.body
                     })
+                } else {
+                    Alert.error('Could not communicate to the themoviedb.org servers. Please try again.')
+                    this.props.errorCallback()
                 }
+
+                this.movieRequest = null
             })
     }
 
@@ -53,7 +60,7 @@ class RateMovie extends Component {
      */
 
     getEmotions() {
-        request.get('/api/emotions/')
+        this.emotionsRequest = request.get('/api/emotions/')
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
@@ -66,7 +73,12 @@ class RateMovie extends Component {
                     this.setState({
                         emotions: emotions
                     })
+                } else {
+                    Alert.error('Could not retrieve available emotions. Please try again.')
+                    this.props.errorCallback()
                 }
+
+                this.emotionsRequest = null
             })
     }
 
@@ -103,11 +115,16 @@ class RateMovie extends Component {
      */
 
     saveRating() {
+        if (this.saveRequest) return
+
         const selectedEmotion = this.state.emotions.filter(e => e.selected)
 
-        if (isEmpty(selectedEmotion)) return
+        if (isEmpty(selectedEmotion)) {
+            Alert.error('Could not save your rating. Please try again.')
+            return
+        }
 
-        request.post('/api/movies/')
+        this.saveRequest = request.post('/api/movies/')
             .set('Content-Type', 'application/json')
             .send(JSON.stringify({ ...this.state.movie, emotionId: selectedEmotion[0].id }))
             .end(err => {
@@ -120,8 +137,35 @@ class RateMovie extends Component {
                     if (this.props.addCallback) {
                         this.props.addCallback(selectedEmotion[0].emotion)
                     }
+                } else {
+                    Alert.error('Could not save your rating. Please try again.')
                 }
+
+                this.saveRequest = null
             })
+    }
+
+    /**
+     * Cancel all requests before the component is unmounted.
+     *
+     * @return  {void}
+     */
+
+    componentWillUnmount() {
+        if (this.movieRequest) {
+            this.movieRequest.abort()
+            this.movieRequest = null
+        }
+
+        if (this.emotionsRequest) {
+            this.emotionsRequest.abort()
+            this.emotionsRequest = null
+        }
+
+        if (this.saveRequest) {
+            this.saveRequest.abort()
+            this.saveRequest = null
+        }
     }
 
     render() {

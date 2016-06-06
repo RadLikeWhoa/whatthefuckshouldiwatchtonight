@@ -1,0 +1,172 @@
+/* Common, default styles for the notification box */
+
+.s-alert-box,
+.s-alert-box * {
+    box-sizing: border-box;
+}
+
+.s-alert-box {
+    position: fixed;
+    background: rgba(42,45,50,0.85);
+    padding: 22px;
+    line-height: 1.4;
+    z-index: 1000;
+    pointer-events: none;
+    color: rgba(250,251,255,0.95);
+    font-size: 100%;
+    font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
+    max-width: 300px;
+    transition: top .4s, bottom .4s;
+}
+
+.s-alert-box.s-alert-show {
+    pointer-events: auto;
+}
+
+.s-alert-box a {
+    color: inherit;
+    opacity: 0.7;
+    font-weight: 700;
+}
+
+.s-alert-box a:hover,
+.s-alert-box a:focus {
+    opacity: 1;
+}
+
+.s-alert-box p {
+    margin: 0;
+}
+
+.s-alert-box.s-alert-show,
+.s-alert-box.s-alert-visible {
+    pointer-events: auto;
+}
+
+.s-alert-close {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    overflow: hidden;
+    text-indent: 100%;
+    cursor: pointer;
+    backface-visibility: hidden;
+}
+
+.s-alert-close:hover,
+.s-alert-close:focus {
+    outline: none;
+}
+
+.s-alert-close::before,
+.s-alert-close::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 60%;
+    top: 50%;
+    left: 50%;
+    background: #fff;
+}
+
+.s-alert-close:hover::before,
+.s-alert-close:hover::after {
+    background: #fff;
+}
+
+.s-alert-close::before {
+    transform: translate(-50%,-50%) rotate(45deg);
+}
+
+.s-alert-close::after {
+    transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+/* positions */
+
+.s-alert-top {
+    max-width: none;
+    top: 1.5em;
+    left: 1.5em;
+    right: 1.5em;
+    bottom: auto;
+    box-shadow: 0 2px 4px rgba(#333, 0.35);
+    border-radius: 3px;
+    will-change: transform;
+}
+
+/* conditions */
+
+.s-alert-info {
+    background: #00A2D3;
+    color: #fff;
+}
+.s-alert-success {
+    background: #27AE60;
+    color: #fff;
+}
+.s-alert-warning {
+    background: #F1C40F;
+    color: #fff;
+}
+.s-alert-error {
+    background: #E74C3C;
+    color: #fff;
+}
+
+.s-alert-close {
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1.5em;
+}
+
+[class^="s-alert-effect-"].s-alert-hide,
+[class*=" s-alert-effect-"].s-alert-hide {
+    animation-direction: reverse;
+}
+
+/* height measurement helper */
+.s-alert-box-height {
+    visibility: hidden;
+    position: fixed;
+}
+
+/* stackslide (top, bottom - full width) */
+
+.s-alert-effect-stackslide .s-alert-close {
+    background: transparent;
+}
+
+.s-alert-effect-stackslide .s-alert-close::before,
+.s-alert-effect-stackslide .s-alert-close::after {
+    background: #fff;
+}
+
+.s-alert-effect-stackslide p {
+    padding: 0 1.5em;
+    display: inline-block;
+}
+
+.s-alert-effect-stackslide .s-alert-close::before,
+.s-alert-effect-stackslide .s-alert-close::after {
+    width: 2px;
+    background: #fff;
+}
+
+.s-alert-effect-stackslide .s-alert-close:hover::before,
+.s-alert-effect-stackslide .s-alert-close:hover::after {
+    background: #fff;
+}
+
+.s-alert-top.s-alert-effect-stackslide.s-alert-show,
+.s-alert-top.s-alert-effect-stackslide.s-alert-hide {
+    animation-name: animSlideTop;
+    animation-duration: 0.3s;
+}
+
+@keyframes animSlideTop {
+    0% { transform: translate3d(0,-100%,0); opacity: 0; }
+    100% { transform: translate3d(0,0,0); opacity: 1; }
+}

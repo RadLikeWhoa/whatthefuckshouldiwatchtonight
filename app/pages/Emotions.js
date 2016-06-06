@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from 'react'
+import Alert from 'react-s-alert'
 import request from 'superagent'
 
 import AddRating from '../components/modals/AddRating'
@@ -34,15 +35,32 @@ class Emotions extends Component {
      */
 
     getEmotions() {
-        request.get('/api/emotions/')
+        this.emotionsRequest = request.get('/api/emotions/')
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
                     this.setState({
                         emotions: res.body.emotions
                     })
+                } else {
+                    Alert.error('Could not retrieve available emotions. Please try again.')
                 }
+
+                this.emotionsRequest = null
             })
+    }
+
+    /**
+     * Cancel all requests before the component is unmounted.
+     *
+     * @return  {void}
+     */
+
+    componentWillUnmount() {
+        if (this.emotionsRequest) {
+            this.emotionsRequest.abort()
+            this.emotionsRequest = null
+        }
     }
 
     render() {
@@ -71,6 +89,10 @@ class Emotions extends Component {
                     ))}
                 </ul>
                 <AddRating ref={a => this.addRating = a} />
+                <Alert stack={{ limit: 1 }}
+                       position="top"
+                       effect="stackslide"
+                       timeout={1000} />
             </main>
         )
     }

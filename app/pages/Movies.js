@@ -5,6 +5,7 @@
  */
 
 import React, { Component, PropTypes } from 'react'
+import Alert from 'react-s-alert'
 import { browserHistory } from 'react-router'
 import request from 'superagent'
 
@@ -66,7 +67,7 @@ class Movies extends Component {
      */
 
     getMovies(orderBy, orderDirection) {
-        request.get(`/api/movies/${this.props.params.emotion}/${orderBy || this.state.order.by}/${orderDirection || this.state.order.direction}/`)
+        this.moviesRequest = request.get(`/api/movies/${this.props.params.emotion}/${orderBy || this.state.order.by}/${orderDirection || this.state.order.direction}/`)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
@@ -75,7 +76,11 @@ class Movies extends Component {
                     })
                 } else if (res.statusCode == 404) {
                     browserHistory.push('/')
+                } else {
+                    Alert.error('Could not retrieve movies for the current emotion. Please try again.')
                 }
+
+                this.moviesRequest = null
             })
     }
 
@@ -135,6 +140,19 @@ class Movies extends Component {
         })
     }
 
+    /**
+     * Cancel all requests before the component is unmounted.
+     *
+     * @return  {void}
+     */
+
+    componentWillUnmount() {
+        if (this.moviesRequest) {
+            this.moviesRequest.abort()
+            this.moviesRequest = null
+        }
+    }
+
     render() {
 
         // Set the document title based on the current emotion.
@@ -164,6 +182,10 @@ class Movies extends Component {
                              rateCallback={(m, p, h) => this.updateMovieEmotion(m, p, h)} />
                 <AddRating ref={a => this.addRating = a}
                            addCallback={() => { this.getMovies(); this.addRating.closeModal() }} />
+               <Alert stack={{ limit: 1 }}
+                      position="top"
+                      effect="stackslide"
+                      timeout={1000} />
             </main>
         )
     }

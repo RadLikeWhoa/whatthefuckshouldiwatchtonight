@@ -106,7 +106,6 @@ $app = new \Slim\App();
 
 $app->get('/emotions/', function (Request $request, Response $response) {
     $emotions = query('SELECT * FROM emotions');
-
     return $response->withJson([ 'emotions' => $emotions ]);
 });
 

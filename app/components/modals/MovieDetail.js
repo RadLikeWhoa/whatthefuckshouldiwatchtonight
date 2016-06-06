@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import request from 'superagent'
+import Alert from 'react-s-alert'
 import Modal from 'react-modal'
+import request from 'superagent'
 import isEmpty from 'lodash/isempty'
 
 import { PercentageEmotion } from '../emotions/Emotion'
@@ -60,7 +61,7 @@ class MovieDetail extends Component {
      */
 
     openModal(movieId) {
-        request.get(`/api/movies/${movieId}/`)
+        this.movieRequest = request.get(`/api/movies/${movieId}/`)
             .set('Accept', 'application/json')
             .end((err, res) => {
                 if (!err) {
@@ -69,7 +70,11 @@ class MovieDetail extends Component {
                         detail: res.body,
                         totalRatings: res.body.emotions.reduce((acc, el) => acc + +el.count, 0)
                     })
+                } else {
+                    Alert.error('Could not retrieve information about the movie. Please try again.')
                 }
+
+                this.movieRequest = null
             })
     }
 
@@ -103,6 +108,8 @@ class MovieDetail extends Component {
                         detail: { ...this.state.detail, emotions },
                         totalRatings: this.state.totalRatings + 1
                     })
+                } else {
+                    Alert.error('Could not saveeee your rating for the movie. Please try again.')
                 }
             })
     }
@@ -131,6 +138,19 @@ class MovieDetail extends Component {
             detail: {},
             totalRatings: 0
         }), 250)
+    }
+
+    /**
+     * Cancel all requests before the component is unmounted.
+     *
+     * @return  {void}
+     */
+
+    componentWillUnmount() {
+        if (this.movieRequest) {
+            this.movieRequest.abort()
+            this.movieRequest = null
+        }
     }
 
     render() {
@@ -164,6 +184,10 @@ class MovieDetail extends Component {
                         </ul>
                     </div>
                 </section>
+                <Alert stack={{ limit: 1 }}
+                       position="top"
+                       effect="stackslide"
+                       timeout={1000} />
             </Modal>
         )
     }

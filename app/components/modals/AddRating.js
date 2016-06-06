@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Alert from 'react-s-alert'
 import Modal from 'react-modal'
 
 import RateMovie from '../movies/RateMovie'
@@ -103,7 +104,8 @@ class AddRating extends Component {
                 {this.state.selectedMovieId ?
                     <RateMovie movieId={this.state.selectedMovieId}
                                closeCallback={() => this.closeModal()}
-                               addCallback={e => this.props.addCallback(e)} />
+                               addCallback={e => this.props.addCallback(e)}
+                               errorCallback={() => { this.setState({ selectedMovieId: 0 })}} />
                 : null}
             </Modal>
         )
