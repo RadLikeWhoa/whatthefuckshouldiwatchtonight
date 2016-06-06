@@ -39,8 +39,8 @@ class Options extends Component {
                 display: 'Release date'
             }],
             direction: [
-                'ascending',
-                'descending'
+                'descending',
+                'ascending'
             ]
         }
     }
@@ -66,10 +66,11 @@ class Options extends Component {
                 </div>
                 <div data-col="3-6 empty"></div>
                 <div data-col="1-6">
-                    <button data-button="block"
-                            className="popover-container"
-                            onClick={() => this.orderPopover.openPopover()}>
-                        Sort by
+                    <div className="popover-container">
+                        <button data-button="block"
+                                onClick={() => this.orderPopover.openPopover()}>
+                            Sort by
+                        </button>
                         <Popover ref={p => this.orderPopover = p}>
                             {this.getOrderCriteria().by.map((i, index) => (
                                 <li key={index}
@@ -91,7 +92,7 @@ class Options extends Component {
                                 ))}
                             </div>
                         </Popover>
-                    </button>
+                    </div>
                 </div>
             </section>
         )
