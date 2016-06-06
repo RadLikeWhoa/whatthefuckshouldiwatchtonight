@@ -4,10 +4,7 @@ import request from 'superagent'
 import isEmpty from 'lodash/isempty'
 
 import { SelectableEmotion } from '../emotions/Emotion'
-
-// The API key is used when communicating with the TMDB API.
-
-const apiKey = '3b699b130bdb1b0397cd703da00dcbeb'
+import { apiKey } from '../../settings.js'
 
 class RateMovie extends Component {
     static propTypes = {

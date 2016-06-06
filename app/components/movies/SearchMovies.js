@@ -2,9 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import request from 'superagent'
 import debounce from 'lodash/debounce'
 
-// The API key is used when communicating with the TMDB API.
-
-const apiKey = '3b699b130bdb1b0397cd703da00dcbeb'
+import { apiKey } from '../../settings.js'
 
 class SearchMovies extends Component {
     static propTypes = {
