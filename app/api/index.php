@@ -217,8 +217,8 @@ $app->post('/movies/', function (Request $request, Response $response) {
 
         // Insert a new record for the movie using the information from TMDB.
 
-        $i1 = insert('INSERT INTO movies (id, title, poster_path, runtime, release_year) VALUES (?, ?, ?, ?, ?)', [
-            [ $body['id'], $body['title'], $body['poster_path'], $body['runtime'], substr($body['release_date'], 0, 4) ]
+        $i1 = insert('INSERT INTO movies (id, title, overview, poster_path, runtime, release_year) VALUES (?, ?, ?, ?, ?, ?)', [
+            [ $body['id'], $body['title'], $body['overview'], $body['poster_path'], $body['runtime'], substr($body['release_date'], 0, 4) ]
         ]);
 
         // Insert the top 5 cast members and all directors for the movie.

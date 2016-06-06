@@ -145,11 +145,14 @@ class MovieDetail extends Component {
                          style={{ backgroundImage: this.state.detail.poster_path ? `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})` : 'none'}}></div>
                     <div data-col="2-3"
                          className="detail-content">
-                        <h2 className="h3 detail-title">
-                            <span className="highlighted">{this.state.detail.title}</span> ({this.state.detail.release_year})
-                        </h2>
-                        <p>{!isEmpty(this.state.detail.directors) && `by ${this.state.detail.directors.join(', ')} — `}{this.state.detail.runtime} mins</p>
-                        {!isEmpty(this.state.detail.cast) && <p>Cast: {this.state.detail.cast.join(', ')}</p>}
+                        <div className="detail-movie">
+                            <h2 className="h3 detail-title">
+                                <span className="highlighted">{this.state.detail.title}</span> ({this.state.detail.release_year})
+                            </h2>
+                            <p>{!isEmpty(this.state.detail.directors) && `by ${this.state.detail.directors.join(', ')} — `}{this.state.detail.runtime} mins</p>
+                            <p className="detail-description">{this.state.detail.overview}</p>
+                            {!isEmpty(this.state.detail.cast) && <p>Cast: {this.state.detail.cast.join(', ')}</p>}
+                        </div>
                         <ul className="unstyled-list percentage-list">
                             {!isEmpty(this.state.detail.emotions) && this.state.detail.emotions.map(e => (
                                 <PercentageEmotion key={e.id}

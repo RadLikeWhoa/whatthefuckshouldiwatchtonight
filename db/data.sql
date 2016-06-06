@@ -6,27 +6,27 @@ INSERT INTO emotions (emotion) VALUES
   ("inspired"),
   ("weird");
 
-INSERT INTO movies (id, title, poster_path, runtime, release_year) VALUES
-  (1, "Captain America: Civil War", "rDT86hJCxnoOs4ARjrCiRej7pOi.jpg", 146, 2016),
-  (2, "Zootopia", "pKop1BcfgHzaN26EnhqLmjVP6LQ.jpg", 108, 2016),
-  (3, "Star Wars: The Force Awakens", "weUSwMdQIa3NaXVzwUoIIcAi85d.jpg", 136, 2015),
-  (4, "Mad Max: Fury Road", "sARK4uNacjUY4ACu0QjQPG0OUmW.jpg", 120, 2015),
-  (5, "The Boy", "nY8jTN68Mhdqu06U9qtqIHr5o85.jpg", 97, 2016),
-  (6, "The Notebook", "gMfstesBXKdsHToAUXVPHujUDfb.jpg", 123, 2004),
-  (7, "Titanic", "f9iH7Javzxokvnkiz2yHD1dcmUy.jpg", 194, 1998),
-  (8, "Raiders of the Lost Ark", "44sKJOGP3fTm4QXBcIuqu0RkdP7.jpg", 115, 1981),
-  (9, "Rush", "cjEepHZOZAwmK6nAj5jis6HV75E.jpg", 123, 2013),
-  (10, "The Human Centipede (The First Sequence)", "rhy5WMyLVmYQ9PfEM60pg25E3TL.jpg", 92, 2009),
-  (11, "(500) Days of Summer", "5SjtNPD1bb182vzQccvEUpXHFjN.jpg", 95, 2009),
-  (12, "Spectre", "jR9tBigjRLIwDdycTc8LQZQYAtl.jpg", 148, 2015),
-  (13, "Silver Linings Playbook", "ilrZAV2klTB0FLxLb01bOp5pzD9.jpg", 122, 2012),
-  (14, "The Hangover", "eshEkiG7NmU4ekA8CtpIdYiYufZ.jpg", 100, 2009),
-  (15, "Ghostbusters", "3FS3oBdorgczgfCkFi2u8ZTFfpS.jpg", 107, 1984),
-  (16, "Deadpool", "inVq3FRqcYIRl2la8iZikYYxFNR.jpg", 108, 2016),
-  (17, "The Hunger Games", "iLJdwmzrHFjFwI5lvYAT1gcpRuA.jpg", 142, 2012),
-  (18, "Frozen", "jIjdFXKUNtdf1bwqMrhearpyjMj.jpg", 102, 2013),
-  (19, "The Dark Knight", "1hRoyzDtpgMU7Dz4JF22RANzQO7.jpg", 152, 2008),
-  (20, "Before Sunrise", "9NBjDNPHA6SkThIweOs8iCfsA8a.jpg", 105, 1995);
+INSERT INTO movies (id, title, overview, poster_path, runtime, release_year) VALUES
+  (1, "Captain America: Civil War", "Some description", "rDT86hJCxnoOs4ARjrCiRej7pOi.jpg", 146, 2016),
+  (2, "Zootopia", "Some description", "pKop1BcfgHzaN26EnhqLmjVP6LQ.jpg", 108, 2016),
+  (3, "Star Wars: The Force Awakens", "Some description", "weUSwMdQIa3NaXVzwUoIIcAi85d.jpg", 136, 2015),
+  (4, "Mad Max: Fury Road", "Some description", "sARK4uNacjUY4ACu0QjQPG0OUmW.jpg", 120, 2015),
+  (5, "The Boy", "Some description", "nY8jTN68Mhdqu06U9qtqIHr5o85.jpg", 97, 2016),
+  (6, "The Notebook", "Some description", "gMfstesBXKdsHToAUXVPHujUDfb.jpg", 123, 2004),
+  (7, "Titanic", "Some description", "f9iH7Javzxokvnkiz2yHD1dcmUy.jpg", 194, 1998),
+  (8, "Raiders of the Lost Ark", "Some description", "44sKJOGP3fTm4QXBcIuqu0RkdP7.jpg", 115, 1981),
+  (9, "Rush", "Some description", "cjEepHZOZAwmK6nAj5jis6HV75E.jpg", 123, 2013),
+  (10, "The Human Centipede (The First Sequence)", "Some description", "rhy5WMyLVmYQ9PfEM60pg25E3TL.jpg", 92, 2009),
+  (11, "(500) Days of Summer", "Some description", "5SjtNPD1bb182vzQccvEUpXHFjN.jpg", 95, 2009),
+  (12, "Spectre", "Some description", "jR9tBigjRLIwDdycTc8LQZQYAtl.jpg", 148, 2015),
+  (13, "Silver Linings Playbook", "Some description", "ilrZAV2klTB0FLxLb01bOp5pzD9.jpg", 122, 2012),
+  (14, "The Hangover", "Some description", "eshEkiG7NmU4ekA8CtpIdYiYufZ.jpg", 100, 2009),
+  (15, "Ghostbusters", "Some description", "3FS3oBdorgczgfCkFi2u8ZTFfpS.jpg", 107, 1984),
+  (16, "Deadpool", "Some description", "inVq3FRqcYIRl2la8iZikYYxFNR.jpg", 108, 2016),
+  (17, "The Hunger Games", "Some description", "iLJdwmzrHFjFwI5lvYAT1gcpRuA.jpg", 142, 2012),
+  (18, "Frozen", "Some description", "jIjdFXKUNtdf1bwqMrhearpyjMj.jpg", 102, 2013),
+  (19, "The Dark Knight", "Some description", "1hRoyzDtpgMU7Dz4JF22RANzQO7.jpg", 152, 2008),
+  (20, "Before Sunrise", "Some description", "9NBjDNPHA6SkThIweOs8iCfsA8a.jpg", 105, 1995);
 
 INSERT INTO reviews (movie_id, emotion_id, review_date) VALUES
   (1, 3, "2016-07-04"),

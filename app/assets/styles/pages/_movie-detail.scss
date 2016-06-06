@@ -16,8 +16,18 @@
     padding: 1.5em !important;
 }
 
+.detail-movie {
+    height: 11em;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .detail-title {
     margin-bottom: 0;
+}
+
+.detail-description {
+    font-style: italic;
 }
 
 .percentage-list {
@@ -25,6 +35,17 @@
     bottom: 0;
     right: 0;
     left: 0;
+    background-color: $background-color;
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        right: 0;
+        height: 2em;
+        background-image: linear-gradient(to bottom, rgba($background-color, 0), rgba($background-color, 1));
+    }
 }
 
 .percentage {
