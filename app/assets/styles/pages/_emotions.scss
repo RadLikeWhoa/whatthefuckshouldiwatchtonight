@@ -1,7 +1,15 @@
 .emotions-header {
     padding: 3em 1.5em;
-    text-align: center;
-    border-bottom: 1px solid $main-color;
+    background-color: rgba($main-color, 0.15);
+
+    button {
+        margin: 0.25em 0;
+    }
+}
+
+.emotions-title {
+    color: #fff;
+    margin-bottom: 0;
 }
 
 .emotions-list [data-col] {
@@ -20,9 +28,7 @@
     text-decoration: none;
     text-align: center;
     color: #fff;
-    border-bottom: 1px solid $main-color;
-    border-right: 1px solid $main-color;
-    height: calc((100vh - 13em) / 2);
+    height: calc((100vh - 9em) / 2);
     transition: background-color 0.1s ease-in-out;
     will-change: background-color;
 
@@ -58,6 +64,6 @@ $colors: (
 
 @each $name, $color in $colors {
     .emotion-#{$name}:hover {
-        background-color: transparentize($color, 0.85);
+        background-color: rgba($color, 0.15);
     }
 }

@@ -1,3 +1,6 @@
+import React, { Component, PropTypes } from 'react'
+import { findDOMNode } from 'react-dom'
+
 /**
  * Popovers show additional information above a component. They can be shown as
  * a list of options (default) or as a simple bit of text (informational). This
@@ -5,10 +8,7 @@
  * the children of the component.
  */
 
-import React, { Component, PropTypes } from 'react'
-import { findDOMNode } from 'react-dom'
-
-export default class Popover extends Component {
+class Popover extends Component {
     static propTypes = {
         informational: PropTypes.bool,
         children: PropTypes.oneOfType([
@@ -107,3 +107,5 @@ export default class Popover extends Component {
         )
     }
 }
+
+export default Popover

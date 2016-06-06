@@ -1,8 +1,3 @@
-/**
- * This component is responsible for showing detailed information about a single
- * movie inside a modal.
- */
-
 import React, { Component, PropTypes } from 'react'
 import request from 'superagent'
 import Modal from 'react-modal'
@@ -10,7 +5,12 @@ import isEmpty from 'lodash/isempty'
 
 import { PercentageEmotion } from '../emotions/Emotion'
 
-export default class MovieDetail extends Component {
+/**
+ * This component is responsible for showing detailed information about a single
+ * movie inside a modal.
+ */
+
+class MovieDetail extends Component {
     static propTypes = {
         rateCallback: PropTypes.func.isRequired,
         emotion: PropTypes.string.isRequired
@@ -146,23 +146,18 @@ export default class MovieDetail extends Component {
                     <div data-col="2-3"
                          className="detail-content">
                         <h2 className="h3 detail-title">
-                            <span className="highlighted">{this.state.detail.title}</span>
-                            ({this.state.detail.release_year})
+                            <span className="highlighted">{this.state.detail.title}</span> ({this.state.detail.release_year})
                         </h2>
                         <p>{!isEmpty(this.state.detail.directors) && `by ${this.state.detail.directors.join(', ')} — `}{this.state.detail.runtime} mins</p>
-                        {!isEmpty(this.state.detail.cast) &&
-                            <p>Cast: {this.state.detail.cast.join(', ')}</p>
-                        }
+                        {!isEmpty(this.state.detail.cast) && <p>Cast: {this.state.detail.cast.join(', ')}</p>}
                         <ul className="unstyled-list percentage-list">
-                            {!isEmpty(this.state.detail.emotions) &&
-                                this.state.detail.emotions.map(e => (
-                                    <PercentageEmotion key={e.id}
-                                                       percentage={e.count / +this.state.totalRatings}
-                                                       emotion={e.emotion}
-                                                       id={e.id}
-                                                       onClick={i => this.addRating(i)} />
-                                ))
-                            }
+                            {!isEmpty(this.state.detail.emotions) && this.state.detail.emotions.map(e => (
+                                <PercentageEmotion key={e.id}
+                                                   percentage={e.count / +this.state.totalRatings}
+                                                   emotion={e.emotion}
+                                                   id={e.id}
+                                                   onClick={i => this.addRating(i)} />
+                            ))}
                         </ul>
                     </div>
                 </section>
@@ -170,3 +165,5 @@ export default class MovieDetail extends Component {
         )
     }
 }
+
+export default MovieDetail

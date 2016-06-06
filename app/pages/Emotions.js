@@ -15,7 +15,7 @@ import { DisplayEmotion } from '../components/emotions/Emotion'
  * rendering of the emotions page.
  */
 
-export default class Emotions extends Component {
+class Emotions extends Component {
     constructor(props) {
         super(props)
 
@@ -53,12 +53,16 @@ export default class Emotions extends Component {
 
         return (
             <main className="wrapper">
-                <header className="emotions-header">
-                    <h1 className="emotions-title">Show me movies that'll make me feel…</h1>
-                    <button data-button
-                            onClick={() => this.addRating.openModal()}>
-                        …or rate a movie?
-                    </button>
+                <header className="emotions-header" data-grid>
+                    <div data-col="1-2">
+                        <h1 className="emotions-title">Show me movies that'll make me feel…</h1>
+                    </div>
+                    <div data-col="1-2" className="right-text">
+                        <button data-button
+                                onClick={() => this.addRating.openModal()}>
+                            …or rate a movie?
+                        </button>
+                    </div>
                 </header>
                 <ul data-grid="gutterless"
                     className="emotions-list unstyled-list">
@@ -71,3 +75,5 @@ export default class Emotions extends Component {
         )
     }
 }
+
+export default Emotions

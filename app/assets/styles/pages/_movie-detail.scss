@@ -25,13 +25,10 @@
     bottom: 0;
     right: 0;
     left: 0;
-    border-top: 1px solid $main-color;
 }
 
 .percentage {
     text-align: center;
-    border-right: 1px solid $main-color;
-    border-bottom: 1px solid $main-color;
     user-select: none;
 
     &:nth-child(3n) {

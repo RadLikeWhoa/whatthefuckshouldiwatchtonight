@@ -80,7 +80,7 @@
     }
 
     &:nth-child(odd) {
-        background-color: transparentize($main-color, 0.5);
+        background-color: rgba($main-color, 0.5);
     }
 
     &:last-child {
@@ -115,12 +115,16 @@
         will-change: transform;
     }
 
+    &:hover {
+        background-color: rgba($main-color, 0.2);
+    }
+
     &:hover img {
         transform: rotateZ(10deg) scale(1.05);
     }
 
     &.is-selected {
-        background-color: $main-color;
+        background-color: rgba($main-color, 0.6);
     }
 }
 
