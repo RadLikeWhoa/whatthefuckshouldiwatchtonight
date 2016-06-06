@@ -5,12 +5,11 @@
  */
 
 import React, { Component, PropTypes } from 'react'
-import { Link, browserHistory } from 'react-router'
+import { browserHistory } from 'react-router'
 import request from 'superagent'
 
 import MovieDetail from '../components/modals/MovieDetail'
 import AddRating from '../components/modals/AddRating'
-import Popover from '../components/helpers/Popover'
 import Options from '../components/movies/Options'
 import Movie from '../components/movies/Movie'
 

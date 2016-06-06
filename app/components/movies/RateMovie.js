@@ -25,7 +25,12 @@ class RateMovie extends Component {
     }
 
     /**
-     * @todo document
+     * Retrieve the information for a given movie.
+     *
+     * @param   {integer}  movieId  The ID of the movie to retrieve information
+     *                              for.
+     *
+     * @return  {void}
      */
 
     getMovie(movieId) {
