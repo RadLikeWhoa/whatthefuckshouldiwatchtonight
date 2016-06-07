@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isempty'
 
 import { SelectableEmotion } from '../emotions/Emotion'
 import { apiKey } from '../../settings.js'
+import { parseReleaseYear, handleRequest } from '../../utils.js'
 
 class RateMovie extends Component {
     static propTypes = {
@@ -38,18 +39,21 @@ class RateMovie extends Component {
     getMovie(movieId) {
         this.movieRequest = request.get(`http://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&append_to_response=credits`)
             .set('Accept', 'application/json')
-            .end((err, res) => {
-                if (!err) {
-                    this.setState({
-                        movie: res.body
-                    })
-                } else {
-                    Alert.error('Could not communicate to the themoviedb.org servers. Please try again.')
+            .end((err, res) => handleRequest(err, res, res => {
+                this.setState({
+                    movie: res.body
+                })
+
+                this.movieRequest = null
+            }, () => {
+                Alert.error('Could not communicate to the themoviedb.org servers. Please try again.')
+
+                if (this.props.errorCallback) {
                     this.props.errorCallback()
                 }
 
                 this.movieRequest = null
-            })
+            }))
     }
 
     /**
@@ -62,24 +66,27 @@ class RateMovie extends Component {
     getEmotions() {
         this.emotionsRequest = request.get('/api/emotions/')
             .set('Accept', 'application/json')
-            .end((err, res) => {
-                if (!err) {
-                    const emotions = res.body.emotions
+            .end((err, res) => handleRequest(err, res, res => {
+                const emotions = res.body.emotions
 
-                    // Add a `selected` flag to each emotion.
+                // Add a `selected` flag to each emotion.
 
-                    emotions.forEach((e, i) => emotions[i].selected = false)
+                emotions.forEach((e, i) => emotions[i].selected = false)
 
-                    this.setState({
-                        emotions: emotions
-                    })
-                } else {
-                    Alert.error('Could not retrieve available emotions. Please try again.')
+                this.setState({
+                    emotions: emotions
+                })
+
+                this.emotionsRequest = null
+            }, () => {
+                Alert.error('Could not retrieve available emotions. Please try again.')
+
+                if (this.props.errorCallback) {
                     this.props.errorCallback()
                 }
 
                 this.emotionsRequest = null
-            })
+            }))
     }
 
     /**
@@ -127,22 +134,21 @@ class RateMovie extends Component {
         this.saveRequest = request.post('/api/movies/')
             .set('Content-Type', 'application/json')
             .send(JSON.stringify({ ...this.state.movie, emotionId: selectedEmotion[0].id }))
-            .end(err => {
-                if (!err) {
-                    browserHistory.push(`/${selectedEmotion[0].emotion}/`)
+            .end((err, res) => handleRequest(err, res, res => {
+                browserHistory.push(`/${selectedEmotion[0].emotion}/`)
 
-                    // Call the callback function with the just selected
-                    // emotion.
+                // Call the callback function with the just selected
+                // emotion.
 
-                    if (this.props.addCallback) {
-                        this.props.addCallback(selectedEmotion[0].emotion)
-                    }
-                } else {
-                    Alert.error('Could not save your rating. Please try again.')
+                if (this.props.addCallback) {
+                    this.props.addCallback(selectedEmotion[0].emotion)
                 }
 
                 this.saveRequest = null
-            })
+            }, () => {
+                Alert.error('Could not save your rating. Please try again.')
+                this.saveRequest = null
+            }))
     }
 
     /**
@@ -178,11 +184,10 @@ class RateMovie extends Component {
                     </div>
                     <div data-col="5-6">
                         <h2 className="h3 detail-title">
-                            <span className="highlighted">{this.state.movie.title}</span>
-                            {(() => { const date = (new Date(this.state.movie.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}
+                            <span className="highlighted">{this.state.movie.title}</span> {parseReleaseYear(this.state.movie.release_date)}
                         </h2>
                         {!isEmpty(this.state.movie.credits) &&
-                            <p>{this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ')}</p>
+                            <p>by {this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ')}</p>
                         }
                     </div>
                 </section>

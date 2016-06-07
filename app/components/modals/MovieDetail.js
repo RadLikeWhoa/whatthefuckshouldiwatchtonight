@@ -5,6 +5,7 @@ import request from 'superagent'
 import isEmpty from 'lodash/isempty'
 
 import { PercentageEmotion } from '../emotions/Emotion'
+import { handleRequest } from '../../utils'
 
 /**
  * This component is responsible for showing detailed information about a single
@@ -63,19 +64,18 @@ class MovieDetail extends Component {
     openModal(movieId) {
         this.movieRequest = request.get(`/api/movies/${movieId}/`)
             .set('Accept', 'application/json')
-            .end((err, res) => {
-                if (!err) {
-                    this.setState({
-                        isOpen: true,
-                        detail: res.body,
-                        totalRatings: res.body.emotions.reduce((acc, el) => acc + +el.count, 0)
-                    })
-                } else {
-                    Alert.error('Could not retrieve information about the movie. Please try again.')
-                }
+            .end((err, res) => handleRequest(err, res, res => {
+                this.setState({
+                    isOpen: true,
+                    detail: res.body,
+                    totalRatings: res.body.emotions.reduce((acc, el) => acc + +el.count, 0)
+                })
 
                 this.movieRequest = null
-            })
+            }, () => {
+                Alert.error('Could not retrieve information about the movie. Please try again.')
+                this.movieRequest = null
+            }))
     }
 
     /**
@@ -92,26 +92,24 @@ class MovieDetail extends Component {
         request.post('/api/reviews/')
             .set('Content-Type', 'application/json')
             .send(`{ "movieId": ${this.state.detail.id}, "emotionId": ${emotionId} }`)
-            .end(err => {
-                if (!err) {
-                    this.hasChanged = true
+            .end((err, res) => handleRequest(err, res, res => {
+                this.hasChanged = true
 
-                    // Update the count of the just selected emotion. The
-                    // totalRatings count is also updated so the percentages all
-                    // work correctly.
+                // Update the count of the just selected emotion. The
+                // totalRatings count is also updated so the percentages all
+                // work correctly.
 
-                    const emotions = this.state.detail.emotions
-                    const count = emotions[emotions.indexOf(emotions.filter(e => e.id == emotionId)[0])].count
-                    emotions[emotions.indexOf(emotions.filter(e => e.id == emotionId)[0])].count = +count + 1
+                const emotions = this.state.detail.emotions
+                const count = emotions[emotions.indexOf(emotions.filter(e => e.id == emotionId)[0])].count
+                emotions[emotions.indexOf(emotions.filter(e => e.id == emotionId)[0])].count = +count + 1
 
-                    this.setState({
-                        detail: { ...this.state.detail, emotions },
-                        totalRatings: this.state.totalRatings + 1
-                    })
-                } else {
-                    Alert.error('Could not saveeee your rating for the movie. Please try again.')
-                }
-            })
+                this.setState({
+                    detail: { ...this.state.detail, emotions },
+                    totalRatings: this.state.totalRatings + 1
+                })
+            }, () => {
+                Alert.error('Could not save your rating for the movie. Please try again.')
+            }))
     }
 
     /**
@@ -184,10 +182,6 @@ class MovieDetail extends Component {
                         </ul>
                     </div>
                 </section>
-                <Alert stack={{ limit: 1 }}
-                       position="top"
-                       effect="stackslide"
-                       timeout={1000} />
             </Modal>
         )
     }

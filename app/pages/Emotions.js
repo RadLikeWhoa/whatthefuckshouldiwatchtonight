@@ -9,6 +9,7 @@ import request from 'superagent'
 
 import AddRating from '../components/modals/AddRating'
 import { DisplayEmotion } from '../components/emotions/Emotion'
+import { handleRequest } from '../utils'
 
 /**
  * Emotions is the container Component for the emotion picker. It is responsible
@@ -37,17 +38,16 @@ class Emotions extends Component {
     getEmotions() {
         this.emotionsRequest = request.get('/api/emotions/')
             .set('Accept', 'application/json')
-            .end((err, res) => {
-                if (!err) {
-                    this.setState({
-                        emotions: res.body.emotions
-                    })
-                } else {
-                    Alert.error('Could not retrieve available emotions. Please try again.')
-                }
+            .end((err, res) => handleRequest(err, res, res => {
+                this.setState({
+                    emotions: res.body.emotions
+                })
 
                 this.emotionsRequest = null
-            })
+            }, () => {
+                Alert.error('Could not retrieve available emotions. Please try again.')
+                this.emotionsRequest = null
+            }))
     }
 
     /**

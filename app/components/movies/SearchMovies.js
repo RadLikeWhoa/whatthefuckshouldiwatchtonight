@@ -4,6 +4,7 @@ import request from 'superagent'
 import debounce from 'lodash/debounce'
 
 import { apiKey } from '../../settings.js'
+import { parseReleaseYear, handleRequest } from '../../utils.js'
 
 class SearchMovies extends Component {
     static propTypes = {
@@ -38,27 +39,25 @@ class SearchMovies extends Component {
         if (query) {
             this.searchRequest = request.get(`http://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
                 .set('Accept', 'application/json')
-                .end((err, res) => {
-                    if (!err) {
+                .end((err, res) => handleRequest(err, res, res => {
+                    // Only include movies that actually have a poster path
+                    // defined. Otherwise they would not make much sense in
+                    // this application.
 
-                        // Only include movies that actually have a poster path
-                        // defined. Otherwise they would not make much sense in
-                        // this application.
-
-                        this.setState({
-                            searchResults: res.body.results.filter(m => m.poster_path),
-                            searching: false
-                        })
-                    } else {
-                        this.setState({
-                            searching: false
-                        })
-
-                        Alert.error('Could not communicate to the themoviedb.org servers. Please try again.')
-                    }
+                    this.setState({
+                        searchResults: res.body.results.filter(m => m.poster_path),
+                        searching: false
+                    })
 
                     this.searchRequest = null
-                })
+                }, () => {
+                    this.setState({
+                        searching: false
+                    })
+
+                    Alert.error('Could not communicate to the themoviedb.org servers. Please try again.')
+                    this.searchRequest = null
+                }))
         } else {
 
             // Remove all movies if the query is empty.
@@ -98,7 +97,7 @@ class SearchMovies extends Component {
                             <li className="search-result-item"
                                 key={r.id}
                                 onClick={() => this.props.selectedSearchResult(r.id)}>
-                                {r.title}{(() => { const date = (new Date(r.release_date)).getFullYear(); return !isNaN(date) ? ` (${date})` : '' })()}
+                                {r.title} {parseReleaseYear(r.release_date)}
                             </li>
                         ))}
                     </ul>

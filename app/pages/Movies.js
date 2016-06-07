@@ -13,6 +13,7 @@ import MovieDetail from '../components/modals/MovieDetail'
 import AddRating from '../components/modals/AddRating'
 import Options from '../components/movies/Options'
 import Movie from '../components/movies/Movie'
+import { handleRequest } from '../utils'
 
 /**
  * Movies is the container Component for the movie overview. It is responsible
@@ -36,7 +37,7 @@ class Movies extends Component {
             }
         }
 
-        this.getMovies()
+        this.getMovies(this.state.order.by, this.state.order.direction)
     }
 
     /**
@@ -49,7 +50,7 @@ class Movies extends Component {
      */
 
     componentWillUpdate(nextProps, nextState) {
-        if (this.state.order.by != nextState.order.by || this.state.order.direction != nextState.order.direction) {
+        if (this.state.order != nextState.order) {
             this.getMovies(nextState.order.by, nextState.order.direction)
         }
     }
@@ -67,21 +68,23 @@ class Movies extends Component {
      */
 
     getMovies(orderBy, orderDirection) {
-        this.moviesRequest = request.get(`/api/movies/${this.props.params.emotion}/${orderBy || this.state.order.by}/${orderDirection || this.state.order.direction}/`)
+        this.moviesRequest = request.get(`/api/movies/${this.props.params.emotion}/${orderBy}/${orderDirection}/`)
             .set('Accept', 'application/json')
-            .end((err, res) => {
-                if (!err) {
-                    this.setState({
-                        movies: res.body.movies
-                    })
-                } else if (res.statusCode == 404) {
+            .end((err, res) => handleRequest(err, res, res => {
+                this.setState({
+                    movies: res.body.movies
+                })
+
+                this.moviesRequest = null
+            }, (err) => {
+                if (err.status == 404) {
                     browserHistory.push('/')
                 } else {
                     Alert.error('Could not retrieve movies for the current emotion. Please try again.')
                 }
 
                 this.moviesRequest = null
-            })
+            }))
     }
 
     /**
@@ -131,10 +134,10 @@ class Movies extends Component {
                     const d1 = new Date(df1[0], df1[1] - 1, df1[2], df1[3], df1[4], df1[5])
                     const d2 = new Date(df2[0], df2[1] - 1, df2[2], df2[3], df2[4], df2[5])
 
-                    return d1 > d2 ? -1 : 1
+                    return d2 - d1
                 } else if (this.state.order.by == 'match') {
                     const modifier = this.state.order.direction == 'descending' ? 1 : -1
-                    return (+m1.percentage > +m2.percentage ? -1 : +m1.percentage < +m2.percentage ? 1 : 0) * modifier
+                    return ((+m2.percentage) - (+m1.percentage)) * modifier
                 }
             })
         })
@@ -181,7 +184,7 @@ class Movies extends Component {
                              emotion={this.props.params.emotion}
                              rateCallback={(m, p, h) => this.updateMovieEmotion(m, p, h)} />
                 <AddRating ref={a => this.addRating = a}
-                           addCallback={() => { this.getMovies(); this.addRating.closeModal() }} />
+                           addCallback={() => { this.getMovies(this.state.order.by, this.state.order.direction); this.addRating.closeModal() }} />
                <Alert stack={{ limit: 1 }}
                       position="top"
                       effect="stackslide"
