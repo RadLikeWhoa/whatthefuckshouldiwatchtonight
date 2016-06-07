@@ -77,6 +77,8 @@ class AddRating extends Component {
      */
 
     closeModal() {
+        if (!this.state.isOpen) return
+        
         this.setState({
             isOpen: false
         })

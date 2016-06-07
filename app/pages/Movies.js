@@ -52,6 +52,10 @@ class Movies extends Component {
     componentWillUpdate(nextProps, nextState) {
         if (this.state.order != nextState.order) {
             this.getMovies(nextState.order.by, nextState.order.direction)
+        } else if (this.props.params.emotion != nextProps.params.emotion) {
+            this.getMovies(nextState.order.by, nextState.order.direction)
+            this.movieDetail.closeModal()
+            this.addRating.closeModal()
         }
     }
 

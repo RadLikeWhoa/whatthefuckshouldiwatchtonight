@@ -122,6 +122,8 @@ class MovieDetail extends Component {
      */
 
     closeModal() {
+        if (!this.state.isOpen) return
+
         this.props.rateCallback(this.state.detail.id, this.state.detail.emotions.filter(e => e.emotion == this.props.emotion)[0].count / +this.state.totalRatings, this.hasChanged)
 
         this.hasChanged = false
