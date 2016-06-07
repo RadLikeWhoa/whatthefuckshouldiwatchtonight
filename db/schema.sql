@@ -9,11 +9,11 @@ DROP TABLE IF EXISTS emotions;
 
 CREATE TABLE movies (
     id            INT(9),
-    title         VARCHAR(100)  NOT NULL,
-    overview      VARCHAR(500)  NOT NULL,
-    poster_path   VARCHAR(100)  NOT NULL,
-    runtime       INT(5)        NOT NULL,
-    release_year  INT(4)        NOT NULL,
+    title         VARCHAR(100)   NOT NULL,
+    overview      VARCHAR(2000)  NOT NULL,
+    poster_path   VARCHAR(100)   NOT NULL,
+    runtime       INT(5)         NOT NULL,
+    release_year  INT(4)         NOT NULL,
     PRIMARY KEY (id)
 ) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
