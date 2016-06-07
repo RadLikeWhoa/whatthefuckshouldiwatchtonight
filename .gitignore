@@ -4,3 +4,4 @@ dist/
 release/
 db/insert.sql
 app/api/config.php
+.ftpconfig
