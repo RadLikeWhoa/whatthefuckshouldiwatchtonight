@@ -11,4 +11,14 @@ $button-alt-colors: (
     end: #4A5866
 );
 
-$ssgs-columns: 2 3 6;
+$ssgs-columns: 2 3 4 5 6;
+
+$media-queries: (
+    'm': 40em,
+    'l': 65em
+);
+
+$ssgs-prefixes: (
+    'M': '(min-width: #{map-get($media-queries, "m")})',
+    'L': '(min-width: #{map-get($media-queries, "l")})'
+);

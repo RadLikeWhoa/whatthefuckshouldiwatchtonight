@@ -72,11 +72,11 @@ class Emotions extends Component {
         return (
             <main className="wrapper">
                 <header className="emotions-header" data-grid>
-                    <div data-col="1-2">
+                    <div data-col="L4-5">
                         <h1 className="emotions-title">Show me movies that'll make me feel…</h1>
                     </div>
-                    <div data-col="1-2" className="right-text">
-                        <button data-button
+                    <div data-col="L1-5" className="right-text">
+                        <button data-button="block"
                                 onClick={() => this.addRating.openModal()}>
                             …or rate a movie?
                         </button>

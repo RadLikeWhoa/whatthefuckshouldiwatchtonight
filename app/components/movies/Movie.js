@@ -10,7 +10,7 @@ import Popover from '../helpers/Popover'
 
 const Movie = ({title, posterPath, percentage, onClick, emotion}) => (
     <li className="movie-entry"
-        data-col="1-6"
+        data-col="1-2 M1-3 L1-6"
         style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${posterPath})`}}
         onClick={onClick}>
         <h2 className="h3 movie-title">{title}</h2>

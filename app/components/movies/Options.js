@@ -49,7 +49,7 @@ class Options extends Component {
         return (
             <section data-grid
                      className="options">
-                <div data-col="1-6">
+                <div data-col="1-4">
                     <Link to="/">
                         <button data-button="block"
                                 className="popover-container">
@@ -58,14 +58,14 @@ class Options extends Component {
                         </button>
                     </Link>
                 </div>
-                <div data-col="1-6">
+                <div data-col="1-4">
                     <button data-button="block"
                             onClick={() => this.props.onClickRate()}>
                         Rate a movie
                     </button>
                 </div>
-                <div data-col="3-6 empty"></div>
-                <div data-col="1-6">
+                <div data-col="1-4 empty"></div>
+                <div data-col="1-4">
                     <section className="popover-container">
                         <button data-button="block"
                                 onClick={() => this.orderPopover.openPopover()}>

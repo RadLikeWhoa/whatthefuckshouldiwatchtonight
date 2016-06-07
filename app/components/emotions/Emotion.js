@@ -9,7 +9,7 @@ import Popover from '../helpers/Popover'
  */
 
 const DisplayEmotion = ({name}) => (
-    <li data-col="1-3">
+    <li data-col="1-2 L1-3">
         <div className="popover-container">
             <Link className={`emotions-entry emotion-${name}`}
                   to={`/${name}/`}>
