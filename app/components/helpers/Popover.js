@@ -74,10 +74,8 @@ class Popover extends Component {
             isOpen: true
         })
 
-        if (!this.props.informational) {
-            document.addEventListener('click', this.handleClickOutside, false)
-            document.addEventListener('keydown', this.handleEscapePress, false)
-        }
+        document.addEventListener('click', this.handleClickOutside, false)
+        document.addEventListener('keydown', this.handleEscapePress, false)
     }
 
     /**
@@ -92,10 +90,8 @@ class Popover extends Component {
             isOpen: false
         })
 
-        if (!this.props.informational) {
-            document.removeEventListener('click', this.handleClickOutside)
-            document.removeEventListener('keydown', this.handleEscapePress)
-        }
+        document.removeEventListener('click', this.handleClickOutside)
+        document.removeEventListener('keydown', this.handleEscapePress)
     }
 
     render() {

@@ -76,7 +76,7 @@ class Movies extends Component {
                 })
 
                 this.moviesRequest = null
-            }, (err) => {
+            }, err => {
                 if (err.status == 404) {
                     browserHistory.push('/')
                 } else {
@@ -128,6 +128,11 @@ class Movies extends Component {
                 ...this.state.movies.slice(index + 1)
             ].sort((m1, m2) => {
                 if (this.state.order.by == 'date-added' && this.state.order.direction == 'descending') {
+
+                    // Order the movies by their latest review date. These need
+                    // to be parsed from the MySQL timestamp. This is only
+                    // relevant if the list is sorted descending.
+
                     const df1 = m1.latest_review_date.split(/[: -]/)
                     const df2 = m2.latest_review_date.split(/[: -]/)
 
@@ -136,6 +141,10 @@ class Movies extends Component {
 
                     return d2 - d1
                 } else if (this.state.order.by == 'match') {
+
+                    // Order the movies by their emotional match, either
+                    // ascending or descending.
+
                     const modifier = this.state.order.direction == 'descending' ? 1 : -1
                     return ((+m2.percentage) - (+m1.percentage)) * modifier
                 }
