@@ -14,14 +14,18 @@ var csso = require('gulp-csso')
 var svgo = require('gulp-svgo')
 var autoprefixer = require('gulp-autoprefixer')
 
-gulp.task('build', function () {
-    return browserify({ entries: 'app/main.js', extensions: ['.js'], debug: true })
+// Build JS files using browserify with ES6, ES7 features enabled.
+
+gulp.task('js', function () {
+    return browserify({ entries: 'app/main.js', extensions: [ '.js' ], debug: true })
         .transform('babelify', { presets: [ 'es2015', 'react', 'stage-0' ] })
         .bundle()
-        .on('error', function(err) { console.error(err); this.emit('end'); })
+        .on('error', function (err) { console.error(err); this.emit('end'); })
         .pipe(source('bundle.js'))
         .pipe(gulp.dest('app/dist/js/'))
 })
+
+// Process Sass files and use autoprefixer.
 
 gulp.task('styles', function () {
     return gulp.src('app/assets/styles/style.scss')
@@ -30,17 +34,23 @@ gulp.task('styles', function () {
         .pipe(gulp.dest('app/dist/css/'))
 })
 
+// Minify SVG files.
+
 gulp.task('svg', function () {
     return gulp.src('app/assets/svg/*.svg')
         .pipe(svgo())
         .pipe(gulp.dest('app/dist/svg/'))
 })
 
+// Combine SQL schema and sample data into a convenience script.
+
 gulp.task('sql', function () {
     return gulp.src([ 'db/schema.sql', 'db/data.sql' ])
         .pipe(concat('insert.sql'))
         .pipe(gulp.dest('db/'))
 })
+
+// Build files for production. This is especially relevant for the React code.
 
 gulp.task('release', function () {
     process.env.NODE_ENV = 'production'
@@ -70,13 +80,18 @@ gulp.task('release', function () {
     return merge(styles, scripts, fonts, svg)
 })
 
-gulp.task('watch', [ 'build', 'styles', 'svg', 'sql' ], function () {
-    gulp.watch([ 'app/main.js', 'app/components/**/*.js', 'app/pages/**/*.js' ], [ 'build' ])
+// Watch source files and execute relevant tasks. Runs all other tasks before
+// starting to watch.
+
+gulp.task('watch', [ 'js', 'styles', 'svg', 'sql' ], function () {
+    gulp.watch([ 'app/main.js', 'app/components/**/*.js', 'app/pages/**/*.js' ], [ 'js' ])
     gulp.watch('app/assets/styles/**/*.scss', [ 'styles' ])
     gulp.watch('db/**/*.sql', [ 'sql' ])
     gulp.watch('app/assets/svg/*.svg', [ 'svg' ])
 
     require('opn')('http://localhost:8888')
 })
+
+// By default, build all source files and start watching.
 
 gulp.task('default', [ 'watch' ])
