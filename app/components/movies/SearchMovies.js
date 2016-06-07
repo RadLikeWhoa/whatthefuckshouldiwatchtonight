@@ -6,6 +6,11 @@ import debounce from 'lodash/debounce'
 import { apiKey } from '../../settings.js'
 import { parseReleaseYear, handleRequest } from '../../utils.js'
 
+/**
+ * This component presents the user with the option to search movies from the
+ * TMDB API. Movies can then be added to the database along with a review.
+ */
+
 class SearchMovies extends Component {
     static propTypes = {
         selectedSearchResult: PropTypes.func.isRequired

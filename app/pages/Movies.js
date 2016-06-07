@@ -194,10 +194,10 @@ class Movies extends Component {
                              rateCallback={(m, p, h) => this.updateMovieEmotion(m, p, h)} />
                 <AddRating ref={a => this.addRating = a}
                            addCallback={() => { this.getMovies(this.state.order.by, this.state.order.direction); this.addRating.closeModal() }} />
-               <Alert stack={{ limit: 1 }}
-                      position="top"
-                      effect="stackslide"
-                      timeout={3500} />
+                <Alert stack={{ limit: 1 }}
+                       position="top"
+                       effect="stackslide"
+                       timeout={3500} />
             </main>
         )
     }

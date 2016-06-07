@@ -49,34 +49,22 @@
 }
 
 .percentage {
+    padding: 0.75em 1.5em;
     text-align: center;
+    transition: background-color 0.1s ease-in-out;
     user-select: none;
+    cursor: pointer;
 
-    &:nth-child(3n) {
-        border-right: 0;
+    &:hover {
+        background-color: rgba($main-color, 0.2);
     }
 
-    &:nth-last-child(-n+3) {
-        border-bottom: 0;
+    &.is-highlighted {
+        background-color: rgba($main-color, 0.6);
     }
 
-    span {
-        display: block;
-        padding: 0.75em 1.5em;
-        transition: background-color 0.1s ease-in-out;
-        cursor: pointer;
-
-        &:hover {
-            background-color: rgba($main-color, 0.2);
-        }
-
-        &.is-highlighted {
-            background-color: rgba($main-color, 0.6);
-        }
-
-        &:hover img {
-            transform: rotateZ(10deg) scale(1.05);
-        }
+    &:hover img {
+        transform: rotateZ(10deg) scale(1.05);
     }
 
     img {

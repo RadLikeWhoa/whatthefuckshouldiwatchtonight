@@ -51,12 +51,12 @@ SelectableEmotion.propTypes = {
  */
 
 const PercentageEmotion = ({percentage, id, emotion, onClick}) => (
-    <li data-col="1-3" className="percentage">
-        <span style={{ opacity: Math.min(1, percentage + 0.3) }}
+    <li data-col="1-3">
+        <div className="percentage" style={{ opacity: Math.min(1, percentage + 0.3) }}
               onClick={(ev) => handlePercentageClick(ev, id, onClick)}>
             <img src={`/dist/svg/${emotion}.svg`} />
             {Math.round(percentage * 100)}% {emotion}
-        </span>
+        </div>
     </li>
 )
 

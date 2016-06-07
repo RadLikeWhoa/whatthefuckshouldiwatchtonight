@@ -66,7 +66,7 @@ class Options extends Component {
                 </div>
                 <div data-col="3-6 empty"></div>
                 <div data-col="1-6">
-                    <div className="popover-container">
+                    <section className="popover-container">
                         <button data-button="block"
                                 onClick={() => this.orderPopover.openPopover()}>
                             Sort by
@@ -79,7 +79,7 @@ class Options extends Component {
                                     {i.display}
                                 </li>
                             ))}
-                            <div data-grid="gutterless">
+                            <section data-grid="gutterless">
                                 {this.getOrderCriteria().direction.map((d, index) => (
                                     <div key={index}
                                          data-col="1-2">
@@ -90,9 +90,9 @@ class Options extends Component {
                                         </li>
                                     </div>
                                 ))}
-                            </div>
+                            </section>
                         </Popover>
-                    </div>
+                    </section>
                 </div>
             </section>
         )

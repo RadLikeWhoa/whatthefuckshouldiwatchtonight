@@ -8,6 +8,11 @@ import { SelectableEmotion } from '../emotions/Emotion'
 import { apiKey } from '../../settings.js'
 import { parseReleaseYear, handleRequest } from '../../utils.js'
 
+/**
+ * This component presents the user with the option to select an emotion and
+ * submit it along with a movie, i.e. create a review.
+ */
+
 class RateMovie extends Component {
     static propTypes = {
         movieId: PropTypes.number.isRequired,
