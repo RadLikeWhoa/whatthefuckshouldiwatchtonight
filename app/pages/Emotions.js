@@ -92,7 +92,7 @@ class Emotions extends Component {
                 <Alert stack={{ limit: 1 }}
                        position="top"
                        effect="stackslide"
-                       timeout={1000} />
+                       timeout={3500} />
             </main>
         )
     }
