@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-
 import Popover from '../helpers/Popover'
 
 /**
@@ -8,7 +7,7 @@ import Popover from '../helpers/Popover'
  * component, as such it was written using the shorthand notation.
  */
 
-const Movie = ({title, posterPath, percentage, onClick, emotion}) => (
+const Movie = ({ title, posterPath, percentage, onClick, emotion }) => (
     <li className="movie-entry"
         data-col="1-2 M1-3 L1-6"
         style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w396/${posterPath})`}}

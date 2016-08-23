@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import Alert from 'react-s-alert'
 import Modal from 'react-modal'
-
 import RateMovie from '../movies/RateMovie'
 import SearchMovies from '../movies/SearchMovies'
 
@@ -43,6 +42,10 @@ class AddRating extends Component {
             isOpen: false,
             selectedMovieId: 0
         }
+
+        this.openModal = this.openModal.bind(this)
+        this.onAfterOpen = this.onAfterOpen.bind(this)
+        this.closeModal = this.closeModal.bind(this)
     }
 
     /**
@@ -78,7 +81,7 @@ class AddRating extends Component {
 
     closeModal() {
         if (!this.state.isOpen) return
-        
+
         this.setState({
             isOpen: false
         })
@@ -93,19 +96,21 @@ class AddRating extends Component {
     }
 
     render() {
+        const { isOpen, selectedMovieId } = this.state
+
         return (
-            <Modal isOpen={this.state.isOpen}
+            <Modal isOpen={isOpen}
                    style={AddRating.modalStyle}
-                   onRequestClose={() => this.closeModal()}
-                   onAfterOpen={() => this.onAfterOpen()}
+                   onRequestClose={this.closeModal}
+                   onAfterOpen={this.onAfterOpen}
                    closeTimeoutMS={350}>
-                {!this.state.selectedMovieId &&
+                {!selectedMovieId &&
                     <SearchMovies ref={s => this.search = s}
                                   selectedSearchResult={id => this.setState({ selectedMovieId: id })} />
                 }
-                {this.state.selectedMovieId ?
-                    <RateMovie movieId={this.state.selectedMovieId}
-                               closeCallback={() => this.closeModal()}
+                {selectedMovieId ?
+                    <RateMovie movieId={selectedMovieId}
+                               closeCallback={this.closeModal}
                                addCallback={e => this.props.addCallback(e)}
                                errorCallback={() => { this.setState({ selectedMovieId: 0 })}} />
                 : null}

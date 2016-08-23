@@ -3,7 +3,6 @@ import { browserHistory } from 'react-router'
 import Alert from 'react-s-alert'
 import request from 'superagent'
 import isEmpty from 'lodash/isempty'
-
 import { SelectableEmotion } from '../emotions/Emotion'
 import { apiKey } from '../../settings.js'
 import { parseReleaseYear, handleRequest } from '../../utils.js'
@@ -30,6 +29,8 @@ class RateMovie extends Component {
 
         this.getEmotions()
         this.getMovie(this.props.movieId)
+
+        this.saveRating = this.saveRating.bind(this)
     }
 
     /**
@@ -180,24 +181,26 @@ class RateMovie extends Component {
     }
 
     render() {
+        const { movie, emotions } = this.state
+
         return (
             <section data-grid>
                 <section className="clearfix add-movie-information">
                     <div data-col="1-6">
                         <img className="result-poster"
-                             src={this.state.movie.poster_path ? `https://image.tmdb.org/t/p/w185${this.state.movie.poster_path}` : ''} />
+                             src={movie.poster_path ? `https://image.tmdb.org/t/p/w185${movie.poster_path}` : ''} />
                     </div>
                     <div data-col="5-6">
                         <h2 className="h3 detail-title">
-                            <span className="highlighted">{this.state.movie.title}</span> {parseReleaseYear(this.state.movie.release_date)}
+                            <span className="highlighted">{movie.title}</span> {parseReleaseYear(movie.release_date)}
                         </h2>
-                        {!isEmpty(this.state.movie.credits) &&
-                            <p>by {this.state.movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ')}</p>
+                        {!isEmpty(movie.credits) &&
+                            <p>by {movie.credits.crew.filter(c => c.job == "Director").map(c => c.name).join(', ')}</p>
                         }
                     </div>
                 </section>
                 <ul className="unstyled-list clearfix selectable-emotions-list">
-                    {this.state.emotions.map((e, i) => (
+                    {emotions.map((e, i) => (
                         <SelectableEmotion name={e.emotion}
                                            isSelected={e.selected}
                                            key={i}
@@ -206,13 +209,13 @@ class RateMovie extends Component {
                 </ul>
                 <div data-col="1-2">
                     <button data-button="block secondary"
-                            onClick={() => this.props.closeCallback()}>
+                            onClick={this.props.closeCallback}>
                         Cancel
                     </button>
                 </div>
                 <div data-col="1-2">
                     <button data-button="block"
-                            onClick={() => this.saveRating()}>
+                            onClick={this.saveRating}>
                         Save Rating
                     </button>
                 </div>

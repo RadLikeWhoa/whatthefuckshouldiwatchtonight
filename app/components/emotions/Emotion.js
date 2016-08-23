@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-
 import Popover from '../helpers/Popover'
 
 /**
@@ -8,7 +7,7 @@ import Popover from '../helpers/Popover'
  * display a list of emotions that link to their respective movies list.
  */
 
-const DisplayEmotion = ({name}) => (
+const DisplayEmotion = ({ name }) => (
     <li data-col="1-2 L1-3">
         <div className="popover-container">
             <Link className={`emotions-entry emotion-${name}`}
@@ -29,7 +28,7 @@ DisplayEmotion.propTypes = {
  * option to select an emotion for the movie they are currently rating.
  */
 
-const SelectableEmotion = ({name, isSelected, onClick}) => (
+const SelectableEmotion = ({ name, isSelected, onClick }) => (
     <li data-col="1-3">
         <button onClick={onClick}
                 className={`selectable-emotion ${isSelected ? ' is-selected' : ''}`}>
@@ -50,7 +49,7 @@ SelectableEmotion.propTypes = {
  * percentage match a given movie has for a given emotion.
  */
 
-const PercentageEmotion = ({percentage, id, emotion, onClick}) => (
+const PercentageEmotion = ({ percentage, id, emotion, onClick }) => (
     <li data-col="1-3">
         <div className="percentage" style={{ opacity: Math.min(1, percentage + 0.3) }}
               onClick={(ev) => handlePercentageClick(ev, id, onClick)}>

@@ -56,8 +56,8 @@ class Popover extends Component {
      * @return  {void}
      */
 
-    handleEscapePress(e) {
-        if (e.keyCode == 27) {
+    handleEscapePress({ keyCode }) {
+        if (keyCode == 27) {
             this.closePopover()
         }
     }
@@ -95,10 +95,12 @@ class Popover extends Component {
     }
 
     render() {
+        const { informational, children } = this.props
+
         return (
             <ul ref={u => this.list = u}
-                className={`unstyled-list popover ${this.props.informational ? 'popover-informational' : ''} ${(this.state.isOpen ? 'is-visible' : '')}`}>
-                {this.props.children}
+                className={`unstyled-list popover ${informational ? 'popover-informational' : ''} ${(this.state.isOpen ? 'is-visible' : '')}`}>
+                {children}
             </ul>
         )
     }

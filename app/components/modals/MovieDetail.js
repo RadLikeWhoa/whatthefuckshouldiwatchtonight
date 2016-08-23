@@ -3,7 +3,6 @@ import Alert from 'react-s-alert'
 import Modal from 'react-modal'
 import request from 'superagent'
 import isEmpty from 'lodash/isempty'
-
 import { PercentageEmotion } from '../emotions/Emotion'
 import { handleRequest } from '../../utils'
 
@@ -50,6 +49,9 @@ class MovieDetail extends Component {
         }
 
         this.hasChanged = false
+
+        this.openModal = this.openModal.bind(this)
+        this.closeModal = this.closeModal.bind(this)
     }
 
     /**
@@ -122,9 +124,15 @@ class MovieDetail extends Component {
      */
 
     closeModal() {
-        if (!this.state.isOpen) return
+        const { isOpen, detail, totalRatings } = this.state
 
-        this.props.rateCallback(this.state.detail.id, this.state.detail.emotions.filter(e => e.emotion == this.props.emotion)[0].count / +this.state.totalRatings, this.hasChanged)
+        if (!isOpen) return
+
+        this.props.rateCallback(
+            detail.id,
+            detail.emotions.filter(e => e.emotion == this.props.emotion)[0].count / +totalRatings,
+            this.hasChanged
+        )
 
         this.hasChanged = false
 
@@ -154,29 +162,31 @@ class MovieDetail extends Component {
     }
 
     render() {
+        const { isOpen, detail } = this.state
+
         return (
-            <Modal isOpen={this.state.isOpen}
+            <Modal isOpen={isOpen}
                    style={MovieDetail.modalStyle}
-                   onRequestClose={() => this.closeModal()}
+                   onRequestClose={this.closeModal}
                    closeTimeoutMS={350}>
                 <section data-grid="gutterless">
                     <div data-col="1-3"
                          className="detail-poster"
-                         style={{ backgroundImage: this.state.detail.poster_path ? `url(https://image.tmdb.org/t/p/w396/${this.state.detail.poster_path})` : 'none'}}></div>
+                         style={{ backgroundImage: detail.poster_path ? `url(https://image.tmdb.org/t/p/w396/${detail.poster_path})` : 'none'}}></div>
                     <div data-col="2-3"
                          className="detail-content">
                         <section className="detail-movie">
                             <h2 className="h3 detail-title">
-                                <span className="highlighted">{this.state.detail.title}</span> ({this.state.detail.release_year})
+                                <span className="highlighted">{detail.title}</span> ({detail.release_year})
                             </h2>
-                            <p>{!isEmpty(this.state.detail.directors) && `by ${this.state.detail.directors.join(', ')} — `}{this.state.detail.runtime} mins</p>
-                            <p className="detail-description">{this.state.detail.overview}</p>
-                            {!isEmpty(this.state.detail.cast) && <p>Cast: {this.state.detail.cast.join(', ')}</p>}
+                            <p>{!isEmpty(detail.directors) && `by ${detail.directors.join(', ')} — `}{detail.runtime} mins</p>
+                            <p className="detail-description">{detail.overview}</p>
+                            {!isEmpty(detail.cast) && <p>Cast: {detail.cast.join(', ')}</p>}
                         </section>
                         <ul className="unstyled-list percentage-list">
-                            {!isEmpty(this.state.detail.emotions) && this.state.detail.emotions.map(e => (
+                            {!isEmpty(detail.emotions) && detail.emotions.map(e => (
                                 <PercentageEmotion key={e.id}
-                                                   percentage={e.count / +this.state.totalRatings}
+                                                   percentage={e.count / +totalRatings}
                                                    emotion={e.emotion}
                                                    id={e.id}
                                                    onClick={i => this.addRating(i)} />

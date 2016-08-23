@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-
 import Popover from '../helpers/Popover'
 
 /**
@@ -46,6 +45,8 @@ class Options extends Component {
     }
 
     render() {
+        const { emotion, order, onClickRate, orderChangeCallback } = this.props
+
         return (
             <section data-grid
                      className="options">
@@ -54,13 +55,13 @@ class Options extends Component {
                         <button data-button="block"
                                 className="popover-container">
                             Change your mood
-                            <Popover informational>Tired of feeling {this.props.emotion}?</Popover>
+                            <Popover informational>Tired of feeling {emotion}?</Popover>
                         </button>
                     </Link>
                 </div>
                 <div data-col="1-4">
                     <button data-button="block"
-                            onClick={() => this.props.onClickRate()}>
+                            onClick={onClickRate}>
                         Rate a movie
                     </button>
                 </div>
@@ -74,8 +75,8 @@ class Options extends Component {
                         <Popover ref={p => this.orderPopover = p}>
                             {this.getOrderCriteria().by.map((i, index) => (
                                 <li key={index}
-                                    className={`popover-item ${this.props.order.by == i.name ? ' is-selected' : ''}`}
-                                    onClick={() => this.props.orderChangeCallback({ ...this.props.order, by: i.name })}>
+                                    className={`popover-item ${order.by == i.name ? ' is-selected' : ''}`}
+                                    onClick={() => this.props.orderChangeCallback({ ...order, by: i.name })}>
                                     {i.display}
                                 </li>
                             ))}
@@ -84,8 +85,8 @@ class Options extends Component {
                                     <div key={index}
                                          data-col="1-2">
                                         <li title={`Sort ${d}`}
-                                            className={`popover-item centered-text ${this.props.order.direction == d ? ' is-selected' : ''}`}
-                                            onClick={() => this.props.orderChangeCallback({ ...this.props.order, direction: d })}>
+                                            className={`popover-item centered-text ${order.direction == d ? ' is-selected' : ''}`}
+                                            onClick={() => orderChangeCallback({ ...order, direction: d })}>
                                             <span data-icon={d}></span>
                                         </li>
                                     </div>
